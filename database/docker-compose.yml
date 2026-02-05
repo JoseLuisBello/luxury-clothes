@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: postgres_local
+    environment:
+      POSTGRES_DB: luxuryclothes
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/01_init.sql
+      - ./pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
