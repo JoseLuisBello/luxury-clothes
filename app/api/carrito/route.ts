@@ -16,11 +16,12 @@ export async function GET(req: Request) {
   
     return NextResponse.json({
         ok: true,
+        code: 200,
         count: carrito.length,
         data: carrito
     });
 
-  } catch (error) {
+  } catch (error: any ) {
     return NextResponse.json(
       { ok: false, error: String(error) },
       { status: 500 }
@@ -36,7 +37,7 @@ export async function POST(req: Request) {
 
     await CarritoCompras.addProduct(clienteId, productoId, cantidad);
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, message: 'Producto agregado al carrito' });
   } catch (error: any) {
     console.error(error);
 
@@ -45,7 +46,7 @@ export async function POST(req: Request) {
         ok: false,
         error: error.message ?? 'Error interno',
       },
-      { status: 400 }
+      { status: 500 }
     );
   }
 }
