@@ -30,7 +30,6 @@ export async function GET(req: Request) {
 }
 
 
-
 export async function POST(req: Request) {
   try {
     const { clienteId, productoId, cantidad } = await req.json();
@@ -39,9 +38,27 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ ok: true, message: 'Producto agregado al carrito' });
   } catch (error: any) {
-    console.error(error);
+      return NextResponse.json(
+      {
+        ok: false,
+        error: error.message ?? 'Error interno',
+      },
+      { status: 500 }
+    );
+  }
+}
 
-    return NextResponse.json(
+
+export async function DELETE(req: Request) {
+  try {
+    const { clienteId } = await req.json();
+    
+    await CarritoCompras.dropCart(clienteId);
+
+    return NextResponse.json({ ok: true, message: 'Carrito vaciado' });
+
+  } catch (error: any) {
+      return NextResponse.json(
       {
         ok: false,
         error: error.message ?? 'Error interno',
