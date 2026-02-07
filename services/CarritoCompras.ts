@@ -29,7 +29,8 @@ export class CarritoCompras {
         }
 
         if (quantity > 0) {
-            await Carrito.setQuantity(customerId, productId, quantity);
+
+            await Carrito.setQuantity(customerId, productId, quantity + 1);
         }
     }
 
@@ -44,6 +45,11 @@ export class CarritoCompras {
 
         if (quantity === 0) {
             await Carrito.removeProduct(customerId, productId);
+        }
+
+        if (quantity > 0) {
+
+            await Carrito.setQuantity(customerId, productId, quantity - 1);
         }
     }
 
