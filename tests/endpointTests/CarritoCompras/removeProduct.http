@@ -1,3 +1,9 @@
+#--------------------------------------------------
+# Equipo #1
+# Adrien Hernández Sánchez
+# 06 de febrero de 2026
+# Endpoint: Eliminar producto del carrito de compras
+#--------------------------------------------------
 DELETE http://localhost:3000/api/carrito/17
 Content-Type: application/json
 

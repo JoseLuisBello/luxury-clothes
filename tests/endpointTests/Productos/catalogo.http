@@ -1,2 +1,7 @@
-### Obtener catálogo
+#--------------------------------------------------
+# Equipo #1
+# Adrien Hernández Sánchez
+# 06 de febrero de 2026
+# Endpoint: Obtener catálogo de productos
+#--------------------------------------------------
 GET http://localhost:3000/api/catalogo
