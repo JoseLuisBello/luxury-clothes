@@ -1,3 +1,10 @@
+/**
+ * PedidoService
+ * Equipo: 1
+ * Autor: Abdiel
+ * Fecha: 26/02/2026
+ */
+
 import { PedidoRepository } from "@/repositories/PedidoRepository";
 
 export class PedidoService {

@@ -1,6 +1,6 @@
 /**
  * ClienteRepository
- * Equipo: ---
+ * Equipo: 1
  * Autor: Abdiel
  * Fecha: 2026
  */

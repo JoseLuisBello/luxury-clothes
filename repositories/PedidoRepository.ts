@@ -1,8 +1,8 @@
 /**
  * PedidoRepository
- * Equipo: ---
+ * Equipo: 1
  * Autor: Abdiel
- * Fecha: 2026
+ * Fecha: 26/02/2026
  */
 
 import { pool } from "@/lib/db";
