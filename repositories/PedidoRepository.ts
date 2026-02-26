@@ -51,4 +51,37 @@ export class PedidoRepository {
     const result = await pool.query(sql, [idCliente]);
     return result.rows;
   }
+
+  static async obtenerComprobante(idPedido: number) {
+
+    const sql = `
+      SELECT
+        p.id AS pedido_id,
+        p.fecha,
+        p.total,
+  
+        c.nombre,
+        c.apellidos,
+        c.correo,
+  
+        pr.nombre AS producto,
+        d.cantidad,
+        d.precio_unitario
+  
+      FROM "Pedido" p
+  
+      JOIN "Cliente" c
+        ON c.id = p.id_cliente
+  
+      JOIN "DetallePedido" d
+        ON d.id_pedido = p.id
+  
+      JOIN "Producto" pr
+        ON pr.id = d.id_producto
+  
+      WHERE p.id = $1
+    `;
+  
+    return await pool.query(sql, [idPedido]);
+  }
 }
