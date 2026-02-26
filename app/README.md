@@ -1,3 +1,5 @@
+# CARPETA PARA PRESENTACION
+```bash
 ├── app/                        # CAPA DE PRESENTACION se mantiene nombre por estructura y forma de trabajar de next
 │   ├── page.tsx                # Pagina prinicpal (Inicio de pagina puede estar logueado o no)
 │   │
@@ -40,3 +42,4 @@
 │           |
 |           └── flitro
 |               └── route.ts
+```

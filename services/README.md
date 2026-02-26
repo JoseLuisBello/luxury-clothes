@@ -1,5 +1,6 @@
 # CARPETA DE SERVICIO
 
+```bash
 ├── services/               # CAPA DE SERVICIO   
 |   ├── cliente/                             # caso de usos implementados
 │   │   └── cliente.service.ts              
@@ -30,3 +31,4 @@
 |   |
 │   └── pedido                               # caso de usos implementados
 │       └── pedido.service.ts
+```

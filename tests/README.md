@@ -1,5 +1,5 @@
 # CARPETA PARA PRUEBAS
-
+```bash
 ├── tests/                      # PRUEBAS
 │   ├── services/                              # se pueden tener varios archivos dentro de cada modulo
 |   |   ├── cliente/
@@ -62,3 +62,4 @@
 |       |
 |       └── pedido/
 |           └── pedido.endpoint.http
+```

@@ -48,6 +48,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 detalles de formado de carpeta
 LUXURY-CLOTHES
+# ESTRUCUTURA 3 CAPAS PROPUESTA
+```bash
 │
 ├── app/                        # CAPA DE PRESENTACION se mantiene nombre por estructura y forma de trabajar de next
 │   ├── page.tsx                # Pagina prinicpal (Inicio de pagina puede estar logueado o no)
@@ -72,7 +74,7 @@ LUXURY-CLOTHES
 │   │   ├── nose.tsx
 │   │   └── nose.tsx
 │   │
-│   └── api/                    # Endpoints  todos las clases o llamadas en un solo routes 
+│   └── api/                    # Endpoints
 │       ├── cliente/
 │       |   ├── añadir
 |       |   |   └── route.ts
@@ -182,3 +184,4 @@ LUXURY-CLOTHES
 ├── package.json
 │   jest.config.js
 └── tsconfig.json
+```

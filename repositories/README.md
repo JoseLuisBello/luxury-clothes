@@ -1,5 +1,5 @@
 # CARPETA DE PERSISTENCIA
-
+```bash
 ├── repositories/               # CAPA DE PERSISTENCIA
 |   ├── cliente/                                # caso de usos implementados us001, us002, us003, us004, us005    
 │   │   └── cliente.repository.ts               # terminado
@@ -33,3 +33,4 @@ us021, us022, us023, us024, us025
 |   |
 │   └── pedido                                  # caso de usos implementados us035, us036  
 │       └── pedido.repository.ts                #
+```
