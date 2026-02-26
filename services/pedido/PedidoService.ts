@@ -5,7 +5,7 @@
  * Fecha: 26/02/2026
  */
 
-import { PedidoRepository } from "@/repositories/PedidoRepository";
+import { PedidoRepository } from "@/repositories/pedido/PedidoRepository";
 
 export class PedidoService {
   static async getDetalle(idPedido: number) {

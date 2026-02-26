@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/pedido/1
 
 ### Historial pedidos cliente
-GET http://localhost:3000/api/pedidos/cliente/1
+GET http://localhost:3000/api/pedido/cliente/1
 
 ### Obtener comprobante
 GET http://localhost:3000/api/pedido/1/comprobante
