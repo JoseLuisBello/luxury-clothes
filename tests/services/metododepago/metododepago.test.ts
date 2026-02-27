@@ -5,6 +5,7 @@ jest.mock('@/repositories/metododepago/metododepago.repository', () => ({
   MetodoDePagoRepository: {
     Ver: jest.fn(),
     agregarMetodo: jest.fn(),
+    modificarMetodo: jest.fn(),
     eliminarMetodo: jest.fn(),
   },
 }));
@@ -103,20 +104,20 @@ describe('Agregar nuevo metodo de pago', () => {
 
     await expect(
       MetodoDePagoService.agregarMetodo(
-        20, 1, '123', null, null, null, null, null
+        20, 1, '1234567812345678', null, null, null, null, null
       )
     ).rejects.toThrow("El cliente ya tiene el máximo de 5 métodos de pago")
   });
 
   test('debe lanzar error si el metodo esta duplicado por numero de cuenta', async () => {
 
-    const metodosMock = [{ numero_cuenta: '123456', correo: null }];
+    const metodosMock = [{ numero_cuenta: '1234567812345678', correo: null }];
 
     (MetodoDePagoRepository.Ver as jest.Mock).mockResolvedValue(metodosMock);
 
     await expect(
       MetodoDePagoService.agregarMetodo(
-        20, 1, '123456', null, null, null, null, null
+        20, 1, '1234567812345678', null, null, null, null, null
       )
     ).rejects.toThrow("Este método de pago ya está registrado")
   });
@@ -132,6 +133,98 @@ describe('Agregar nuevo metodo de pago', () => {
         20, 1, null, null, null, null, 'correo@test.com', null
       )
     ).rejects.toThrow("Este método de pago ya está registrado")
+  });
+});
+
+describe('Modificar metodo de pago', () => {
+
+  test('debe modificar método correctamente', async () => {
+
+    const metodoActual = {
+      id: 6,
+      id_cliente: 3,
+      numero_cuenta: '1234567891237567',
+      nombre_titular: 'Juan Diaz',
+      fecha_vencimiento: new Date('2028-10-01'),
+      banco: null,
+      correo: null,
+      proveedor: 'MASTER CARD'
+    };
+
+    const metodoModificado = {...metodoActual, nombre_titular: 'Luis Diaz' };
+
+    jest.spyOn(MetodoDePagoService, 'detallesmetodo').mockResolvedValue(metodoActual);
+
+    (MetodoDePagoRepository.modificarMetodo as jest.Mock).mockResolvedValue(metodoModificado);
+
+    const result = await MetodoDePagoService.modificarMetodo(
+      3,                
+      2,                
+      6,                
+      '1234567891237567',
+      'Luis Diaz',      
+      '2028-10-01',
+      null,
+      null,
+      'MASTER CARD'
+    );
+
+    expect(result).toEqual(metodoModificado);
+    expect(MetodoDePagoRepository.modificarMetodo).toHaveBeenCalled();
+  });
+
+
+  test('debe lanzar error si cliente no existe', async () => {
+
+    await expect(
+      MetodoDePagoService.modificarMetodo(
+        0, 2, 6, '123', null, null, null, null, null
+      )
+    ).rejects.toThrow("Cliente requerido");
+
+  });
+
+
+  test('debe lanzar error si metodo no existe', async () => {
+
+    jest.spyOn(MetodoDePagoService, 'detallesmetodo').mockResolvedValue(null);
+
+    await expect(
+      MetodoDePagoService.modificarMetodo(
+        3, 2, 6, '123', null, null, null, null, null
+      )
+    ).rejects.toThrow("Método no encontrado");
+
+  });
+
+  test('debe lanzar error si no hay cambios', async () => {
+
+    const metodoActual = {
+      id: 6,
+      id_cliente: 3,
+      numero_cuenta: '1234567891237567',
+      nombre_titular: 'Juan Diaz',
+      fecha_vencimiento: new Date('2028-10-01'),
+      banco: null,
+      correo: null,
+      proveedor: 'MASTER CARD'
+    };
+
+    jest.spyOn(MetodoDePagoService, 'detallesmetodo').mockResolvedValue(metodoActual);
+
+    await expect(
+      MetodoDePagoService.modificarMetodo(
+        3,
+        2,
+        6,
+        '1234567891237567',
+        'Juan Diaz',
+        '2028-10-01',
+        null,
+        null,
+        'MASTER CARD'
+      )
+    ).rejects.toThrow("No hay cambios");
   });
 });
 
