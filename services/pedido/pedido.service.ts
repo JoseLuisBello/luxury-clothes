@@ -1,9 +1,8 @@
-/**
- * PedidoService
- * Equipo: 1
- * Autor: Abdiel
- * Fecha: 26/02/2026
- */
+//***********/
+//* Nombre del equipo: Equipo 1 */
+//* Autor de la clase: Cervantes Rosales Abdiel */
+//* Fecha: 25/02/2026 */
+//**********/
 
 import { PedidoRepository } from "@/repositories/pedido/pedido.repository";
 import { QueryResult } from "pg";
