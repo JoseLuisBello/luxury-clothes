@@ -10,6 +10,8 @@ jest.mock("@/repositories/pedido/pedido.repository", () => ({
     PedidoRepository: {
         cancelarPedido: jest.fn(),
         estadoPedido: jest.fn(),
+        getDetallePedido: jest.fn(),
+        obtenerHistorialCliente: jest.fn(),
     },
 }));
 
@@ -83,6 +85,121 @@ describe("PedidoService", () => {
             await expect(PedidoService.obtenerEstadoPedido(999)).rejects.toThrow(
                 "Pedido no encontrado"
             );
+        });
+    });
+
+//***********/
+//* Nombre del equipo: Equipo 1 */
+//* Autor de la clase: Cervantes Rosales Abdiel */
+//* Fecha: 26/02/2026 */
+//**********/
+
+
+    //************************************/
+    // Detalle de pedido
+    //************************************/
+
+    describe("getDetalle", () => {
+
+        test("retorna el detalle del pedido cuando existe", async () => {
+
+            const mockDetalle = [
+                {
+                    pedido_id: 1,
+                    nombre: "Camisa Nike",
+                    cantidad: 1,
+                    precio_unitario: 299.99,
+                },
+            ];
+
+            (PedidoRepository.getDetallePedido as jest.Mock).mockResolvedValue({
+                rows: mockDetalle,
+            });
+
+            const result = await PedidoService.getDetalle(1);
+
+            expect(result).toEqual(mockDetalle);
+            expect(PedidoRepository.getDetallePedido).toHaveBeenCalledWith(1);
+        });
+
+        test("lanza error cuando el pedido no existe", async () => {
+
+            (PedidoRepository.getDetallePedido as jest.Mock).mockResolvedValue({
+                rows: [],
+            });
+
+            await expect(
+                PedidoService.getDetalle(999)
+            ).rejects.toThrow("Pedido no encontrado");
+        });
+    });
+
+    //************************************/
+    // Historial pedidos cliente
+    //************************************/
+
+    describe("obtenerHistorialCliente", () => {
+
+        test("retorna historial cuando el cliente tiene pedidos", async () => {
+
+            const mockHistorial = [
+                {
+                    id_pedido: 1,
+                    fecha: "2026-02-25",
+                    total: 299.99,
+                    nombre: "Camisa Nike",
+                    cantidad: 1,
+                    precio_unitario: 299.99,
+                },
+            ];
+
+            (PedidoRepository.obtenerHistorialCliente as jest.Mock).mockResolvedValue(
+                mockHistorial
+            );
+
+            const result = await PedidoService.obtenerHistorialCliente(1);
+
+            expect(result).toEqual(mockHistorial);
+            expect(PedidoRepository.obtenerHistorialCliente).toHaveBeenCalledWith(1);
+        });
+
+        test("retorna arreglo vacío si no hay pedidos", async () => {
+
+            (PedidoRepository.obtenerHistorialCliente as jest.Mock).mockResolvedValue(
+                []
+            );
+
+            const result = await PedidoService.obtenerHistorialCliente(50);
+
+            expect(result).toEqual([]);
+        });
+    });
+
+    //************************************/
+    // Obtener comprobante
+    //************************************/
+
+    describe("obtenerComprobante", () => {
+
+        test("genera comprobante con datos del pedido", async () => {
+
+            const mockDetalle = [
+                {
+                    pedido_id: 1,
+                    nombre: "Camisa Nike",
+                    cantidad: 1,
+                    precio_unitario: 299.99,
+                },
+            ];
+
+            (PedidoRepository.getDetallePedido as jest.Mock).mockResolvedValue({
+                rows: mockDetalle,
+            });
+
+            const result = await PedidoService.getDetalle(1);
+
+            expect(result.length).toBeGreaterThan(0);
+            expect(result[0]).toHaveProperty("nombre");
         });
     });
 });
