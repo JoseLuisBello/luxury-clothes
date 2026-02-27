@@ -12,6 +12,8 @@ jest.mock("@/repositories/pedido/pedido.repository", () => ({
         estadoPedido: jest.fn(),
         getDetallePedido: jest.fn(),
         obtenerHistorialCliente: jest.fn(),
+        procesarCompra: jest.fn(),
+        crearPedidoDesdeCarrito: jest.fn(),
     },
 }));
 
@@ -24,7 +26,7 @@ describe("PedidoService", () => {
     // Cancelaion de pedido
     //************************************/
 
-    describe("cancelarPedido", () => {
+    describe("Cancelar pedido", () => {
         test("cancela pedido correctamente cuando está permitido", async () => {
             (PedidoRepository.cancelarPedido as jest.Mock).mockResolvedValue({
                 rowCount: 1,
@@ -57,7 +59,7 @@ describe("PedidoService", () => {
     // Estado de pedido
     //************************************/
 
-    describe("obtenerEstadoPedido", () => {
+    describe("Estado de pedido", () => {
         test("retorna el estado del pedido cuando existe", async () => {
             const mockPedido = {
                 id: 30,
@@ -88,11 +90,49 @@ describe("PedidoService", () => {
         });
     });
 
-//***********/
-//* Nombre del equipo: Equipo 1 */
-//* Autor de la clase: Cervantes Rosales Abdiel */
-//* Fecha: 26/02/2026 */
-//**********/
+
+    //************************************/
+    // Proceso de compra de pedido
+    //************************************/
+
+    describe("Proceso de compra de pedido", () => {
+        test("crea pedido correctamente con carrito válido", async () => {
+            (PedidoRepository.crearPedidoDesdeCarrito as jest.Mock).mockResolvedValue({
+                rowCount: 1,
+                rows: [{
+                    id: 100,
+                    id_cliente: 5,
+                    total: 1500,
+                    estado: "pendiente"
+                }],
+            });
+
+            const resultado = await PedidoService.procesarCompra(5, 1, 2, "Sin notas");
+
+            expect(resultado).toMatchObject({
+                id: 100,
+                total: 1500,
+                estado: "pendiente"
+            });
+            expect(PedidoRepository.crearPedidoDesdeCarrito).toHaveBeenCalledWith(5, 1, 2, "Sin notas");
+        });
+
+        test("envia error si carrito vacío", async () => {
+            (PedidoRepository.crearPedidoDesdeCarrito as jest.Mock).mockRejectedValue(
+                new Error("El carrito está vacío o no tiene productos válidos")
+            );
+
+            await expect(
+                PedidoService.procesarCompra(5, 1, 2)
+            ).rejects.toThrow("El carrito está vacío o no tiene productos válidos");
+        });
+    });
+
+    //***********/
+    //* Nombre del equipo: Equipo 1 */
+    //* Autor de la clase: Cervantes Rosales Abdiel */
+    //* Fecha: 26/02/2026 */
+    //**********/
 
 
     //************************************/
