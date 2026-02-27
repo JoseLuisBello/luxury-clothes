@@ -22,6 +22,53 @@ export class DireccionEnvio {
         return rows;
     }
 
+    //Encontrar solo una direccion de cliente
+    static async findByIdAndClientId(
+        clientId: number,
+        addressId: number
+        ) {
+
+        const query = `
+            SELECT id, id_cliente, ciudad, estado, codigo_postal,
+                calle, numero_externo, numero_interno, colonia
+            FROM "DireccionEnvio"
+            WHERE id = $1 AND id_cliente = $2;
+        `;
+
+        const { rows } = await pool.query(query, [addressId, clientId]);
+
+        return rows[0]; // puede ser undefined
+    }
+
+    static async findDuplicateForCreate(clientId: number, data: any) {
+        const query = `
+            SELECT 1 FROM "DireccionEnvio"
+            WHERE id_cliente = $1
+            AND ciudad = $2
+            AND estado = $3
+            AND codigo_postal = $4
+            AND colonia = $5
+            AND calle = $6
+            AND numero_externo = $7
+            AND numero_interno IS NOT DISTINCT FROM $8
+            LIMIT 1;
+        `;
+
+        const values = [
+            clientId,
+            data.ciudad,
+            data.estado,
+            data.codigo_postal,
+            data.colonia,
+            data.calle,
+            data.numero_externo,
+            data.numero_interno ?? null
+        ];
+
+        const { rows } = await pool.query(query, values);
+        return rows.length > 0;
+    }
+    
     //no permitir direcciones duplicadas para un mismo cliente
     static async findDuplicateAddress(clientId: number, addressId: number, data: any){
         const query = `

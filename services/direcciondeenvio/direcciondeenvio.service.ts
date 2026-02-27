@@ -10,9 +10,9 @@ export class DireccionesEnvio{
     
     //Reglas de negocio para las direcciones de envío
     //1. no permitir direcciones duplicadas para un mismo cliente
-    static async addAddress(clientId: number, addressId: number, data: any){
+    static async addAddress(clientId: number, data: any){
 
-        const duplicate = await DireccionEnvio.findDuplicateAddress(clientId, addressId, data);
+        const duplicate = await DireccionEnvio.findDuplicateForCreate(clientId, data);
 
         if(duplicate){
             throw new Error("Duplicate address for the same client is not allowed");
@@ -21,6 +21,7 @@ export class DireccionesEnvio{
         return await DireccionEnvio.addShippingAddress(clientId, data);
 
     }
+
 
     static async updateAddress(clientId: number, addressId: number, data: any){
         //Primero verificamos que la dirección exista y pertenezca al cliente
@@ -56,7 +57,7 @@ export class DireccionesEnvio{
 
     }
 
-    static async getAddress(clientId: number){
+    static async getAddresses(clientId: number){
         //Obtenemos las direcciones de envío del cliente
         const rows = await DireccionEnvio.findByUserId(clientId);
 
@@ -81,5 +82,18 @@ export class DireccionesEnvio{
             colonia: row.colonia
             }))
         };
+    }
+
+    static async getAddress(clientId: number, addressId: number) {
+        const address = await DireccionEnvio.findByIdAndClientId(
+            clientId,
+            addressId
+        );
+
+        if (!address) {
+            throw new Error("Address not found for the given client");
+        }
+
+        return address;
     }
 }
