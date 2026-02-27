@@ -69,4 +69,32 @@ export class PedidoService {
     return result.rows[0];
   }
 
+  //************************************/
+  // Proceso de compra de pedido
+  //************************************/
+
+  static async procesarCompra(
+    idCliente: number,
+    idMetodoPago: number,
+    idDireccion: number,
+    notas?: string
+  ) {
+    try {
+      const result = await PedidoRepository.crearPedidoDesdeCarrito(
+        idCliente,
+        idMetodoPago,
+        idDireccion,
+        notas
+      );
+
+      if (result.rowCount === 0) {
+        throw new Error("No se pudo crear el pedido");
+      }
+
+      return result.rows[0];
+    } catch (error: any) {
+      throw new Error(error.message || "Error al procesar la compra");
+    }
+  }
+
 }

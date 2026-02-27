@@ -113,4 +113,24 @@ export class AdministradorRepository {
        ORDER BY nombre ASC`
     );
   }
+
+  //************************************/
+  // Historial de ventas
+  //************************************/
+
+  static async obtenerHistorialVentas(): Promise<QueryResult> {
+    return pool.query(
+      `SELECT 
+         pr.id AS id_producto,
+         pr.nombre AS nombre_producto,
+         SUM(dp.cantidad) AS cantidad_total_vendida,
+         COUNT(DISTINCT p.id) AS numero_pedidos
+       FROM "DetallePedido" dp
+       JOIN "Producto" pr ON dp.id_producto = pr.id
+       JOIN "Pedido" p ON dp.id_pedido = p.id
+       WHERE p.estado NOT IN ('cancelado')  -- Opcional: excluir cancelados
+       GROUP BY pr.id, pr.nombre
+       ORDER BY cantidad_total_vendida DESC`
+    );
+  }
 }
