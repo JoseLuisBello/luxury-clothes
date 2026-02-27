@@ -78,4 +78,18 @@ export class ProductoService {
 
         return { mensaje: "Producto desactivado correctamente", id };
     }
+
+    //************************************/
+    // Historial de ventas
+    //************************************/
+
+    static async obtenerHistorialVentas() {
+        try {
+            const result: QueryResult = await AdministradorRepository.obtenerHistorialVentas();
+
+            return result.rows;
+        } catch (error: any) {
+            throw new Error(error.message || "Error al obtener el historial de ventas");
+        }
+    }
 }
