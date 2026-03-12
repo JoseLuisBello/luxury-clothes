@@ -1,4 +1,48 @@
-# CARPETA PARA ARCHIVOS SQL
+# AÑADIR NUEVA BASE DE DATOS
+
+1. En la carpeta `database/` se tiene una carpeta `new_shcema/` con el archivo `LuxuryClothes_v2.sql` que es el nuevo esquema de la base de datos.
+
+2. Para añadir nueva base de datos, posicionarse en la carpeta `project/` y cambiar el archivo `init.sql` por el contenido de `LuxuryClothes_v2.sql`.
+
+    ```bash
+    project/
+    ├── docker-compose.yml
+    └── db/
+        ├── init.sql    <-- MODIFICAR ESTE
+        └── data.sql    <-- PUEDEN BORRARLO
+    ```
+
+3. En la terminal, posicionados en la carpeta `project/` levantar el servicio de la base de datos.
+
+    ```bash
+    docker compose up -d
+    ```
+
+4. Una vez levantado, estando en la misma carpeta `project/` ejecutar el archivo `init.sql` ya modificado:
+
+    ```bash
+    docker exec -i postgres_local psql -U postgres -d luxuryclothes < db/init.sql
+    ```
+
+5. La salida debería verse algo así:
+
+    ```
+    DROP SCHEMA
+    CREATE SCHEMA
+    CREATE TABLE
+    CREATE TABLE
+    CREATE TABLE
+    CREATE TABLE
+    CREATE TABLE
+    CREATE TABLE
+    CREATE TABLE
+    ...
+    ```
+
+    Verificar igualmente en `TablePlus` la inserción de las nuevas tablas.
+
+
+# SOLO EJECUTAR CUANDO SE LEVANTA POR PRIMERA VEZ
 
 Para poder levantar la base de datos localmente seguir los siguientes pasos.
 
