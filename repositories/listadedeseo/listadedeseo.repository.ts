@@ -10,7 +10,7 @@ export class DetalleListaDeseos {
 
   //Encontrar los productos de la lista de deseos de un cliente
   static async findByUserId(clientId: number) {
-    const query = `
+   /*  const query = `
       SELECT 
         p.id,
         p.nombre,
@@ -23,6 +23,22 @@ export class DetalleListaDeseos {
       LEFT JOIN "ImagenProducto" i ON p.id = i.id_producto
       WHERE ld.id_cliente = $1
       GROUP BY p.id, p.nombre, p.precio, p.stock
+      ORDER BY p.id
+    `; */
+
+
+     const query = `
+      SELECT 
+        p.id,
+        p.nombre,
+        p.precio,
+        array_remove(array_agg(i.url), NULL) AS imagenes
+      FROM "ListaDeseos" ld
+      JOIN "DetalleDeseos" dd ON ld.id = dd.id_lista_deseos
+      JOIN "Producto" p ON dd.id_producto = p.id
+      LEFT JOIN "ImagenProducto" i ON p.id = i.id_producto
+      WHERE ld.id_usuario = $1
+      GROUP BY p.id, p.nombre, p.precio
       ORDER BY p.id
     `;
 
@@ -57,16 +73,16 @@ export class DetalleListaDeseos {
     const query = `
       SELECT id
       FROM "ListaDeseos"
-      WHERE id_cliente = $1
+      WHERE id_usuario = $1
     `;
     const { rows } = await pool.query(query, [clientId]);
-    return rows[0];
+    return rows[0]?.id;
   }
 
   //Si el cliente no tiene lista de deseos, crear una nueva
   static async createWishlistForClient(clientId: number) {
     const query = `
-      INSERT INTO "ListaDeseos" (id_cliente)
+      INSERT INTO "ListaDeseos" (id_usuario)
       VALUES ($1)
       RETURNING id
     `;
