@@ -12,9 +12,9 @@ export class DireccionEnvio {
     static async findByUserId(clientId: number){
         //Consulta para obtener la lista de direcciones
         const query = `
-            SELECT id,id_cliente, ciudad, estado, codigo_postal, calle, numero_externo, numero_interno, colonia
+            SELECT id, id_usuario, ciudad, estado, codigo_postal, calle, numero_externo, numero_interno, colonia
             FROM "DireccionEnvio"
-            WHERE id_cliente = $1
+            WHERE id_usuario = $1
             ORDER BY id;
         `;
 
@@ -29,10 +29,10 @@ export class DireccionEnvio {
         ) {
 
         const query = `
-            SELECT id, id_cliente, ciudad, estado, codigo_postal,
+            SELECT id, id_usuario, ciudad, estado, codigo_postal,
                 calle, numero_externo, numero_interno, colonia
             FROM "DireccionEnvio"
-            WHERE id = $1 AND id_cliente = $2;
+            WHERE id = $1 AND id_usuario = $2;
         `;
 
         const { rows } = await pool.query(query, [addressId, clientId]);
@@ -43,7 +43,7 @@ export class DireccionEnvio {
     static async findDuplicateForCreate(clientId: number, data: any) {
         const query = `
             SELECT 1 FROM "DireccionEnvio"
-            WHERE id_cliente = $1
+            WHERE id_usuario = $1
             AND ciudad = $2
             AND estado = $3
             AND codigo_postal = $4
@@ -73,7 +73,7 @@ export class DireccionEnvio {
     static async findDuplicateAddress(clientId: number, addressId: number, data: any){
         const query = `
             SELECT 1 FROM "DireccionEnvio"
-            WHERE id_cliente = $1
+            WHERE id_usuario = $1
             AND ciudad = $2
             AND estado = $3
             AND codigo_postal = $4
@@ -102,7 +102,7 @@ export class DireccionEnvio {
     static async addShippingAddress(clientId: number, data: any){
         //Consulta para insertar una direccion nueva
         const query = `
-            INSERT INTO "DireccionEnvio" (id_cliente, ciudad, estado, codigo_postal, calle, numero_externo, numero_interno, colonia) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            INSERT INTO "DireccionEnvio" (id_usuario, ciudad, estado, codigo_postal, calle, numero_externo, numero_interno, colonia) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
             RETURNING *;
         `;
 
