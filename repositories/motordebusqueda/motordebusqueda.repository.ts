@@ -2,6 +2,7 @@
  * Equipo #1
  * Diaz Antonio Luis Pedro
  * 6 de febrero de 2026
+ * 12 de marzo de 2026
  */
 
 import { pool } from '@/lib/db';
