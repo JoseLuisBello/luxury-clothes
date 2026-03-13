@@ -1,9 +1,8 @@
-/**
- * ClienteRepository
- * Equipo: 1
- * Autor: Abdiel
- * Fecha: 2026
- */
+//***********/
+//* Nombre del equipo: Equipo 1 */
+//* Autor de la clase: Cervantes Rosales Abdiel */
+//* Fecha: 25/02/2026 */
+//**********/
 
 import { pool } from "@/lib/db";
 

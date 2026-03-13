@@ -4,39 +4,48 @@
 //* Fecha: 06/02/2026 */
 //**********/
 
-#modulo de cliente
+### REGISTRO CLIENTE
 POST http://localhost:3000/api/auth/register
 Content-Type: application/json
 
 {
-  "nombre": "Luis Fernando",
+  "nombre": "Pedro",
   "apellidos": "Perez",
-  "correo": "abdielcer1@test.com",
-  "contrasena": "123456",
-  "telefono": "9589876542",
+  "correo": "pedroper@test.com",
+  "contrasena": "1234567",
+  "telefono": "9559876542",
   "foto_perfil": "t.png"
 }
 
-### LOGIN
+###
+
+### LOGIN CLIENTE
 POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
-  "correo": "abdielcer1@test.com",
-  "contrasena": "123456"
+  "correo": "pedroper@test.com",
+  "contrasena": "1234567"
 }
+
+###
+
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImNvcnJlbyI6InBlZHJvcGVyQHRlc3QuY29tIiwiaWF0IjoxNzcyMjE1MDI3LCJleHAiOjE3NzIyMjIyMjd9.Z8kQ0WihZYk6FeoUbay8VlHq_kjXcucUS5r20XWokH8
+
+###
 //***********/
 //* Nombre del equipo: Equipo 1 */
 //* Autor de la clase: Ramos Bello Jose Luis */
 //* Fecha: 06/02/2026 */
 //**********/
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiY29ycmVvIjoiYWJkaWVsY2VyQHRlc3QuY29tIiwiaWF0IjoxNzcwNDM0MDU4LCJleHAiOjE3NzA0NDEyNTh9.eR3AcDRc4YYRD5v9aFaYVxlcNfjZ-2Yc5e03-Dl4e6Q
-
-### Perfil del cliente
+### PERFIL DEL CLIENTE
 GET http://localhost:3000/api/cliente/perfil
 Authorization: Bearer {{token}}
 
-### Modificar perfil de cliente
+###
+
+### MODIFICAR PERFIL (DATOS GENERALES)
 PATCH http://localhost:3000/api/cliente
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -47,8 +56,10 @@ Authorization: Bearer {{token}}
   "telefono": "1299999996",
   "foto_perfil": "default.png"
 }
+
 ###
 
+### CAMBIAR CONTRASEÑA
 PATCH http://localhost:3000/api/cliente
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -59,15 +70,18 @@ Authorization: Bearer {{token}}
 }
 
 ###
+
+### CAMBIAR CORREO
 PATCH http://localhost:3000/api/cliente
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "correo": "abdielcer@test.com"   # correo de otro usuario
+  "correo": "abdielcer@test.com"
 }
 
+###
 
-### Eliminar cuenta de cliente
+### ELIMINAR CUENTA
 DELETE http://localhost:3000/api/cliente
 Authorization: Bearer {{token}}

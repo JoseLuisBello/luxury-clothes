@@ -12,6 +12,7 @@ jest.mock("@/repositories/administrador/administrador.repository", () => ({
         crearProducto: jest.fn(),
         actualizarProducto: jest.fn(),
         desactivarProducto: jest.fn(),
+        obtenerHistorialVentas: jest.fn(),
     },
 }));
 
@@ -23,7 +24,7 @@ describe("ProductoService", () => {
     //************************************/
     // Lista de Clientes
     //************************************/
-    describe("listaClientes", () => {
+    describe("Lista clientes", () => {
         test("retorna lista de clientes activos cuando existen", async () => {
             const mockClientes = [
                 { id: 1, nombre: "Ana López" },
@@ -54,7 +55,7 @@ describe("ProductoService", () => {
     //************************************/
     // Agregar producto
     //************************************/
-    describe("agregarProducto", () => {
+    describe("Agregar producto", () => {
         test("crea producto correctamente con datos válidos", async () => {
             const datos = {
                 nombre: "Lentes de sol",
@@ -133,7 +134,7 @@ describe("ProductoService", () => {
     //************************************/
     // Modificar producto
     //************************************/
-    describe("actualizarProducto", () => {
+    describe("Modificar producto", () => {
         test("actualiza producto correctamente con campos válidos", async () => {
             const datos = {
                 nombre: "Mouse Actualizado",
@@ -161,7 +162,7 @@ describe("ProductoService", () => {
     //************************************/
     // Eliminar producto
     //************************************/
-    describe("eliminarProducto", () => {
+    describe("Eliminar producto", () => {
         test("desactiva producto correctamente cuando existe", async () => {
             (AdministradorRepository.desactivarProducto as jest.Mock).mockResolvedValue({
                 rowCount: 1,
@@ -187,6 +188,48 @@ describe("ProductoService", () => {
             await expect(ProductoService.eliminarProducto(999)).rejects.toThrow(
                 "Producto no encontrado o ya está inactivo"
             );
+        });
+    });
+
+    //************************************/
+    // Historial de ventas
+    //************************************/
+
+    describe("Historial de ventas", () => {
+        test("regresa los productos vendidos en orden descendente", async () => {
+            const mockVentas = [
+                { id_producto: 1, nombre_producto: "Camisa", cantidad_total_vendida: 50, numero_pedidos: 10 },
+                { id_producto: 2, nombre_producto: "Pantalón", cantidad_total_vendida: 30, numero_pedidos: 8 },
+                { id_producto: 3, nombre_producto: "Zapatos", cantidad_total_vendida: 10, numero_pedidos: 3 },
+            ];
+
+            (AdministradorRepository.obtenerHistorialVentas as jest.Mock).mockResolvedValue({
+                rows: mockVentas,
+            });
+
+            const result = await ProductoService.obtenerHistorialVentas();
+
+            expect(result).toEqual(mockVentas);
+            expect(AdministradorRepository.obtenerHistorialVentas).toHaveBeenCalled();
+            expect(result[0].cantidad_total_vendida).toBeGreaterThanOrEqual(result[1].cantidad_total_vendida);
+        });
+
+        test("retorna array vacío si no hay ventas", async () => {
+            (AdministradorRepository.obtenerHistorialVentas as jest.Mock).mockResolvedValue({
+                rows: [],
+            });
+
+            const result = await ProductoService.obtenerHistorialVentas();
+
+            expect(result).toEqual([]);
+        });
+
+        test("lanza error si falla la consulta", async () => {
+            (AdministradorRepository.obtenerHistorialVentas as jest.Mock).mockRejectedValue(
+                new Error("Error en BD")
+            );
+
+            await expect(ProductoService.obtenerHistorialVentas()).rejects.toThrow("Error en BD");
         });
     });
 });

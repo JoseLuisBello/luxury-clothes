@@ -1,7 +1,7 @@
 /**
  * Equipo #1
  * Diaz Antonio Luis Pedro
- * 24 de febrero de 2026
+ * 27 de febrero de 2026
  */
 
 import { NextResponse } from "next/server";
@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     try {
 
         const body = await req.json();
-        const { id_usuario, id_tipo_metodo, numero_cuenta, nombre_titular, fecha_vencimiento, banco, correo, id_proveedor } = body;
+        const { id_usuario, id_tipo_metodo, id_metodo, numero_cuenta, nombre_titular, fecha_vencimiento, banco, correo, id_proveedor } = body;
 
         if (!id_usuario) {
             return NextResponse.json(
@@ -19,16 +19,17 @@ export async function POST(req: Request) {
                 { status: 400 }
             );
         }
-
-        if (!id_tipo_metodo) {
+        if (!id_metodo) {
             return NextResponse.json(
-                { ok: false, error: "id_tipo_metodo requerido" },
+                { ok: false, error: "id_metodo requerido" },
                 { status: 400 }
             );
         }
-        const nuevoMetodo = await MetodoDePagoService.agregarMetodo(
+
+        const nuevoMetodo = await MetodoDePagoService.modificarMetodo(
             Number(id_usuario),
             Number(id_tipo_metodo),
+            Number(id_metodo),
             numero_cuenta ?? null,
             nombre_titular ?? null,
             fecha_vencimiento ?? null,
@@ -40,14 +41,14 @@ export async function POST(req: Request) {
         return NextResponse.json(
             {
                 ok: true,
-                message: "Método de pago agregado correctamente",
+                message: "Método de pago modificado correctamente",
                 data: nuevoMetodo
             },
-            { status: 201 }
+            { status: 200 }
         );
 
     } catch (error: any) {
-        console.error("ERROR EN /api/metododepago/agregar:", error);
+        console.error("ERROR EN /api/metododepago/modificar:", error);
         return NextResponse.json(
             {
                 ok: false,

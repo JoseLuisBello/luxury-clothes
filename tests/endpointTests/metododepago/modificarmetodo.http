@@ -1,0 +1,14 @@
+POST  http://localhost:3000/api/metodosdepago/modificar
+Content-Type: application/json
+
+{
+  "id_usuario": 1,
+  "id_tipo_metodo": 1,
+  "id_metodo": 1,
+  "numero_cuenta": "1234567891237567",
+  "nombre_titular": "Pablo Diaz",
+  "fecha_vencimiento": "2028-10-01",
+  "banco": null,
+  "correo": null,
+  "id_proveedor": 1
+}

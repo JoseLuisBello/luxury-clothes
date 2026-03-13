@@ -1,3 +1,9 @@
+//***********/
+//* Nombre del equipo: Equipo 1 */
+//* Autor de la clase: Cervantes Rosales Abdiel */
+//* Fecha: 06/02/2026 */
+//**********/
+
 import { NextResponse } from "next/server";
 import { AuthService } from "@/services/cliente/cliente.service";
 

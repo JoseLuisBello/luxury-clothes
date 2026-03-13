@@ -1,9 +1,8 @@
-/**
- * PedidoService
- * Equipo: 1
- * Autor: Abdiel
- * Fecha: 26/02/2026
- */
+//***********/
+//* Nombre del equipo: Equipo 1 */
+//* Autor de la clase: Cervantes Rosales Abdiel */
+//* Fecha: 25/02/2026 */
+//**********/
 
 import { PedidoRepository } from "@/repositories/pedido/pedido.repository";
 import { QueryResult } from "pg";
@@ -68,6 +67,34 @@ export class PedidoService {
     }
 
     return result.rows[0];
+  }
+
+  //************************************/
+  // Proceso de compra de pedido
+  //************************************/
+
+  static async procesarCompra(
+    idCliente: number,
+    idMetodoPago: number,
+    idDireccion: number,
+    notas?: string
+  ) {
+    try {
+      const result = await PedidoRepository.crearPedidoDesdeCarrito(
+        idCliente,
+        idMetodoPago,
+        idDireccion,
+        notas
+      );
+
+      if (result.rowCount === 0) {
+        throw new Error("No se pudo crear el pedido");
+      }
+
+      return result.rows[0];
+    } catch (error: any) {
+      throw new Error(error.message || "Error al procesar la compra");
+    }
   }
 
 }
