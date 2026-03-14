@@ -8,14 +8,23 @@ import { pool } from '@/lib/db';
 
 export class Producto {
 
-  static async findAll() {
+  // TODO: Catalogo de productos por:
+  // Genero
+  // Categoria
+  // Subcategoria
+  // Marca
+
+  // Genero combinado con categoria o subcategoria o marca
+  // Categoria combinado con genero o subcategoria o marca
+  // Subcategoria combinado con genero o categoria o marca
+  // Marca combinado con categoria o subcategoria o genero
+  static async getAllProducts() {
     const { rows } = await pool.query(
       `
       SELECT DISTINCT ON (P.id)
         P.id,
         P.nombre,
         P.precio,
-        P.stock,
         M.nombre AS marca,
         I.url AS imagen_url
       FROM "Producto" P
@@ -28,7 +37,7 @@ export class Producto {
     return rows;
   }
 
-    static async productDetails(productId: number){
+  static async productDetails(productId: number){
     const { rows } = await pool.query(
       `
       SELECT
