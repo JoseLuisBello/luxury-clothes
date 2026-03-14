@@ -112,7 +112,7 @@ export class Producto {
                 'stock', S.stock
               )
             )
-            FROM "StockPorTallas" S
+            FROM "StockPorTalla" S
             JOIN "Talla" T ON S.id_talla = T.id
             WHERE S.id_producto = P.id
           ),
