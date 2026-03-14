@@ -87,3 +87,46 @@ export async function DELETE(req: Request) {
     );
   }
 }
+
+
+/**
+ * Función para actualizar la cantidad de un producto en el carrito de compras de un cliente.
+ * @param req - JSON que contiene clienteId, cantidad, flag
+ * @returns boolean - True para indicar que se ha modificado
+ */
+export async function PUT(
+  req: Request
+) {
+  let result = false;
+  try {
+    const { id_usuario, id_producto, id_talla, cantidad, flag } = await req.json();
+
+    if (flag === 'increase') {
+      result = await CarritoCompras.increaseQuantityProduct({id_usuario, id_producto, id_talla, cantidad});
+    } else if (flag === 'decrease') {
+      result = await CarritoCompras.decreaseQuantityProduct({id_usuario, id_producto, id_talla, cantidad});
+    } else {
+        throw new Error('Flag inválida. Debe ser "increase" o "decrease".');
+    }
+
+    if (!result) {
+      return NextResponse.json({ ok: false, message: 'No se pudo actualizar la cantidad del producto en el carrito' }, { status: 400 });
+    }
+
+    return NextResponse.json({
+      ok: true,
+      message: 'Cantidad actualizada',
+    });
+
+  } catch (error: any) {
+    console.error('PUT /api/carrito/', error);
+
+    return NextResponse.json(
+      {
+        ok: false,
+        error: error.message ?? 'Error al actualizar cantidad',
+      },
+      { status: 500 }
+    );
+  }
+}
