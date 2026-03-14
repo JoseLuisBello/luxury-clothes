@@ -6,29 +6,60 @@
 import { pool } from '@/lib/db';
 
 export class Carrito {
-  // Agregar producto al carrito, si existe, actualizar la cantidad
-  static async addProduct(customerId: number, productId: number, quantity: number) {
+  
+  /**
+   * Función para agregar un producto al carrito de compras. 
+   * Si el producto ya existe en el carrito, se actualiza la cantidad.
+   * @param id_producto - ID del producto a agregar
+   * @param id_usuario - ID del usuario que agrega el producto
+   * @param id_talla - ID de la talla del producto
+   * @param cantidad - Cantidad del producto a agregar
+   * @return void
+   */
+  static async addProduct({
+    id_producto,
+    id_usuario,
+    id_talla,
+    cantidad
+  } : {
+    id_producto: number;
+    id_usuario: number;
+    id_talla: number;
+    cantidad: number;
+  }) {
     await pool.query(
       `
-      INSERT INTO "CarritoCompras" (id_cliente, id_producto, cantidad)
-      VALUES ($1, $2, $3)
-      ON CONFLICT (id_cliente, id_producto)
-      DO UPDATE SET cantidad = "CarritoCompras".cantidad + $3
+      INSERT INTO "CarritoCompras" (id_usuario, id_producto, id_talla, cantidad)
+      VALUES ($1, $2, $3, $4)
+      ON CONFLICT (id_usuario, id_producto, id_talla)
+      DO UPDATE 
+      SET cantidad = "CarritoCompras".cantidad + EXCLUDED.cantidad
       `,
-      [customerId, productId, quantity]
+      [id_usuario, id_producto, id_talla, cantidad]
     );
   }
 
-  // Obtener el carrito de un cliente
+  
+  /**
+   * Función para obtener el carrito de compras de un cliente por su ID.
+   * @param customerId - ID del cliente para obtener su carrito de compras
+   * @returns Lista de productos en el carrito de compras del cliente, incluyendo nombre, precio, talla, cantidad e imagen
+   */
   static async getCartByCustomerId(customerId: number) {
     const { rows } = await pool.query(
       `
       SELECT DISTINCT ON (P.id) 
-      P.id, P.nombre, P.precio, C.cantidad, I.url as imagen
+        P.id as id_producto, 
+        P.nombre as nombre, 
+        P.precio as precio,
+        T.nombre as talla,
+        C.cantidad as cantidad, 
+        I.url as imagen
       FROM "CarritoCompras" C 
       INNER JOIN "Producto" P ON C.id_producto = P.id
+      INNER JOIN "Talla" T ON C.id_talla = T.id
       INNER JOIN "ImagenProducto" I ON P.id = I.id_producto
-      WHERE C.id_cliente = $1
+      WHERE C.id_usuario = $1
       `,
       [customerId]
     );
