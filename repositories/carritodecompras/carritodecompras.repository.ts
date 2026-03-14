@@ -71,6 +71,7 @@ export class Carrito {
    * Función para eliminar un producto del carrito de compras de un cliente.
    * @param id_usuario - ID del cliente del cual se desea eliminar el producto
    * @param id_producto - ID del producto que se desea eliminar del carrito de compras
+   * @returns boolean - Retorna true si el producto se eliminó correctamente, false en caso contrario
    */
   static async removeProduct(
     {
@@ -101,7 +102,7 @@ export class Carrito {
    * @param id_producto - ID del producto del cual se desea actualizar la cantidad
    * @param id_talla - ID de la talla del producto del cual se desea actualizar la cantidad
    * @param cantidad - Nueva cantidad del producto en el carrito de compras
-    * @return void
+    * @return boolean - Retorna true si la cantidad se actualizó correctamente, false en caso contrario 
    */
   static async setQuantity(
     {
@@ -138,28 +139,20 @@ export class Carrito {
   }
   
 
-  // Vaciar el carrito de un cliente
-  static async clearCart(customerId: number) {
-    await pool.query(
+  /**
+   * Funcion para vaciar el carrito de compras de un cliente, eliminando todos los productos asociados a su ID.
+   * @param id_usuario - ID del cliente del cual se desea vaciar el carrito de compras
+   * @return boolean - Retorna true si el carrito se vació correctamente, false en caso contrario
+   */
+  static async clearCart(id_usuario: number) {
+    const { rowCount } = await pool.query(
       `
       DELETE FROM "CarritoCompras"
       WHERE id_cliente = $1
       `,
-      [customerId]
-    );
-  }
-
-  // Obtener id de un producto en el carrito
-  static async getProductInCart(customerId: number, productId: number) {
-    const { rows } = await pool.query(
-      `
-      SELECT id_producto
-      FROM "CarritoCompras"
-      WHERE id_cliente = $1 AND id_producto = $2
-      `,
-      [customerId, productId]
+      [id_usuario]
     );
 
-    return rows[0];
+    return !!rowCount && typeof rowCount === 'number' && rowCount > 0;
   }
 }
