@@ -112,3 +112,25 @@ export class LogisticaRepository {
     );
   }
 }
+
+/**
+ * Función para obtener el historial de estados de un pedido
+ * @param id_Pedido - ID del pedido
+ * @returns Historial de estados del pedido
+ */
+export async function getHistorialEstadosPedido(id_Pedido: number) {
+  const result = await pool.query(
+    `SELECT
+      E.nombre AS estado,
+      E.descripcion,
+      H.fecha
+    FROM "HistorialEstadoPedido" H
+    INNER JOIN "EstadoPedido" E
+      ON H.id_estado_pedido = E.id
+    WHERE H.id_pedido = $1
+    ORDER BY H.fecha ASC;`,
+    [id_Pedido]
+  );
+  
+  return result.rows;
+}
