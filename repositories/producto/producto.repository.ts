@@ -76,22 +76,53 @@ export class Producto {
     return rows;
   }
 
+
+  /**
+   * Función que obtiene detalles de un producto.
+   * @param productId - ID del producto para el cual se desean obtener los detalles.
+   * @returns JSON con los detalles del producto, incluyendo nombre, descripción, precio, color, marca, imágenes y stock por talla.
+   */
   static async productDetails(productId: number){
     const { rows } = await pool.query(
       `
       SELECT
-        P.id AS id,
-        P.nombre AS nombre,
-        P.precio AS precio,
-        P.stock AS stock,
+        P.id,
+        P.nombre,
+        P.descripcion,
+        P.precio,
+        C.nombre AS color,
         M.nombre AS marca,
-        array_agg(I.url) AS imagenes
-      FROM "Producto" P
-      LEFT JOIN "ImagenProducto" I ON P.id = I.id_producto
-      LEFT JOIN "Marca" M ON P.id_marca = M.id
-      WHERE P.id = $1
-      GROUP BY P.id, P.nombre, P.precio, P.stock, M.nombre;
 
+        -- Imagenes
+        COALESCE(
+          (
+            SELECT array_agg(I.url)
+            FROM "ImagenProducto" I
+            WHERE I.id_producto = P.id
+          ),
+          '{}'
+        ) AS imagenes,
+
+        -- Stock por talla
+        COALESCE(
+          (
+            SELECT json_agg(
+              json_build_object(
+                'talla', T.nombre,
+                'stock', S.stock
+              )
+            )
+            FROM "StockPorTallas" S
+            JOIN "Talla" T ON S.id_talla = T.id
+            WHERE S.id_producto = P.id
+          ),
+          '[]'
+        ) AS stock_por_talla
+
+      FROM "Producto" P
+      LEFT JOIN "Marca" M ON P.id_marca = M.id
+      LEFT JOIN "Color" C ON P.id_color = C.id
+      WHERE P.id = $1;
       `,
       [productId]
     );
