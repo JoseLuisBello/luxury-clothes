@@ -31,14 +31,23 @@ export async function GET(req: Request) {
   }
 }
 
-
+/**
+ * Función para agregar un producto al carrito de compras de un cliente.
+ * @param req - JSON que contiene id_usuario, id_producto, id_talla, cantidad
+ * @returns boolean - True para indicar que se ha modificado 
+ * la tabla de CarritoCompras
+ */
 export async function POST(req: Request) {
   try {
-    const { clienteId, productoId, cantidad } = await req.json();
+    const { id_usuario, id_producto, id_talla, cantidad } = await req.json();
 
-    await CarritoCompras.addProduct(clienteId, productoId, cantidad);
+    const result = await CarritoCompras.addProduct({ id_usuario, id_producto, id_talla, cantidad });
 
-    return NextResponse.json({ ok: true, message: 'Producto agregado al carrito' });
+    if (!result) {
+      return NextResponse.json({ ok: false, message: 'No se pudo agregar el producto al carrito' }, { status: 400 });
+    }
+    
+    return NextResponse.json({ ok: result, message: 'Producto agregado al carrito' });
   } catch (error: any) {
       return NextResponse.json(
       {
