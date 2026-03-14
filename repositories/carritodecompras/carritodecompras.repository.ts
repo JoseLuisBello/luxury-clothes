@@ -94,20 +94,47 @@ export class Carrito {
     return !!result && typeof result.rowCount === 'number' && result.rowCount > 0;
   }
 
-  // Actualizar la cantidad de productos en el carrito
+  
+  /**
+   * Función para actualizar la cantidad de un producto en el carrito de compras de un cliente.
+   * @param id_usuario - ID del cliente del cual se desea actualizar la cantidad del producto
+   * @param id_producto - ID del producto del cual se desea actualizar la cantidad
+   * @param id_talla - ID de la talla del producto del cual se desea actualizar la cantidad
+   * @param cantidad - Nueva cantidad del producto en el carrito de compras
+    * @return void
+   */
   static async setQuantity(
-    clienteId: number,
-    productoId: number,
-    cantidad: number
+    {
+      id_usuario,
+      id_producto,
+      id_talla,
+      cantidad
+    } : {
+      id_usuario: number;
+      id_producto: number;
+      id_talla: number;
+      cantidad: number;
+    }
   ) {
-    await pool.query(
+
+    if ( cantidad < 0 ) {
+      throw new Error('La cantidad no puede ser negativa');
+    }
+    
+    if ( cantidad === 0 ) {
+      return await this.removeProduct({ id_usuario, id_producto, id_talla });
+    }
+
+    const { rowCount } = await pool.query(
       `
       UPDATE "CarritoCompras"
-      SET cantidad = $3
-      WHERE id_cliente = $1 AND id_producto = $2
+      SET cantidad = $4
+      WHERE id_usuario = $1 AND id_producto = $2 AND id_talla = $3
       `,
-      [clienteId, productoId, cantidad]
+      [id_usuario, id_producto, id_talla, cantidad]
     );
+
+    return !!rowCount && typeof rowCount === 'number' && rowCount > 0;
   }
   
 
