@@ -1,62 +1,75 @@
-import { Producto } from '@/repositories/producto/producto.repository';
+import { Producto as ProductoService } from '@/services/producto/producto.service';
 import { pool } from '@/lib/db';
 
 jest.mock('@/lib/db', () => ({
   pool: {
-    query: jest.fn(),
-  },
+    query: jest.fn()
+  }
 }));
 
+describe('Producto Repository & Service', () => {
 
-describe('Producto Repository - findAll', () => {
-
-  it('retorna el catálogo de productos', async () => {
-    const mockRows = [
-      {
-        id: 1,
-        nombre: 'Camisa',
-        precio: 500,
-        stock: 10,
-        marca: 'Nike',
-        imagen_url: 'img.jpg',
-      },
-    ];
-
-    (pool.query as jest.Mock).mockResolvedValue({ rows: mockRows });
-
-    const result = await Producto.findAll();
-
-    expect(pool.query).toHaveBeenCalled();
-    expect(result).toEqual(mockRows);
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-});
+  describe('Obtener catalogo -> getCatalog', () => {
 
+    it('debe retornar productos sin filtros', async () => {
 
-describe('Producto Repository - productDetails', () => {
+      const mockProducts = [
+        { id: 1, nombre: 'Camisa', precio: 500, marca: 'Nike', imagen_url: 'img1.jpg' },
+        { id: 2, nombre: 'Pantalón', precio: 800, marca: 'Adidas', imagen_url: 'img2.jpg' }
+      ];
 
-  it('retorna los detalles de un producto', async () => {
-    const mockProduct = {
-      id: 1,
-      nombre: 'Camisa',
-      precio: 500,
-      stock: 10,
-      marca: 'Nike',
-      imagenes: ['img1.jpg', 'img2.jpg'],
-    };
+      (pool.query as jest.Mock).mockResolvedValue({
+        rows: mockProducts
+      });
 
-    (pool.query as jest.Mock).mockResolvedValue({
-      rows: [mockProduct],
+      const result = await ProductoService.getCatalog({});
+
+      expect(pool.query).toHaveBeenCalled();
+      expect(result).toEqual(mockProducts);
+      expect(result.length).toBe(2);
+
     });
 
-    const result = await Producto.productDetails(1);
+  });
 
-    expect(pool.query).toHaveBeenCalledWith(
-      expect.any(String),
-      [1]
-    );
+  describe('Obtener detalles de producto -> getProductDetails', () => {
 
-    expect(result).toEqual(mockProduct);
+    it('debe retornar detalles de un producto', async () => {
+
+      const mockProduct = {
+        id: 1,
+        nombre: 'Camisa Negra',
+        descripcion: 'Camisa oversize',
+        precio: 700,
+        color: 'Negro',
+        marca: 'Nike',
+        imagenes: ['img1.jpg', 'img2.jpg'],
+        stock_por_talla: [
+          { talla: 'S', stock: 10 },
+          { talla: 'M', stock: 5 }
+        ]
+      };
+
+      (pool.query as jest.Mock).mockResolvedValue({
+        rows: [mockProduct]
+      });
+
+      const result = await ProductoService.getProductDetails(1);
+
+      expect(pool.query).toHaveBeenCalledWith(
+        expect.any(String),
+        [1]
+      );
+
+      expect(result).toEqual(mockProduct);
+      expect(result.nombre).toBe('Camisa Negra');
+
+    });
+
   });
 
 });
