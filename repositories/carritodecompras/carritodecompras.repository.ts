@@ -6,29 +6,62 @@
 import { pool } from '@/lib/db';
 
 export class Carrito {
-  // Agregar producto al carrito, si existe, actualizar la cantidad
-  static async addProduct(customerId: number, productId: number, quantity: number) {
-    await pool.query(
+  
+  /**
+   * Función para agregar un producto al carrito de compras. 
+   * Si el producto ya existe en el carrito, se actualiza la cantidad.
+   * @param id_producto - ID del producto a agregar
+   * @param id_usuario - ID del usuario que agrega el producto
+   * @param id_talla - ID de la talla del producto
+   * @param cantidad - Cantidad del producto a agregar
+   * @return boolean - Retorna true si el producto se agregó correctamente, false en caso contrario
+   */
+  static async addProduct({
+    id_producto,
+    id_usuario,
+    id_talla,
+    cantidad
+  } : {
+    id_producto: number;
+    id_usuario: number;
+    id_talla: number;
+    cantidad: number;
+  }) {
+    const { rowCount } = await pool.query(
       `
-      INSERT INTO "CarritoCompras" (id_cliente, id_producto, cantidad)
-      VALUES ($1, $2, $3)
-      ON CONFLICT (id_cliente, id_producto)
-      DO UPDATE SET cantidad = "CarritoCompras".cantidad + $3
+      INSERT INTO "CarritoCompras" (id_usuario, id_producto, id_talla, cantidad)
+      VALUES ($1, $2, $3, $4)
+      ON CONFLICT (id_usuario, id_producto, id_talla)
+      DO UPDATE 
+      SET cantidad = "CarritoCompras".cantidad + EXCLUDED.cantidad
       `,
-      [customerId, productId, quantity]
+      [id_usuario, id_producto, id_talla, cantidad]
     );
+
+    return !!rowCount && typeof rowCount === 'number' && rowCount > 0;
   }
 
-  // Obtener el carrito de un cliente
+  
+  /**
+   * Función para obtener el carrito de compras de un cliente por su ID.
+   * @param customerId - ID del cliente para obtener su carrito de compras
+   * @returns Lista de productos en el carrito de compras del cliente, incluyendo nombre, precio, talla, cantidad e imagen
+   */
   static async getCartByCustomerId(customerId: number) {
     const { rows } = await pool.query(
       `
       SELECT DISTINCT ON (P.id) 
-      P.id, P.nombre, P.precio, C.cantidad, I.url as imagen
+        P.id as id_producto, 
+        P.nombre as nombre, 
+        P.precio as precio,
+        T.nombre as talla,
+        C.cantidad as cantidad, 
+        I.url as imagen
       FROM "CarritoCompras" C 
       INNER JOIN "Producto" P ON C.id_producto = P.id
+      INNER JOIN "Talla" T ON C.id_talla = T.id
       INNER JOIN "ImagenProducto" I ON P.id = I.id_producto
-      WHERE C.id_cliente = $1
+      WHERE C.id_usuario = $1
       `,
       [customerId]
     );
@@ -36,56 +69,92 @@ export class Carrito {
     return rows;
   }
 
-  // Eliminar un producto del carrito
-  static async removeProduct(customerId: number, productId: number) {
-    await pool.query(
+  /**
+   * Función para eliminar un producto del carrito de compras de un cliente.
+   * @param id_usuario - ID del cliente del cual se desea eliminar el producto
+   * @param id_producto - ID del producto que se desea eliminar del carrito de compras
+   * @returns boolean - Retorna true si el producto se eliminó correctamente, false en caso contrario
+   */
+  static async removeProduct(
+    {
+      id_usuario,
+      id_producto,
+      id_talla
+    } : {
+      id_usuario: number;
+      id_producto: number;
+      id_talla: number;
+    }
+  ) {
+    const result = await pool.query(
       `
         DELETE FROM "CarritoCompras"
-        WHERE id_cliente = $1 AND id_producto = $2
+        WHERE id_usuario = $1 AND id_producto = $2 AND id_talla = $3
       `,
-      [customerId, productId]
+      [id_usuario, id_producto, id_talla]
     );
+
+    return !!result && typeof result.rowCount === 'number' && result.rowCount > 0;
   }
 
-  // Actualizar la cantidad de productos en el carrito
+  
+  /**
+   * Función para actualizar la cantidad de un producto en el carrito de compras de un cliente.
+   * @param id_usuario - ID del cliente del cual se desea actualizar la cantidad del producto
+   * @param id_producto - ID del producto del cual se desea actualizar la cantidad
+   * @param id_talla - ID de la talla del producto del cual se desea actualizar la cantidad
+   * @param cantidad - Nueva cantidad del producto en el carrito de compras
+    * @return boolean - Retorna true si la cantidad se actualizó correctamente, false en caso contrario 
+   */
   static async setQuantity(
-    clienteId: number,
-    productoId: number,
-    cantidad: number
+    {
+      id_usuario,
+      id_producto,
+      id_talla,
+      cantidad
+    } : {
+      id_usuario: number;
+      id_producto: number;
+      id_talla: number;
+      cantidad: number;
+    }
   ) {
-    await pool.query(
+
+    if ( cantidad < 0 ) {
+      throw new Error('La cantidad no puede ser negativa');
+    }
+    
+    if ( cantidad === 0 ) {
+      return await this.removeProduct({ id_usuario, id_producto, id_talla });
+    }
+
+    const { rowCount } = await pool.query(
       `
       UPDATE "CarritoCompras"
-      SET cantidad = $3
-      WHERE id_cliente = $1 AND id_producto = $2
+      SET cantidad = $4
+      WHERE id_usuario = $1 AND id_producto = $2 AND id_talla = $3
       `,
-      [clienteId, productoId, cantidad]
+      [id_usuario, id_producto, id_talla, cantidad]
     );
+
+    return !!rowCount && typeof rowCount === 'number' && rowCount > 0;
   }
   
 
-  // Vaciar el carrito de un cliente
-  static async clearCart(customerId: number) {
-    await pool.query(
+  /**
+   * Funcion para vaciar el carrito de compras de un cliente, eliminando todos los productos asociados a su ID.
+   * @param id_usuario - ID del cliente del cual se desea vaciar el carrito de compras
+   * @return boolean - Retorna true si el carrito se vació correctamente, false en caso contrario
+   */
+  static async clearCart(id_usuario: number) {
+    const { rowCount } = await pool.query(
       `
       DELETE FROM "CarritoCompras"
-      WHERE id_cliente = $1
+      WHERE id_usuario = $1
       `,
-      [customerId]
-    );
-  }
-
-  // Obtener id de un producto en el carrito
-  static async getProductInCart(customerId: number, productId: number) {
-    const { rows } = await pool.query(
-      `
-      SELECT id_producto
-      FROM "CarritoCompras"
-      WHERE id_cliente = $1 AND id_producto = $2
-      `,
-      [customerId, productId]
+      [id_usuario]
     );
 
-    return rows[0];
+    return !!rowCount && typeof rowCount === 'number' && rowCount > 0;
   }
 }
