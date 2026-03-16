@@ -20,7 +20,6 @@ export async function GET() {
             data: colors,
         });
     } catch (error) {
-        console.error("Error al obtener los colores:", error);
         return NextResponse.json({ ok: false, message: "Error al obtener los colores" });
     }
 }
