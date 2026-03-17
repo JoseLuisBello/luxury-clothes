@@ -7,6 +7,6 @@
 import { apiFetch } from "@/lib/api";
 import { MarcaResponse } from "@/types/Marca";
 
-export const getMarcas = async (): Promise<MarcaResponse> => {
-    return await apiFetch("/marcas");
+export const getMarcas = (): Promise<MarcaResponse> => {
+    return apiFetch("/marcas");
 }

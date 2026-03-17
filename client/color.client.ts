@@ -7,6 +7,6 @@
 import { apiFetch } from "@/lib/api";
 import { ColoresResponse } from "@/types/Color";
 
-export const getColores = async (): Promise<ColoresResponse> => {
-    return await apiFetch("/colores");
+export const getColores = (): Promise<ColoresResponse> => {
+    return apiFetch("/colores");
 }
