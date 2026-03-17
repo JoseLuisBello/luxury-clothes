@@ -49,7 +49,7 @@ export default function Carousel(
               <Image
                 src={slide?.imagen_url || ''}
                 alt={slide?.nombre}
-                className="w-full h-[500px] object-cover"
+                className="w-full h-125 object-cover"
                 width={500}
                 height={500}
               />
