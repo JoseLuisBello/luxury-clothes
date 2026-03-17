@@ -22,14 +22,80 @@ export default async function Home() {
       </div>
       <div className="py-14">
         {
-          <nav>
-            <ul className="flex space-x-9 text-sm">
-              {categorias.data?.map( categoria => (
-                <li className="text-white" key={categoria.id}><Link href="#">{categoria.name.toUpperCase()}</Link></li>
-              ))}
+          <nav className="z-50">
+            <ul className="flex justify-center space-x-9 text-sm">
+              <li className="text-white group" key={12312}>
+                <Link href="#">
+                  {"CATEGORÍAS"}
+                </Link>
+
+                <div className="
+                  fixed left-0 top-28 w-full opacity-0 invisible
+                  group-hover:opacity-100 group-hover:visible
+                  transition-all duration-300
+                  bg-white text-black shadow-xl py-10
+                ">
+                  <div className="max-w-6xl mx-auto grid grid-cols-3 gap-8 px-8">
+
+                    {
+                      categorias.data?.map( categoria =>
+                        <div key={categoria.id}>
+                          <p className="font-semibold mb-3"><Link href="#">{categoria.name.toUpperCase()}</Link></p>
+                          <ul className="space-y-2 text-gray-600">
+                            {
+                              categoria.subcategories.map(
+                                subcategoria => (
+                                  <li key={subcategoria.id} className="hover:underline cursor-pointer">
+                                    <Link href="#">{subcategoria.nombre}</Link>
+                                  </li>
+                                )
+                              )
+                            }
+                          </ul>
+                        </div>
+                      )
+                    }
+
+                  </div>
+                </div>
+              </li>
 
               {generos.data.slice(0, 3)?.map( genero => (
-                <li className="text-white" key={genero.id}><Link href="#">{genero.nombre.toUpperCase()}</Link></li>
+                <li className="text-white group" key={genero.id}>
+                  <Link href="#">
+                    {genero.nombre.toUpperCase()}
+                  </Link>
+
+                  <div className="
+                    fixed left-0 top-28 w-full opacity-0 invisible
+                    group-hover:opacity-100 group-hover:visible
+                    transition-all duration-300
+                    bg-white text-black shadow-xl py-10
+                  ">
+                    <div className="max-w-6xl mx-auto grid grid-cols-3 gap-8 px-8">
+
+                      {
+                        categorias.data?.map( categoria =>
+                          <div key={categoria.id}>
+                            <p className="font-semibold mb-3"><Link href="#">{categoria.name.toUpperCase()}</Link></p>
+                            <ul className="space-y-2 text-gray-600">
+                              {
+                                categoria.subcategories.map(
+                                  subcategoria => (
+                                    <li key={subcategoria.id} className="hover:underline cursor-pointer">
+                                      <Link href="#">{subcategoria.nombre}</Link>
+                                    </li>
+                                  )
+                                )
+                              }
+                            </ul>
+                          </div>
+                        )
+                      }
+
+                    </div>
+                  </div>
+                </li>
               ))}
             </ul>
           </nav>
