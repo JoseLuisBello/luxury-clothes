@@ -115,6 +115,7 @@ export class LogisticaRepository {
 
 /**
  * Función para obtener el historial de estados de un pedido
+ * @author Hernández Sánchez Adrien
  * @param id_Pedido - ID del pedido
  * @returns Historial de estados del pedido
  */

@@ -7,7 +7,8 @@ export default async function Home() {
 
   return (
     <>
-      <Carousel slides={productos.productos?.slice(10,40)} />
+      
+      <Footer />
     </>
   )
 }
