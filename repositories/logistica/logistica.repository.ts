@@ -162,7 +162,7 @@ export class LogisticaRepository {
         ON E.id_direccion = D.id
       WHERE E.id_pedido = $1;
       `
-    );
+    , [id_pedido]);
   
     return rows[0];
   }
