@@ -50,7 +50,7 @@
 
 # NUEVOS DATOS PARA BASE DE DATOS
 
-1. En la carpeta `database/` se tiene una carpeta `new_data/` con el archivo `data.sql` que son los nuevos datos de la base de datos.
+1. En la carpeta `database/` se tiene una carpeta `new_data/` con el archivo `update.sql` que son los nuevos datos de la base de datos.
 
 2. En la terminal, posicionados en la carpeta `project/` levantar el servicio de la base de datos si fuera el caso (Si no lo tienen levantado).
 
@@ -82,11 +82,11 @@
     INSERT 0 20
     INSERT 0 12
     INSERT 0 4
-    INSERT 0 18
-    INSERT 0 10
-    INSERT 0 130
-    INSERT 0 956
-    INSERT 0 597
+    INSERT 0 22
+    INSERT 0 28
+    INSERT 0 150
+    INSERT 0 1012
+    INSERT 0 635
     INSERT 0 4
     INSERT 0 6
     INSERT 0 5
