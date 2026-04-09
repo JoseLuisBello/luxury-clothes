@@ -117,7 +117,7 @@ export default async function NavBar() {
           <Link href="#profile">
             <Image src="/assets/images/profile.svg" alt="Cart" width={30} height={30} />
           </Link>
-          <Link href="#wishlist">
+          <Link href="/cuenta/listadedeseos/">
             <Image src="/assets/images/wish.svg" alt="User" width={30} height={30} />
           </Link>
           <Link href="#cart">
