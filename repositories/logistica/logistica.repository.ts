@@ -167,4 +167,55 @@ export class LogisticaRepository {
     return rows[0];
   }
 
+  /**
+   * Función para actualizar el estado del envio
+   * @author Adrien Hernández Sánchez
+   * @param idPedido - ID del pedido a actualizar 
+   * @param idNuevoEstado - Nuevo estado del envío
+   * @param idUsuarioLogistica - ID del usuario que realiza la actualización
+   */
+  static async actualizarEstadoEnvioPedido(
+    idPedido: number,
+    idNuevoEstado: number,
+    idUsuarioLogistica: number
+  ): Promise<QueryResult> {
+    const client = await pool.connect();
+
+    try {
+      await client.query('BEGIN');
+
+      const updatePedido = await client.query(
+        `UPDATE "Envio"
+         SET id_estado_envio = $1
+         WHERE id_pedido = $2
+         RETURNING id, id_estado_envio`,
+        [idNuevoEstado, idPedido]
+      );
+
+      if (updatePedido.rowCount === 0) {
+        throw new Error("Pedido no encontrado");
+      }
+
+      const insertHistorial = await client.query(
+        `INSERT INTO "HistorialEstadoPedido" 
+           (id_pedido, id_estado_envio, id_usuario)
+         VALUES ($1, $2, $3)
+         RETURNING id, fecha`,
+        [idPedido, idNuevoEstado, idUsuarioLogistica]
+      );
+
+      await client.query('COMMIT');
+
+      return {
+        ...updatePedido,
+        historial: insertHistorial.rows[0]
+      } as any;
+
+    } catch (error) {
+      await client.query('ROLLBACK');
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
 }
