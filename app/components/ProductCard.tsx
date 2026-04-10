@@ -9,19 +9,55 @@
 import Image from "next/image";
 import { ListaDeDeseos } from "@/types/listadedeseos/ListaDeDeseos";
 
-export default function ProductCard({ product, showToCart = true, }: { product?: ListaDeDeseos, showToCart?: boolean }) {
+export default function ProductCard(
+  { 
+    product, 
+    showToCart = true, 
+    showIcon = true,
+    isFavorite = false
+  }
+  : 
+  { 
+    product?: ListaDeDeseos,
+    showToCart?: boolean, 
+    showIcon?: boolean,
+    isFavorite?: boolean
+  }
+) {
+  
   return (
     // Quitamos alturas fijas del contenedor principal
     <div className="border border-gray-200 flex flex-col h-fit">
       
-      <div className="aspect-square w-full flex items-center justify-center overflow-hidden">
-         <Image
+      <div className="relative aspect-square w-full flex items-center justify-center overflow-hidden">
+        
+        <Image
           src={product?.imagenes?.[0] || "/placeholder.png"}
           width={400}
           height={400}
           alt={product?.nombre || "Producto"}
           className="w-full h-full object-cover"
         />
+        {showIcon && (
+        <button
+          className={`absolute top-4 right-4 flex items-center justify-center
+            w-10 h-10 rounded-full shadow-md border transition transform
+            hover:scale-110 active:scale-95
+            ${isFavorite 
+              ? "bg-white border-gray-300 hover:bg-gray-200" 
+              : "bg-white border-black hover:bg-gray-200"}`}
+        >
+          <Image 
+            src="/assets/images/wish.svg" 
+            alt="Wishlist" 
+            width={20} 
+            height={20}
+            className={`${isFavorite ? "invert" : ""}`}
+          />
+        </button>
+
+        ) }
+
       </div>
 
       <div className="p-4 flex flex-col">

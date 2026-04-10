@@ -20,87 +20,89 @@ export default async function NavBar() {
           height={80} 
         />
       </Link>
-      <div className="py-14">
-        {
-          <nav className="z-50">
-            <ul className="flex justify-center space-x-9 text-sm">
-              <li className="text-white group hover:underline" key={12312}>
-                <Link href="#">
-                  {"CATEGORÍAS"}
-                </Link>
+        
+      <nav className="z-50 *:h-full flex items-center">
+        <ul className="h-full flex justify-center items-center text-sm space-x-9">
+          <li className="h-full text-white group hover:underline" key={12312}>
+            <div className="h-full w-auto flex items-center justify-center">
+              <Link href="#">
+                {"CATEGORÍAS"}
+              </Link>
+            </div>
 
-                <div className="
-                  fixed left-0 top-28 w-full opacity-0 invisible
-                  group-hover:opacity-100 group-hover:visible
-                  transition-all duration-300
-                  bg-white text-black shadow-xl py-10
-                ">
-                  <div className="max-w-6xl mx-auto grid grid-cols-3 gap-8 px-8">
+            <div className="
+              fixed left-0 top-28 w-full opacity-0 invisible
+              group-hover:opacity-100 group-hover:visible
+              transition-all duration-300
+              bg-white text-black shadow-xl py-10
+            ">
+              <div className="max-w-6xl mx-auto grid grid-cols-3 gap-8 px-8">
 
-                    {
-                      categorias.data?.map( categoria =>
-                        <div key={categoria.id}>
-                          <p className="font-semibold mb-3"><Link href="#">{categoria.name.toUpperCase()}</Link></p>
-                          <ul className="space-y-2 text-gray-600">
-                            {
-                              categoria.subcategories.map(
-                                subcategoria => (
-                                  <li key={subcategoria.id} className="hover:underline cursor-pointer">
-                                    <Link href="#">{subcategoria.nombre}</Link>
-                                  </li>
-                                )
-                              )
-                            }
-                          </ul>
-                        </div>
-                      )
-                    }
-
-                  </div>
-                </div>
-              </li>
-
-              {generos.data.slice(0, 3)?.map( genero => (
-                <li className="text-white group hover:underline" key={genero.id}>
-                  <Link href="#">
-                    {genero.nombre.toUpperCase()}
-                  </Link>
-
-                  <div className="
-                    fixed left-0 top-28 w-full opacity-0 invisible
-                    group-hover:opacity-100 group-hover:visible
-                    transition-all duration-300
-                    bg-white text-black shadow-xl py-10
-                  ">
-                    <div className="max-w-6xl mx-auto grid grid-cols-3 gap-8 px-8">
-
-                      {
-                        categorias.data?.map( categoria =>
-                          <div key={categoria.id}>
-                            <p className="font-semibold mb-3"><Link href="#">{categoria.name.toUpperCase()}</Link></p>
-                            <ul className="space-y-2 text-gray-600">
-                              {
-                                categoria.subcategories.map(
-                                  subcategoria => (
-                                    <li key={subcategoria.id} className="hover:underline cursor-pointer">
-                                      <Link href="#">{subcategoria.nombre}</Link>
-                                    </li>
-                                  )
-                                )
-                              }
-                            </ul>
-                          </div>
-                        )
-                      }
-
+                {
+                  categorias.data?.map( categoria =>
+                    <div key={categoria.id}>
+                      <p className="font-semibold mb-3"><Link href="#">{categoria.name.toUpperCase()}</Link></p>
+                      <ul className="space-y-2 text-gray-600">
+                        {
+                          categoria.subcategories.map(
+                            subcategoria => (
+                              <li key={subcategoria.id} className="hover:underline cursor-pointer">
+                                <Link href="#">{subcategoria.nombre}</Link>
+                              </li>
+                            )
+                          )
+                        }
+                      </ul>
                     </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        }
-      </div>
+                  )
+                }
+
+              </div>
+            </div>
+          </li>
+
+          {generos.data.slice(0, 3)?.map( genero => (
+            <li className="h-full text-white group hover:underline flex justify-center items-center" key={genero.id}>
+              <div className="h-full w-auto flex items-center justify-center">
+                <Link href="#">
+                  {genero.nombre.toUpperCase()}
+                </Link>
+              </div>
+
+              <div className="
+                fixed left-0 top-28 w-full opacity-0 invisible
+                group-hover:opacity-100 group-hover:visible
+                transition-all duration-300
+                bg-white text-black shadow-xl py-10
+              ">
+                <div className="max-w-6xl mx-auto grid grid-cols-3 gap-8 px-8">
+
+                  {
+                    categorias.data?.map( categoria =>
+                      <div key={categoria.id}>
+                        <p className="font-semibold mb-3"><Link href="#">{categoria.name.toUpperCase()}</Link></p>
+                        <ul className="space-y-2 text-gray-600">
+                          {
+                            categoria.subcategories.map(
+                              subcategoria => (
+                                <li key={subcategoria.id} className="hover:underline cursor-pointer">
+                                  <Link href="#">{subcategoria.nombre}</Link>
+                                </li>
+                              )
+                            )
+                          }
+                        </ul>
+                      </div>
+                    )
+                  }
+
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </nav>
+        
       <div className="flex space-x-7 items-center">
         <SearchOverlay/>
         <div className="flex space-x-5">
