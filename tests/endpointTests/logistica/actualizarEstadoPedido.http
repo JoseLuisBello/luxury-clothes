@@ -3,6 +3,6 @@ Content-Type: application/json
 
 {
   "idPedido": 1,
-  "idNuevoEstado": 5,
+  "idNuevoEstado": 6,
   "idUsuarioLogistica": 2
 }
