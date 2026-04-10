@@ -25,6 +25,27 @@ export class LogisticaRepository {
     );
   }
 
+  /**
+   * Función para obtener el estado del envío de un pedido
+   * @author Hernández Sánchez Adrien
+   * @param idPedido - ID del pedido
+   * @returns Estado del envío del pedido
+   */
+    static async obtenerEstadoEnvio(idPedido: number): Promise<QueryResult> {
+    return pool.query(
+      `SELECT 
+         e.id_pedido AS id_pedido,
+         ep.nombre AS estado,
+         ep.descripcion,
+         e.fecha_envio,
+         e.fecha_entrega_estimada
+       FROM "Envio" e
+       JOIN "EstadoEnvio" ep ON e.id_estado_envio = ep.id
+       WHERE e.id = $1`,
+      [idPedido]
+    );
+  }
+
   // =============================================
   // Cambiar estado del pedido (con historial)
   // =============================================
@@ -120,14 +141,17 @@ export class LogisticaRepository {
    */
   static async getHistorialEstadosPedido(id_Pedido: number) {
     const { rows } = await pool.query(
-      `SELECT
-        E.nombre AS estado,
-        H.fecha
-      FROM "HistorialEstadoPedido" H
-      INNER JOIN "EstadoPedido" E
-        ON H.id_estado_pedido = E.id
-      WHERE H.id_pedido = $1
-      ORDER BY H.fecha ASC;`,
+      `
+        SELECT
+          E.nombre AS estado_pedido,
+          EE.nombre as estado_envio,
+          H.fecha
+        FROM "HistorialEstadoPedido" H
+        LEFT JOIN "EstadoPedido" E ON H.id_estado_pedido = E.id
+        LEFT JOIN "EstadoEnvio" EE ON H.id_estado_envio = EE.id
+        WHERE H.id_pedido = $1
+        ORDER BY H.fecha ASC;
+      `,
       [id_Pedido]
     );
   
@@ -165,5 +189,87 @@ export class LogisticaRepository {
     , [id_pedido]);
   
     return rows[0];
+  }
+
+  /**
+   * Función para actualizar el estado del envio
+   * @author Adrien Hernández Sánchez
+   * @param idPedido - ID del pedido a actualizar 
+   * @param idNuevoEstado - Nuevo estado del envío
+   * @param idUsuarioLogistica - ID del usuario que realiza la actualización
+   */
+  static async actualizarEstadoEnvioPedido(
+    idPedido: number,
+    idNuevoEstado: number,
+    idUsuarioLogistica: number
+  ): Promise<QueryResult> {
+    const client = await pool.connect();
+
+    try {
+      await client.query('BEGIN');
+
+      const updatePedido = await client.query(
+        `UPDATE "Envio"
+         SET id_estado_envio = $1
+         WHERE id_pedido = $2
+         RETURNING id, id_estado_envio`,
+        [idNuevoEstado, idPedido]
+      );
+
+      if (updatePedido.rowCount === 0) {
+        throw new Error("Pedido no encontrado");
+      }
+
+      const insertHistorial = await client.query(
+        `INSERT INTO "HistorialEstadoPedido" 
+           (id_pedido, id_estado_envio, id_usuario)
+         VALUES ($1, $2, $3)
+         RETURNING id, fecha`,
+        [idPedido, idNuevoEstado, idUsuarioLogistica]
+      );
+
+      await client.query('COMMIT');
+
+      return {
+        ...updatePedido,
+        historial: insertHistorial.rows[0]
+      } as any;
+
+    } catch (error) {
+      await client.query('ROLLBACK');
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
+
+  /**
+   * Función para obtener los envíos que no sean entregados
+   * @author Hernández Sánchez Adrien
+   * @returns Lista de envíos sin entregar y no cancelados
+   */
+  static async obtenerEnviosSinEntregar() {
+    const { rows } = await pool.query(
+      `
+        SELECT
+          P.id as id_pedido,
+          U.nombre as cliente_nombre,
+          U.apellidos as cliente_apellido,
+          E.fecha_entrega_estimada as fecha_estimada,
+          E.numero_guia as numero_guia,
+          EE.nombre as estado_envio
+        FROM "Envio" E
+        
+        JOIN "Pedido" P ON E.id_pedido = P.id
+        JOIN "Usuario" U ON P.id_usuario = U.id
+        JOIN "Rol" R ON U.id_rol = R.id
+        JOIN "EstadoEnvio" EE ON E.id_estado_envio = EE.id
+
+        WHERE R.id = 1
+        AND E.id_estado_envio != 5;
+      `
+    );
+
+    return rows;
   }
 }
