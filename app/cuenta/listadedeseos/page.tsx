@@ -61,6 +61,8 @@ export default function ListadeseosPage() {
               key={product.id}
               product={product}
               showToCart={true}
+              showIcon={true}
+              isFavorite={true} 
             />
           ))}
         </div>
