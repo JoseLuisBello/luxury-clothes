@@ -123,4 +123,13 @@ export class LogisticaService {
   static async obtenerEnvioPedido( id_pedido: number ) {
     return await LogisticaRepository.getEnvioByPedido( id_pedido );
   }
+
+  /**
+   * Función para obtener los envíos que no sean entregados
+   * @author Hernández Sánchez Adrien
+   * @return Lista de envíos sin entregar y no cancelados
+   */
+  static async obtenerEnviosSinEntregar() {
+    return await LogisticaRepository.obtenerEnviosSinEntregar();
+  }
 }
