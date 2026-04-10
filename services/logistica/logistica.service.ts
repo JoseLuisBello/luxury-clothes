@@ -21,14 +21,9 @@ export class LogisticaService {
   /**
    * Función que actualiza el estado de un pedido y registra el cambio en el historial de forma automática
    * @author Ramos Bello José Luis
-   * @author Hernández Sánchez Adrien
    * @param idPedido - ID del pedido a actualizar
    * @param idNuevoEstado - Nuevo estado del pedido
    * @param idUsuarioLogistica - ID del usuario que actualiza
-   * 
-   * Última modificación: 9/04/2026
-   * Cambios realizados: Llamada a función del repositorio
-   * que registra estado en el historial de pedido.
    */
   static async actualizarEstadoPedido(
     idPedido: number,
@@ -47,6 +42,36 @@ export class LogisticaService {
 
     return {
       mensaje: "Estado del pedido actualizado correctamente",
+      id_pedido: idPedido,
+      nuevo_estado: idNuevoEstado,
+      historial_id: result.rows[0]?.historial_id
+    };
+  }
+
+  /**
+   * Función que actualiza el estado de un pedido y registra el cambio en el historial de forma automática
+   * @author Hernández Sánchez Adrien
+   * @param idPedido - ID del pedido a actualizar
+   * @param idNuevoEstado - Nuevo estado del pedido
+   * @param idUsuarioLogistica - ID del usuario que actualiza
+   */
+  static async actualizarEstadoEnvio(
+    idPedido: number,
+    idNuevoEstado: number,
+    idUsuarioLogistica: number
+  ) {
+    if (!idNuevoEstado) {
+      throw new Error("Debe especificar el nuevo estado");
+    }
+
+    const result = await LogisticaRepository.actualizarEstadoEnvioPedido(
+      idPedido,
+      idNuevoEstado,
+      idUsuarioLogistica
+    );
+
+    return {
+      mensaje: "Estado del envío actualizado correctamente",
       id_pedido: idPedido,
       nuevo_estado: idNuevoEstado,
       historial_id: result.rows[0]?.historial_id
