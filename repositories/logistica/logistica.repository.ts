@@ -221,4 +221,8 @@ export class LogisticaRepository {
       client.release();
     }
   }
+
+  /**
+   * Función para obtener loes envíos que no sean entregados
+   */
 }
