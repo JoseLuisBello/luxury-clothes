@@ -1,20 +1,40 @@
 //parametros
 //showBoton, que sea dinamico el card 
 import Image from "next/image";
-export default function ProductCard() {
-  return (
-    <div className="border border-gray-200 ">
-        <div className="w-145 h-145 flex items-center justify-center">
-            <Image src={"https://delvaux-media.imgix.net/products/Delvaux_handbag_Brillant-Tempo-Small-Allure-Calf-26-250-Orage-V4_AA0730CBN085OPA.jpg?w=1024&fm=webp&q=100"} width={400} height={400} alt="product" loading="lazy" className="w-full h-full object-cover"/>
-        </div>
-        <div className="w-145 h-55 p-4">
-            <h2 className="text-lg font-semibold mb-2">Valentino</h2>
-            <p className="text-gray-600 mb-4">Sudadera De Algodón Con Parche Le Chat De La Maison</p>
-            <p className="text-gray-800 font-bold mb-4">$20243.86</p>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded">Agregar al Carrito</button>
-        </div>
 
-        
+export default function ProductCard({ showToCart = true }) {
+  return (
+    // Quitamos alturas fijas del contenedor principal
+    <div className="border border-gray-200 flex flex-col h-fit">
+      
+      <div className="aspect-square w-full flex items-center justify-center overflow-hidden">
+        <Image 
+          src={"https://delvaux-media.imgix.net/products/Delvaux_handbag_Brillant-Tempo-Small-Allure-Calf-26-250-Orage-V4_AA0730CBN085OPA.jpg?w=1024&fm=webp&q=100"} 
+          width={400} 
+          height={400} 
+          alt="product" 
+          loading="lazy" 
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      <div className="p-4 flex flex-col">
+        <h2 className="text-black font-semibold">Valentino</h2>
+
+        <p className="text-black font-regular mb-4">
+          Sudadera De Algodón Con Parche Le Chat De La Maison
+        </p>
+
+        <div className="mt-auto">
+          <p className="text-black font-medium">$20,243.86</p>
+          
+          {showToCart && (
+            <button className="w-full mt-4 border border-gray-300 text-black py-2 rounded-lg hover:bg-black hover:text-white transition">
+              Agregar al carrito
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
