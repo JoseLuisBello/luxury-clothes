@@ -10,6 +10,7 @@ export default function ProductCard() {
         <div className="w-145 h-55 p-4">
             <h2 className="text-lg font-semibold mb-2">Valentino</h2>
             <p className="text-gray-600 mb-4">Sudadera De Algodón Con Parche Le Chat De La Maison</p>
+            <p className="text-gray-800 font-bold mb-4">$20243.86</p>
             <button className="bg-blue-500 text-white px-4 py-2 rounded">Agregar al Carrito</button>
         </div>
 
