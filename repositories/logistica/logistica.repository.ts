@@ -25,6 +25,27 @@ export class LogisticaRepository {
     );
   }
 
+  /**
+   * Función para obtener el estado del envío de un pedido
+   * @author Hernández Sánchez Adrien
+   * @param idPedido - ID del pedido
+   * @returns Estado del envío del pedido
+   */
+    static async obtenerEstadoEnvio(idPedido: number): Promise<QueryResult> {
+    return pool.query(
+      `SELECT 
+         e.id_pedido AS id_pedido,
+         ep.nombre AS estado,
+         ep.descripcion,
+         e.fecha_envio,
+         e.fecha_entrega_estimada
+       FROM "Envio" e
+       JOIN "EstadoEnvio" ep ON e.id_estado_envio = ep.id
+       WHERE e.id = $1`,
+      [idPedido]
+    );
+  }
+
   // =============================================
   // Cambiar estado del pedido (con historial)
   // =============================================
