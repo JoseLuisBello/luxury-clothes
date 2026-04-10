@@ -16,10 +16,7 @@ import { LogisticaService } from "@/services/logistica/logistica.service";
  */
 export async function POST(request: Request) {
     try {
-        const { searchParams } = new URL(request.url);
-        const idPedido = searchParams.get("idPedido") ? parseInt(searchParams.get("idPedido")!) : undefined;
-        const idNuevoEstado = searchParams.get("idNuevoEstado") ? parseInt(searchParams.get("idNuevoEstado")!) : undefined;
-        const idUsuarioLogistica = searchParams.get("idUsuarioLogistica") ? parseInt(searchParams.get("idUsuarioLogistica")!) : undefined;
+        const { idPedido, idNuevoEstado, idUsuarioLogistica } = await request.json();
 
         if (!idPedido || !idNuevoEstado || !idUsuarioLogistica) {
             return NextResponse.json({ error: "Faltan parámetros requeridos" }, { status: 400 });
@@ -30,7 +27,7 @@ export async function POST(request: Request) {
             ok: true,
             resultado: resultado
         });
-        
+
     } catch (error) {
         console.error("Error al actualizar el estado del pedido:", error);
         return NextResponse.json({ error: "Error al actualizar el estado del pedido" }, { status: 500 });
