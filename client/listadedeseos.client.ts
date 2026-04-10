@@ -5,10 +5,9 @@
  */
 
 import { apiFetch } from "@/lib/api";
-import { ListaDeDeseos } from "@/types/listadedeseos/ListaDeDeseos";
+import { WishlistResponse } from "@/types/listadedeseos/ListaDeDeseos";
 
 export const getWishlist = (
-  clientId: number
-): Promise<ListaDeDeseos> => {
+  clientId: number): Promise<WishlistResponse> => {
   return apiFetch(`/listadeseos?clientId=${clientId}`);
 };
