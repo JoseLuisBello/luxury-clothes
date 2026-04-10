@@ -10,7 +10,6 @@
 import { useEffect, useState } from "react";
 import ProductCard from "@/app/components/ProductCard";
 import { ListaDeDeseos } from "@/types/listadedeseos/ListaDeDeseos";
-import { apiFetch } from "@/lib/api";
 
 export default function ListadeseosPage() {
   const [products, setProducts] = useState<ListaDeDeseos[]>([]);
@@ -20,7 +19,13 @@ export default function ListadeseosPage() {
   useEffect(() => {
     async function loadWishlist() {
       try {
-        const { data } = await fetch("/api/listadeseos?clientId=1").then((res) => res.json()); // 👈 CORRECTO
+        const res = await fetch("/api/listadeseos", {
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        // const { data } = await fetch("/api/listadeseos?clientId=1").then((res) => res.json()); 
+        const { data } = await res.json();
 
         setProducts(data);
       } catch (error) {
