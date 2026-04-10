@@ -19,6 +19,22 @@ export class LogisticaService {
   }
 
   /**
+   * Función para obtener el estado del envío de un pedido
+   * @author Hernández Sánchez Adrien
+   * @param idPedido - ID del pedido
+   * @returns Estado del envío del pedido
+   */
+  static async obtenerEstadoEnvio(idPedido: number) {
+    const result: QueryResult = await LogisticaRepository.obtenerEstadoEnvio(idPedido);
+    
+    if (result.rowCount === 0) {
+      throw new Error("Pedido no encontrado o no tiene información de envío");
+    }
+    
+    return result.rows[0];
+  }
+
+  /**
    * Función que actualiza el estado de un pedido y registra el cambio en el historial de forma automática
    * @author Ramos Bello José Luis
    * @param idPedido - ID del pedido a actualizar
