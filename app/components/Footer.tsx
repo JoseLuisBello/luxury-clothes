@@ -129,23 +129,6 @@ export default async function Footer() {
             </div>
 
             <div className="flex flex-col text-white space-y-5">
-              <p className="font-bold">{"COLORES"}</p>
-              <ul className="flex flex-col space-y-2">
-                {
-                  colores.data?.map(
-                    (color) => (
-                      <li key={color.id} className="hover:underline">
-                        <Link href={`#`}>
-                          {color.nombre}
-                        </Link>
-                      </li>
-                    )
-                  )
-                }
-              </ul>
-            </div>
-
-            <div className="flex flex-col text-white space-y-5">
               <p className="font-bold">{"ASISTENCIA"}</p>
               <ul className="flex flex-col space-y-2">
                 {
