@@ -8,9 +8,9 @@ export default async function Productos() {
 
   return (
     // div principal
-    <div className="flex flex-col justify-center items-start">
+    <div className="flex flex-col justify-center items-start px-24">
       {/* breadcrumb */}
-      <div className="flex items-center justify-start border space-x-2 w-fit">
+      <div className="flex items-center justify-start space-x-2 w-fit mt-3 mb-10 text-md font-light">
         <div className="hover:underline w-fit">
           <Link
             href={"#"}
@@ -27,13 +27,13 @@ export default async function Productos() {
       </div>
 
       {/* titulo y apartado de filtro */}
-      <div>
-        <div>
+      <div className="flex w-full justify-between">
+        <div className="text-3xl font-medium">
           <p>Chamarras para Hombre (10) </p>
         </div>
 
         <div className="flex items-center space-x-1">
-          <div>
+          <div className="text-xl">
             <p>Mostrar Filtros</p>
           </div>
 
@@ -41,12 +41,15 @@ export default async function Productos() {
             <Image
               src="/assets/images/filter.svg"
               alt="Filtros"
-              width={24}
-              height={24}
+              width={27}
+              height={27}
             />
           </div>
         </div>
       </div>
+
+      {/* Contenedor principal para productos cards */}
+      <div></div>
     </div>
   );
 }

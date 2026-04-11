@@ -50,7 +50,6 @@ export default async function Footer() {
                   alt="Facebook"
                   width={24}
                   height={24}
-                  className="w-auto h-auto"
                 />
               </a>
               <a href="https://www.instagram.com/luxuryclothes.store.mx/" target="_blank" className="text-white hover:text-gray-300">
@@ -59,7 +58,6 @@ export default async function Footer() {
                   alt="Instagram"
                   width={24}
                   height={24}
-                  className="w-auto h-auto"
                 />
               </a>
               <a href="https://www.instagram.com/luxuryclothes.store.mx/" target="_blank" className="text-white hover:text-gray-300">
@@ -68,7 +66,6 @@ export default async function Footer() {
                   alt="TikTok"
                   width={24}
                   height={24}
-                  className="w-auto h-auto"
                 />
               </a>
 
@@ -78,7 +75,6 @@ export default async function Footer() {
                   alt="X"
                   width={24}
                   height={24}
-                  className="w-auto h-auto"
                 />
               </a>
             </div>
