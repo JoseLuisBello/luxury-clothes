@@ -43,7 +43,7 @@ export default async function Footer() {
             <div className="w-full h-px bg-[#D4AF37]"></div>
 
             <div className="flex space-x-8">
-              <a href="#" className="text-white hover:text-gray-300">
+              <a href="https://www.instagram.com/luxuryclothes.store.mx/" target="_blank" className="text-white hover:text-gray-300">
                 <Image
                   src="/assets/images/facebook.svg"
                   alt="Facebook"
@@ -51,7 +51,7 @@ export default async function Footer() {
                   height={24}
                 />
               </a>
-              <a href="#" className="text-white hover:text-gray-300">
+              <a href="https://www.instagram.com/luxuryclothes.store.mx/" target="_blank" className="text-white hover:text-gray-300">
                 <Image
                   src="/assets/images/instagram.svg"
                   alt="Instagram"
@@ -59,7 +59,7 @@ export default async function Footer() {
                   height={24}
                 />
               </a>
-              <a href="#" className="text-white hover:text-gray-300">
+              <a href="https://www.instagram.com/luxuryclothes.store.mx/" target="_blank" className="text-white hover:text-gray-300">
                 <Image
                   src="/assets/images/tik-tok.svg"
                   alt="TikTok"
@@ -68,7 +68,7 @@ export default async function Footer() {
                 />
               </a>
 
-              <a href="#" className="text-white hover:text-gray-300">
+              <a href="https://www.instagram.com/luxuryclothes.store.mx/" className="text-white hover:text-gray-300">
                 <Image
                   src="/assets/images/gorjeo.svg"
                   alt="X"
