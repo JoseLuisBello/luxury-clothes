@@ -29,7 +29,7 @@ export default async function Productos() {
       </div>
 
       {/* titulo y apartado de filtro */}
-      <div className="flex w-full justify-between">
+      <div className="flex w-full justify-between mb-4">
         <div className="text-3xl font-medium">
           <p>Chamarras para Hombre (10) </p>
         </div>
@@ -51,15 +51,21 @@ export default async function Productos() {
       </div>
 
       {/* Contenedor principal para productos cards */}
-      <div className="grid grid-cols-3 gap-3.5 h-fit">
+      <div className="grid grid-cols-3 gap-3.5">
         {productos.map((producto: Producto) => (
-          <ProductCard
+          <Link
             key={producto.id}
-            isFavorite={false}
-            showIcon={false}
-            showToCart={false}
-            item={producto}
-          />
+            href={`/productos/${producto.id}`}
+            className="hover:shadow-xl transition-shadow"
+          >
+            <ProductCard
+              key={producto.id}
+              isFavorite={false}
+              showIcon={false}
+              showToCart={false}
+              item={producto}
+            />
+          </Link>
         ))}
       </div>
     </div>
