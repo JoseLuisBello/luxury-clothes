@@ -32,7 +32,7 @@ export default async function Productos() {
           <p>Chamarras para Hombre (10) </p>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1">
           <div>
             <p>Mostrar Filtros</p>
           </div>
