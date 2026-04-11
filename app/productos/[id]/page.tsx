@@ -29,9 +29,9 @@ export default function ProductoPage() {
     }
 
     return (
-        <div className="p-24 w-full h-full flex gap-8">
+        <div className="p-24 w-full h-full flex gap-8 justify-center">
             {/* Div para la galeria de imagenes */}
-            <div className="flex space-x-4 border w-fit">
+            <div className="flex space-x-4 w-fit">
                 {/* Imagenes de costado */}
                 <div>
                     {producto.imagenes && producto.imagenes.map((imgUrl, index) => (
@@ -79,7 +79,7 @@ export default function ProductoPage() {
                         <p>{producto.color}</p>
                     </div>
                 </div>
-                <div className="mt-6">
+                <div className="mt-6 flex flex-col gap-4">
                     <p className={"font-semibold"}>Selecciona tu talla:</p>
                     <div className="grid grid-cols-3 gap-2 w-fit">
                         { 
@@ -89,10 +89,17 @@ export default function ProductoPage() {
                         }
                     </div>
                 </div>
-                
-                <div></div>
-                <div></div>
-                <div></div>
+                <div className="mt-12 w-full">
+                    <button className="bg-black text-white py-2 px-4 rounded-[28px] w-full h-16 transition-shadow hover:shadow-md">
+                        Agregar al carrito
+                    </button>
+                </div>
+
+                <div className="mt-6 w-full">
+                    <button className="text-black bg-white py-2 px-4 rounded-[28px] w-full h-16 border border-[#E6E6E6] hover:shadow-md transition-shadow">
+                        Agregar al carrito
+                    </button>
+                </div>
             </div>
         </div>
     );
