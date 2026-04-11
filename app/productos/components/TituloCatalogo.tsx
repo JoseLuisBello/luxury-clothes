@@ -1,14 +1,17 @@
 import Image from "next/image";
 
-export default function TituloCatalogo() {
+export default function TituloCatalogo({
+    title,
+    count,
+} : { title: string; count: number }) {
     return (
         // {/* titulo y apartado de filtro */}
         <div className="flex w-full justify-between mb-4">
         <div className="text-3xl font-medium">
-            <p>Chamarras para Hombre (10) </p>
+            <p>{title} ({count}) </p>
         </div>
 
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-2">
             <div className="text-xl">
             <p>Mostrar Filtros</p>
             </div>
