@@ -3,6 +3,7 @@ import ProductCard from "../components/ProductCard";
 import Link from "next/dist/client/link";
 import Image from "next/image";
 import { Producto } from "@/types/producto/Producto";
+import BreadCrumb from "./components/BreadCrumb";
 export default async function Productos() {
 
   const response = await getCatalogo({id_categoria: 1});
@@ -12,21 +13,7 @@ export default async function Productos() {
     // div principal
     <div className="flex flex-col justify-center items-start px-24">
       {/* breadcrumb */}
-      <div className="flex items-center justify-start space-x-2 w-fit mt-3 mb-10 text-md font-light">
-        <div className="hover:underline w-fit">
-          <Link
-            href={"#"}
-          >Ropa</Link>
-        </div>
-        <span>/</span>
-        <div className="hover:underline w-fit">
-          <Link href={"#"}>Hombre</Link>
-        </div>
-        <span>/</span>
-        <div className="hover:underline w-fit">
-          <Link href={"#"}>Chamarra</Link>
-        </div>
-      </div>
+      <BreadCrumb />
 
       {/* titulo y apartado de filtro */}
       <div className="flex w-full justify-between mb-4">
