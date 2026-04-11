@@ -29,7 +29,7 @@ export default function ProductoPage() {
     }
 
     return (
-        <div className="p-24 w-full h-full">
+        <div className="p-24 w-full h-full flex gap-8">
             {/* Div para la galeria de imagenes */}
             <div className="flex space-x-4 border w-fit">
                 {/* Imagenes de costado */}
@@ -63,30 +63,33 @@ export default function ProductoPage() {
 
             {/* Div para la informacion del producto */}
             <div>
-                <div>
+                <div className="font-semibold text-2xl w-100 h-fit mt-6">
                     <p>{producto.nombre}</p>
                 </div>
-                <div>
+                <div className="w-100 h-fit font-regular text-[14px] opacity-50 mt-2">
                     <p>{producto.descripcion}</p>
                 </div>
-                <div>
+                <div className="font-semibold text-[16px] mt-6">
                     <p>${Number(producto.precio).toLocaleString()}</p>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 text-[16px] mt-8">
                     <p className="font-bold">Color: </p>
                     <div className="flex items-center gap-2">
                         <div className="w-5 h-5 rounded-full" style={{ backgroundColor: getColor(producto.color || "lightgray") }}></div>
                         <p>{producto.color}</p>
                     </div>
                 </div>
-                <div>
-                    <p>Selecciona tu talla:</p>
-                    <div>
-                        <div className="w-30 h-12 border border-[#E6E6E6] rounded-md flex items-center justify-center cursor-pointer hover:border-[#111111]">
-                            XS (20)
-                        </div>
+                <div className="mt-6">
+                    <p className={"font-semibold"}>Selecciona tu talla:</p>
+                    <div className="grid grid-cols-3 gap-2 w-fit">
+                        { 
+                            producto.stock_por_talla && producto.stock_por_talla.map(
+                                (item, index) => <Talla key={index} talla={item.talla} stock={item.stock} />
+                            )
+                        }
                     </div>
                 </div>
+                
                 <div></div>
                 <div></div>
                 <div></div>
@@ -126,4 +129,19 @@ function getColor(nombre: string) {
         default:
             return "lightgray";
     }
+}
+
+// Componente para tallas
+function Talla({
+    talla,
+    stock,
+} : {
+    talla: string;
+    stock: number;
+}) {
+    return (
+        <div className={`w-30 h-12 border border-[#E6E6E6] rounded-md flex items-center justify-center ${stock === 0 ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:border-[#111111]"}`}>
+            {talla} ({stock})
+        </div>
+    );
 }
