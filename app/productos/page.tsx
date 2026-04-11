@@ -27,6 +27,26 @@ export default async function Productos() {
       </div>
 
       {/* titulo y apartado de filtro */}
+      <div>
+        <div>
+          <p>Chamarras para Hombre (10) </p>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <div>
+            <p>Mostrar Filtros</p>
+          </div>
+
+          <div>
+            <Image
+              src="/assets/images/filter.svg"
+              alt="Filtros"
+              width={24}
+              height={24}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

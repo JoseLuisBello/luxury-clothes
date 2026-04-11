@@ -37,6 +37,7 @@ export default async function Footer() {
                 alt="Logo"
                 width={154}
                 height={80}
+                className="w-auto h-auto"
               />
             </div>
 
@@ -49,6 +50,7 @@ export default async function Footer() {
                   alt="Facebook"
                   width={24}
                   height={24}
+                  className="w-auto h-auto"
                 />
               </a>
               <a href="https://www.instagram.com/luxuryclothes.store.mx/" target="_blank" className="text-white hover:text-gray-300">
@@ -57,6 +59,7 @@ export default async function Footer() {
                   alt="Instagram"
                   width={24}
                   height={24}
+                  className="w-auto h-auto"
                 />
               </a>
               <a href="https://www.instagram.com/luxuryclothes.store.mx/" target="_blank" className="text-white hover:text-gray-300">
@@ -65,6 +68,7 @@ export default async function Footer() {
                   alt="TikTok"
                   width={24}
                   height={24}
+                  className="w-auto h-auto"
                 />
               </a>
 
@@ -74,6 +78,7 @@ export default async function Footer() {
                   alt="X"
                   width={24}
                   height={24}
+                  className="w-auto h-auto"
                 />
               </a>
             </div>
@@ -165,15 +170,16 @@ export default async function Footer() {
               proveedoresBancarios.data?.map(
                 (proveedor) => (
                   <div key={proveedor.id} className="flex items-center space-x-4">
-                    {proveedor.id !== 5 &&(<div className="w-16 h-7 bg-white flex items-center justify-center rounded-lg">
+                    {proveedor.id !== 5 &&(<div className="w-16 h-8 bg-white flex items-center justify-center rounded-lg">
                       <Image
                         src={proveedor.url}
                         alt={proveedor.nombre}
                         width={48}
                         height={27}
                         style={{
-                          scale: 1.2,
                           objectFit: "cover",
+                          width: "auto",
+                          height: "auto",
                         }}
                       />
                     </div>)}
