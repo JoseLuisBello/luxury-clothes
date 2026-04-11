@@ -4,6 +4,7 @@ import Link from "next/dist/client/link";
 import Image from "next/image";
 import { Producto } from "@/types/producto/Producto";
 import BreadCrumb from "./components/BreadCrumb";
+import CatalogoCuerpo from "./components/CatalogoCuerpo";
 export default async function Productos() {
 
   const response = await getCatalogo({id_categoria: 1});
@@ -38,23 +39,7 @@ export default async function Productos() {
       </div>
 
       {/* Contenedor principal para productos cards */}
-      <div className="grid grid-cols-3 gap-3.5">
-        {productos.map((producto: Producto) => (
-          <Link
-            key={producto.id}
-            href={`/productos/${producto.id}`}
-            className="hover:shadow-xl transition-shadow"
-          >
-            <ProductCard
-              key={producto.id}
-              isFavorite={false}
-              showIcon={false}
-              showToCart={false}
-              item={producto}
-            />
-          </Link>
-        ))}
-      </div>
+      <CatalogoCuerpo items={productos} />
     </div>
   );
 }
