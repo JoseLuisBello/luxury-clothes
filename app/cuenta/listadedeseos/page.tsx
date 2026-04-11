@@ -7,22 +7,29 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProductCard from "@/app/components/ProductCard";
 import { ListaDeDeseos } from "@/types/listadedeseos/ListaDeDeseos";
+import { exec } from "child_process";
 
 export default function ListadeseosPage() {
   const [products, setProducts] = useState<ListaDeDeseos[]>([]);
   const [loading, setLoading] = useState(true);
 
+  //obtener el id del producto a eliminar
+  const [productIdToRemove, setProductIdToRemove] = useState<number | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    async function loadWishlist() {
-      try {
-        const res = await fetch("/api/listadeseos", {
-          headers: {
-            "Authorization": `Bearer ${localStorage.getItem("token")}`,
-          },
+    loadWishlist();
+  }, []);
+
+  const loadWishlist = async () => {
+    try {
+      const res = await fetch("/api/listadeseos", {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
         });
         // const { data } = await fetch("/api/listadeseos?clientId=1").then((res) => res.json()); 
         const { data } = await res.json();
@@ -33,10 +40,48 @@ export default function ListadeseosPage() {
       } finally {
         setLoading(false);
       }
-    }
+    };
 
-    loadWishlist();
-  }, []);
+    //loadWishlist();
+    
+    const handleRemoveFavorite = (productId: number) => {
+      if(productIdToRemove) removeFavorite(productIdToRemove);
+      setProductIdToRemove(productId);
+
+      timerRef.current = setTimeout(() => {
+        removeFavorite(productId);
+      }, 5000);
+    };
+
+    const removeFavorite = async (productId: number) => {
+    try {
+      const res = await fetch("/api/listadeseos", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ productId }),
+      });
+      console.log("TOKEN:", localStorage.getItem("token"));
+
+      if (res.ok) {
+        setProducts((prev) => prev.filter((p) => p.id !== productId));
+      } else {
+        console.error("Error eliminando producto de favoritos");
+      }
+    } catch (error) {
+      console.error("Error eliminando producto de favoritos:", error);
+    }
+  };
+
+  const handleUndo = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    setProductIdToRemove(null);
+  };
 
   if (loading) {
     return (
@@ -62,7 +107,7 @@ export default function ListadeseosPage() {
               product={product}
               showToCart={true}
               showIcon={true}
-              isFavorite={true} 
+              onRemoveFavorite={removeFavorite}
             />
           ))}
         </div>
