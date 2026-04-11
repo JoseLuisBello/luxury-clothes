@@ -18,6 +18,13 @@ export default function ListadeseosPage() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      window.location.href = "/cuenta";
+      return;
+    }
+
     loadWishlist();
   }, []);
 
@@ -67,7 +74,6 @@ export default function ListadeseosPage() {
     }
   };
 
-  // 🔥 cancelar eliminación
   const handleUndo = () => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
@@ -76,6 +82,19 @@ export default function ListadeseosPage() {
   };
 
   if (loading) return <p className="p-10">Cargando favoritos...</p>;
+
+  if (products.length === 0) {
+    return (
+       <div className="pl-16 pt-12 pr-16 pb-12">
+
+      <h1 className="mb-6 text-xl">Favoritos</h1>
+
+      <div className="p-10 text-center">
+        <p className="text-lg font-medium">Los productos que agregues a tus Favoritos se guardarán aquí.</p>
+      </div>
+    </div>
+    );
+  }
 
   return (
     <div className="pl-16 pt-12 pr-16 pb-12">
@@ -94,7 +113,6 @@ export default function ListadeseosPage() {
             onUndo={handleUndo}
           />
         ))}
-
       </div>
     </div>
   );
