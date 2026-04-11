@@ -25,10 +25,10 @@ export default async function Footer() {
 
   return (
     <>
-      <div className="w-full h-164 bg-[#222] flex flex-col items-center justify-start p-14 space-y-10">
+      <div className="w-full h-fit bg-[#222] flex flex-col items-center justify-start p-14 space-y-7">
         
         {/* Arriba */}
-        <div className="flex justify-start w-full">
+        <div className="flex justify-start w-full h-fit space-x-32">
           {/* Logo con redes */}
           <div className="flex flex-col items-start justify-start gap-7 py-12">
             <div className="w-56">
@@ -81,22 +81,10 @@ export default async function Footer() {
           </div>
 
           {/* Las columnas */}
-          <div className="max-w-6xl mx-auto grid grid-cols-4 gap-16 px-8">
+          <div className="max-w-6xl grid grid-cols-4 gap-24 px-8">
             <div className="flex flex-col text-white space-y-5">
               <p className="font-bold">{"PRODUCTOS"}</p>
               <ul className="flex flex-col space-y-2">
-                {
-                  generos.data?.map(
-                    (genero) => (
-                      <li key={genero.id} className="hover:underline">
-                        <Link href={`#`}>
-                          {genero.nombre}
-                        </Link>
-                      </li>
-                    )
-                  )
-                }
-
                 {
                   categorias.data?.map(
                     (categoria) => (
@@ -112,10 +100,27 @@ export default async function Footer() {
             </div>
 
             <div className="flex flex-col text-white space-y-5">
-              <p className="font-bold">{"MARCAS"}</p>
+              <p className="font-bold">{"MARCAS DESTACADAS"}</p>
               <ul className="flex flex-col space-y-2">
                 {
-                  marcas.data?.map(
+                  marcas.data?.slice(0,16).map(
+                    (marca) => (
+                      <li key={marca.id} className="hover:underline">
+                        <Link href={`#`}>
+                          {marca.nombre}
+                        </Link>
+                      </li>
+                    )
+                  )
+                }
+              </ul>
+            </div>
+
+            <div className="flex flex-col text-white space-y-5">
+              <p className="font-bold">{"NOVEDADES"}</p>
+              <ul className="flex flex-col space-y-2">
+                {
+                  marcas.data?.slice(16,28).map(
                     (marca) => (
                       <li key={marca.id} className="hover:underline">
                         <Link href={`#`}>
