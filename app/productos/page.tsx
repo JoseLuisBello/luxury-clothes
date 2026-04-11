@@ -1,10 +1,12 @@
 import { getCatalogo } from "@/client/producto.client";
+import ProductCard from "../components/ProductCard";
 import Link from "next/dist/client/link";
 import Image from "next/image";
+import { Producto } from "@/types/producto/Producto";
 export default async function Productos() {
 
-  // const response = await getCatalogo({id_categoria: 1});
-  // const productos = response.productos; // por como regresas los datos en tu api
+  const response = await getCatalogo({id_categoria: 1});
+  const productos = response.productos; // por como regresas los datos en tu api
 
   return (
     // div principal
@@ -49,7 +51,17 @@ export default async function Productos() {
       </div>
 
       {/* Contenedor principal para productos cards */}
-      <div></div>
+      <div className="grid grid-cols-3 gap-3.5 h-fit">
+        {productos.map((producto: Producto) => (
+          <ProductCard
+            key={producto.id}
+            isFavorite={false}
+            showIcon={false}
+            showToCart={false}
+            item={producto}
+          />
+        ))}
+      </div>
     </div>
   );
 }
