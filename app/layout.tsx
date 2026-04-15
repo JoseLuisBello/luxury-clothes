@@ -49,17 +49,27 @@ export default async function RootLayout({
   const marcas = await getMarcas();
   const proveedoresBancarios = await getProveedoresBancarios();
 
-  console.log(categoriasPorGenero);
   return (
     <html lang="es">
       <body
         className={`${geistMontserrat.variable} antialiased min-h-screen flex flex-col`}
       >
-        <NavBar />
+        <NavBar 
+          generos={generos}
+          categoriasPorGenero={categoriasPorGenero}
+          todasLasCategorias={todasLasCategorias}
+        />
+
         <main className="flex-1">
           {children}
         </main>
-        <Footer />
+
+        <Footer 
+          categorias={categorias}
+          marcas={marcas}
+          proveedoresBancarios={proveedoresBancarios}
+        
+        />
       </body>
     </html>
   );
