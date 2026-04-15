@@ -3,6 +3,8 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
+import { getCategorias, getTodasLasCategorias } from "@/client/categoria.client";
+import { getGeneros } from "@/client/genero.client";
 
 
 const geistMontserrat = Montserrat({
@@ -18,11 +20,27 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  // Funciones para NavBar
+    const generos = await getGeneros();
+  
+    const categoriasPorGenero = await Promise.all(
+      generos.data.slice(0, 3).map(async (genero) => {
+        const categorias = await getCategorias(genero.id);
+        return {
+          generoId: genero.id,
+          categorias: categorias.data,
+        };
+      })
+    );
+  
+    const todasLasCategorias = await getTodasLasCategorias();
+  // Funciones para Footer
   return (
     <html lang="es">
       <body
