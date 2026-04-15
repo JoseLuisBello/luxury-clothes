@@ -93,13 +93,13 @@ export default function ProductoPage() {
                     </div>
                 </div>
                 <div className="mt-12 w-full">
-                    <button className="bg-black text-white py-2 px-4 rounded-[28px] w-full h-16 transition-shadow hover:shadow-md">
+                    <button className="bg-black text-white py-2 px-4 rounded-[28px] w-full h-16 hover:opacity-60">
                         Agregar al carrito
                     </button>
                 </div>
 
                 <div className="mt-6 w-full">
-                    <button className="text-black bg-white py-2 px-4 rounded-[28px] w-full h-16 border border-[#E6E6E6] hover:shadow-md transition-shadow">
+                    <button className="text-black bg-white py-2 px-4 rounded-[28px] w-full h-16 border border-[#E6E6E6] hover:border-black">
                         Añadir a lista de deseos
                     </button>
                 </div>
