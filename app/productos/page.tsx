@@ -52,7 +52,7 @@ export default async function Productos({searchParams}: Props) {
       {/* titulo y apartado de filtro */}
       <div className="flex w-full justify-between mb-4">
         <div className="text-3xl font-medium">
-          <p>{(titulos.subcategoria ? titulos.subcategoria : titulos.categoria) + " " + (titulos.genero ? "para " + titulos.genero + " (" + productos.length + ")" : "(" + productos.length + ")")}</p>
+          <p>{titulos.categoria ? ((titulos.subcategoria ? titulos.subcategoria : titulos.categoria) + " " + (titulos.genero ? "para " + titulos.genero + " (" + productos.length + ")" : "(" + productos.length + ")")) : "Todos los productos (" + productos.length + ")"}</p>
         </div>
 
         <div className="flex items-center space-x-1">

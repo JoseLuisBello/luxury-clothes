@@ -6,12 +6,11 @@
  */
 import { filterProductos } from "@/client/producto.client";
 import Filtros from "../components/Filtros";
-import { getCategorias } from "@/client/categoria.client";
+import { getCategoriasDefault } from "@/client/categoria.client";
 import { getGeneros } from "@/client/genero.client";
 import { getColores } from "@/client/color.client";
 import { getMarcas } from "@/client/marca.client";
 import CatalogoCuerpo from "../components/CatalogoCuerpo";
-import BreadCrumb from "../components/BreadCrumb";
 
 
 interface Props {
@@ -28,7 +27,7 @@ interface Props {
 }
 
 export default async function BuscarPage({ searchParams }: Props) {
-    const categoriasRes = await getCategorias();
+    const categoriasRes = await getCategoriasDefault();
     const categorias = categoriasRes.data;
     const generosRes = await getGeneros();
     const generos = generosRes.data;
@@ -56,9 +55,8 @@ export default async function BuscarPage({ searchParams }: Props) {
 
     return (
         <div className="flex flex-col justify-center items-start px-24">
-            <BreadCrumb />
             
-            <div className="flex justify-between items-center mt-2 mb-4 w-full">
+            <div className="flex justify-between items-center mt-18 w-full">
                 <Filtros categorias={categorias} generos={generos} colores={colores} marcas={marcas} title={params.q} count={productos.length} />
             </div>
 
