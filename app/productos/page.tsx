@@ -37,7 +37,11 @@ export default async function Productos({searchParams}: Props) {
     // div principal
     <div className="flex flex-col justify-center items-start px-24 mb-24 w-full h-fit">
       {/* breadcrumb */}
-      <BreadCrumb />
+      <BreadCrumb 
+        categoria={categoria || 0}
+        subcategoria={subcategoria}
+        genero={genero}
+      />
 
       {/* titulo y apartado de filtro */}
       <div className="flex w-full justify-between mb-4">
