@@ -1,9 +1,8 @@
 import Image from "next/image";
-import { getCategorias } from "@/client/categoria.client";
+import { getCategorias, getTodasLasCategorias } from "@/client/categoria.client";
 import { getGeneros } from "@/client/genero.client";
 import Link from "next/link";
 import SearchOverlay from "./Search";
-import { SubcategoriaPorGenero } from "@/types/producto/Categoria";
 
 export default async function NavBar() {
   const generos = await getGeneros();
@@ -17,6 +16,8 @@ export default async function NavBar() {
       };
     })
   );
+
+  const todasLasCategorias = await getTodasLasCategorias();
 
 
   return (
@@ -34,7 +35,7 @@ export default async function NavBar() {
         
       <nav className="z-50 *:h-full flex items-center">
         <ul className="h-full flex justify-center items-center text-sm space-x-9">
-          {/* <li className="h-full text-white group hover:underline" key={12312}>
+          <li className="h-full text-white group hover:underline" key={12312}>
             <div className="h-full w-auto flex items-center justify-center">
               <Link href="#">
                 {"CATEGORÍAS"}
@@ -50,15 +51,15 @@ export default async function NavBar() {
               <div className="max-w-6xl mx-auto grid grid-cols-3 gap-8 px-8">
 
                 {
-                  categorias.data?.map( categoria =>
-                    <div key={categoria.id}>
-                      <p className="font-semibold mb-3"><Link href="#">{categoria.name.toUpperCase()}</Link></p>
+                  todasLasCategorias.data?.map( categoria =>
+                    <div key={categoria.id_categoria}>
+                      <p className="font-semibold mb-3"><Link href="#">{categoria.categoria.toUpperCase()}</Link></p>
                       <ul className="space-y-2 text-gray-600">
                         {
-                          categoria.subcategories.map(
+                          categoria.subcategorias.map(
                             subcategoria => (
                               <li key={subcategoria.id} className="hover:underline cursor-pointer">
-                                <Link href={`/productos?categoria=${categoria.id}&subcategoria=${subcategoria.id}`}>{subcategoria.nombre}</Link>
+                                <Link href={`/productos?categoria=${categoria.id_categoria}&subcategoria=${subcategoria.id}`}>{subcategoria.nombre}</Link>
                               </li>
                             )
                           )
@@ -70,7 +71,7 @@ export default async function NavBar() {
 
               </div>
             </div>
-          </li> */}
+          </li>
 
           {
             generos.data.slice(0, 3)?.map( (genero) => {
