@@ -14,3 +14,10 @@ import { CategoriaPorGenero } from "@/types/producto/Categoria";
 export const getCategorias = (id_genero: number) : Promise<CategoriaPorGenero> => {
     return apiFetch(`/categorias?id_genero=${id_genero}`);
 }
+
+/**
+ * Funcion que retorna listado de todas las categorias
+ */
+export const getTodasLasCategorias = () : Promise<CategoriaPorGenero> => {
+    return apiFetch(`/categorias/all`);
+}
