@@ -3,7 +3,8 @@
 "use client";
 
 import { useState } from "react";
-import FormularioDireccion from "@/app/components/FormularioDireccion";
+import FormularioDireccion from "@/app/cuenta/direcciones/components/FormularioDireccion";
+import DireccionEnvio from "./components/DireccionEnvio";
 
 export default function DireccionesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,7 +17,7 @@ export default function DireccionesPage() {
 
   return (
     <div className="pl-16 pt-12 pr-16 pb-12 min-h-screen">
-      <h1 className="mb-6 text-lg font-normal">
+      <h1 className="mb-6 text-2xl font-medium">
         Direcciones de entrega guardadas
       </h1>
 
@@ -41,6 +42,7 @@ export default function DireccionesPage() {
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSaveAddress}
       />
+      <DireccionEnvio/>
     </div>
   );
 }
