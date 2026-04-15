@@ -1,6 +1,4 @@
 import Image from "next/image";
-import { getCategorias, getTodasLasCategorias } from "@/client/categoria.client";
-import { getGeneros } from "@/client/genero.client";
 import Link from "next/link";
 import SearchOverlay from "./Search";
 import { GeneroResponse } from "@/types/producto/Genero";
