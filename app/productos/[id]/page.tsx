@@ -1,31 +1,43 @@
-"use client";
+// "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { Producto } from "@/types/producto/Producto";
-import { useParams } from "next/navigation";
+import { getProducto } from "@/client/producto.client";
+import { Loader } from "lucide-react";
+// import { useParams } from "next/navigation";
 
-export default function ProductoPage() {
-    const [producto, setProducto] = useState<Producto | null>(null);
-    const [url, setURL] = useState<String | null>(null);
-    const { id } = useParams();
+type Props = {
+  params: { id: number };
+};
 
-    useEffect(() => {
-        async function fetchProducto() {
-            try {
-                const res = await fetch(`/api/producto/${id}`);
-                const data = await res.json();
-                setProducto(data.data);
-                setURL(data.data.imagenes[0]);
-            } catch (error) {
-                console.error("Error fetching producto:", error);
-            }
-        }
+export default async function ProductoPage({ params }: Props) {
+    // const [producto, setProducto] = useState<Producto | null>(null);
+    // const [url, setURL] = useState<String | null>(null);
+    // const { id } = useParams();
 
-        fetchProducto();
-    }, [id]);
+    // useEffect(() => {
+    //     async function fetchProducto() {
+    //         try {
+    //             const res = await fetch(`/api/producto/${id}`);
+    //             const data = await res.json();
+    //             setProducto(data.data);
+    //             setURL(data.data.imagenes[0]);
+    //         } catch (error) {
+    //             console.error("Error fetching producto:", error);
+    //         }
+    //     }
+
+    //     fetchProducto();
+    // }, [id]);
+
+    const producto = await getProducto(params.id);
 
     if (!producto) {
-        return <div className="h-full w-full flex items-center justify-center">Cargando...</div>;
+        return (
+            <div className="h-full w-full flex items-center justify-center">
+                <Loader className="animate-spin" size={48} />
+            </div>
+        );
     }
 
     return (
