@@ -7,9 +7,12 @@
 import { NextResponse } from "next/server";
 import { CategoriaService } from "@/services/pedido/categorias/categorias.service";
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
-        const categorias = await CategoriaService.getCategoriasConSubcategorias();
+        const { searchParams } = new URL(request.url);
+        const id_genero = Number(searchParams.get("id_genero"));
+
+        const categorias = await CategoriaService.getCategoriasConSubcategorias(id_genero);
 
         if (!categorias || categorias.length === 0) {
             throw new Error("No se encontraron categorías");

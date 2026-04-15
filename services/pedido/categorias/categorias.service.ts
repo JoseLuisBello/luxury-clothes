@@ -11,7 +11,7 @@ export class CategoriaService {
      * Obtener categorías con sus subcategorías
      * @returns Lista de categorías con sus subcategorías
      */
-    static async getCategoriasConSubcategorias() {
-        return await CategoriaRepository.getCategoriasConSubcategorias();
+    static async getCategoriasConSubcategorias(id_genero: number) {
+        return await CategoriaRepository.getCategoriasConSubcategorias(id_genero);
     }
 }

@@ -37,7 +37,7 @@ export class CategoriaRepository {
             GROUP BY s.id, s.nombre, s.id_categoria
             ) s ON s.id_categoria = c.id
             GROUP BY c.id, c.nombre
-            ORDER BY c.nombre;
+            ORDER BY c.id;
             `, [id_genero]
         );
         return rows;
