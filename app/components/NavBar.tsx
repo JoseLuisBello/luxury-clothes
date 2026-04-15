@@ -59,7 +59,7 @@ export default async function NavBar() {
                           categoria.subcategorias.map(
                             subcategoria => (
                               <li key={subcategoria.id} className="hover:underline cursor-pointer">
-                                <Link href={`/productos?categoria=${categoria.id_categoria}&subcategoria=${subcategoria.id}`}>{subcategoria.nombre}</Link>
+                                <Link href={`/productos?categoria=${categoria.id_categoria}&subcategoria=${subcategoria.id}`}>{subcategoria.nombre + " (" + subcategoria.total + ")"}</Link>
                               </li>
                             )
                           )
@@ -102,7 +102,7 @@ export default async function NavBar() {
                                 categoria.subcategorias.map(
                                   subcategoria => (
                                     <li key={subcategoria.id} className="hover:underline cursor-pointer">
-                                      <Link href={`/productos?categoria=${categoria.id_categoria}&subcategoria=${subcategoria.id}&genero=${genero.id}`}>{subcategoria.nombre}</Link>
+                                      <Link href={`/productos?categoria=${categoria.id_categoria}&subcategoria=${subcategoria.id}&genero=${genero.id}`}>{subcategoria.nombre + " (" + subcategoria.total + ")"}</Link>
                                     </li>
                                   )
                                 )
