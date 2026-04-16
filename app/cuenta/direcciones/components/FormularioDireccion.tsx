@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Estados } from "@/types/direccionesenvio/DireccionesEnvio";
 import { X } from "lucide-react"; 
 
@@ -7,10 +7,23 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: any) => void;
+  selectedDireccion?: any | null;
 }
 
-export default function FormularioDireccion({ isOpen, onClose, onSubmit }: Props) {
+export default function FormularioDireccion({ isOpen, onClose, onSubmit, selectedDireccion}: Props) {
   const [telefono, setTelefono] = useState("");
+  const isEditing = !!selectedDireccion;
+
+  useEffect(() => {
+    if (selectedDireccion?.telefono) {
+      setTelefono(
+        selectedDireccion.telefono.replace("+52", "").replace(/\s/g, "")
+      );
+    } else {
+      setTelefono("");
+    }
+  }, [selectedDireccion]);
+
   if (!isOpen) return null;
 
   return (
@@ -25,15 +38,34 @@ export default function FormularioDireccion({ isOpen, onClose, onSubmit }: Props
           <X size={24} />
         </button>
 
-        <h2 className="text-2xl font-medium mt-4 mb-8">Agregar dirección</h2>
+        <h2 className="text-2xl font-medium mt-4 mb-8">
+          {isEditing ? "Editar dirección" : "Agregar dirección" }
+        </h2>
 
-        <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+        <form 
+          className="space-y-6" 
+          onSubmit={(e) => {e.preventDefault();
+
+            onSubmit({
+              nombre: (document.getElementById("nombre") as HTMLInputElement)?.value,
+              apellido: (document.getElementById("apellido") as HTMLInputElement)?.value,
+              direccion: (document.getElementById("direccion") as HTMLInputElement)?.value,
+              ciudad: (document.getElementById("ciudad") as HTMLInputElement)?.value,
+              cp: (document.getElementById("cp") as HTMLInputElement)?.value,
+              estado: (document.querySelector("select") as HTMLSelectElement)?.value,
+              telefono: "+52 " + telefono.replace(/\s/g, ""),
+              isEditing,
+            });
+
+          }}
+          
+        >
 
           {/* Nombre / Apellido */}
           <div className="grid grid-cols-2 gap-4">
             
             <div className="relative">
-              <input id="nombre" type="text" placeholder=" " required
+              <input id="nombre" type="text" defaultValue={selectedDireccion?.nombre} placeholder=" " required
                 className="peer border border-gray-600 p-3 rounded-md w-full" />
               <label htmlFor="nombre"
                 className="absolute left-3 top-3 text-gray-400 transition-all
@@ -46,7 +78,7 @@ export default function FormularioDireccion({ isOpen, onClose, onSubmit }: Props
             </div>
 
             <div className="relative">
-              <input id="apellido" type="text" placeholder=" " required
+              <input id="apellido" type="text" defaultValue={selectedDireccion?.apellido} placeholder=" " required
                 className="peer border border-gray-600 p-3 rounded-md w-full" />
               <label htmlFor="apellido"
                 className="absolute left-3 top-3 text-gray-400 transition-all
@@ -62,7 +94,7 @@ export default function FormularioDireccion({ isOpen, onClose, onSubmit }: Props
 
           {/* Dirección */}
           <div className="relative">
-            <input id="direccion" type="text" placeholder=" " required
+            <input id="direccion" type="text" defaultValue={selectedDireccion?.direccion} placeholder=" " required
               className="peer border border-gray-600 p-3 rounded-md w-full" />
             <label htmlFor="direccion"
               className="absolute left-3 top-3 text-gray-400 transition-all
@@ -104,7 +136,7 @@ export default function FormularioDireccion({ isOpen, onClose, onSubmit }: Props
           <div className="grid grid-cols-2 gap-6">
 
             <div className="relative">
-              <input id="ciudad" type="text" placeholder=" " required
+              <input id="ciudad" type="text" defaultValue={selectedDireccion?.ciudad} placeholder=" " required
                 className="peer border border-gray-600 p-3 rounded-md w-full" />
               <label htmlFor="ciudad"
                 className="absolute left-3 top-3 text-gray-400 transition-all
@@ -117,7 +149,7 @@ export default function FormularioDireccion({ isOpen, onClose, onSubmit }: Props
             </div>
 
             <div className="relative">
-              <input id="cp" type="text" placeholder=" " required
+              <input id="cp" type="text" defaultValue={selectedDireccion?.cp} placeholder=" " required
                 className="peer border border-gray-600 p-3 rounded-md w-full" />
               <label htmlFor="cp"
                 className="absolute left-3 top-3 text-gray-400 transition-all
@@ -206,14 +238,30 @@ export default function FormularioDireccion({ isOpen, onClose, onSubmit }: Props
             </label>
           </div>
 
-          {/* Botón */}
-          <div className="flex justify-end pt-6">
-            <button 
+         {/* BOTONES */}
+          <div className="flex justify-end  items-center pt-6">
+
+            {/* ELIMINAR */}
+            {isEditing && (
+              <button
+                type="button"
+                onClick={() => console.log("Eliminar dirección")}
+                className="bg-white text-red-500 border border-red-500 px-6 py-3 rounded-full font-medium hover:bg-red-50 transition"
+              >
+                Eliminar
+              </button>
+            )}
+            <p className="p-2"></p>
+
+            
+            {/* GUARDAR */}
+            <button
               type="submit"
               className="bg-black text-white px-8 py-3 rounded-full font-medium hover:opacity-80 transition"
             >
-              Guardar
+              {isEditing ? "Actualizar" : "Guardar"}
             </button>
+
           </div>
 
         </form>
