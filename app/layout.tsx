@@ -50,11 +50,6 @@ export default async function RootLayout({
   const marcas = await getMarcas();
   const proveedoresBancarios = await getProveedoresBancarios();
 
-  // Funciones para filtros de productos
-  const categoriasRes = await getTodasLasCategorias();
-  const coloresRes = await getColores();
-  const marcasRes = await getMarcas();
-
   return (
     <html lang="es">
       <body
