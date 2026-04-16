@@ -6,7 +6,7 @@
  */
 import { filterProductos } from "@/client/producto.client";
 import Filtros from "../components/Filtros";
-import { getCategoriasDefault } from "@/client/categoria.client";
+import { getTodasLasCategorias } from "@/client/categoria.client";
 import { getGeneros } from "@/client/genero.client";
 import { getColores } from "@/client/color.client";
 import { getMarcas } from "@/client/marca.client";
@@ -27,8 +27,7 @@ interface Props {
 }
 
 export default async function BuscarPage({ searchParams }: Props) {
-    const categoriasRes = await getCategoriasDefault();
-    const categorias = categoriasRes.data;
+    const categoriasRes = await getTodasLasCategorias();
     const generosRes = await getGeneros();
     const generos = generosRes.data;
     const coloresRes = await getColores();
@@ -57,7 +56,7 @@ export default async function BuscarPage({ searchParams }: Props) {
         <div className="flex flex-col justify-center items-start px-24">
             
             <div className="flex justify-between items-center mt-18 w-full">
-                <Filtros categorias={categorias} generos={generos} colores={colores} marcas={marcas} title={params.q} count={productos.length} />
+                <Filtros categorias={categoriasRes} generos={generos} colores={colores} marcas={marcas} title={params.q} count={productos.length} />
             </div>
 
             <CatalogoCuerpo items={productos} />

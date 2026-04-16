@@ -10,9 +10,10 @@ import { useState } from "react";
 import { X, Plus, Minus } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
+import { CategoriaPorGenero } from "@/types/producto/Categoria";
 
 interface Props {
-    categorias: any[];
+    categorias: CategoriaPorGenero;
     generos: any[];
     colores: any[];
     marcas: any[];
@@ -127,23 +128,62 @@ export default function Filtros({ categorias, generos, colores, marcas, title, c
                         {/* SECCIONES */}
                         {/* seccion de orden */}
                         <FiltroItem title="Ordenar por" open={activo === "orden"} onToggle={() => setActivo(activo === "orden" ? null : "orden")}>
-                            <p className="text-sm cursor-pointer" onClick={() => aplicarFiltro("orden", "precio_asc")}>Precio menor a mayor</p>
-                            <p className="text-sm cursor-pointer" onClick={() => aplicarFiltro("orden", "precio_desc")}>Precio mayor a menor</p>
+                            <div className="text-sm cursor-pointer" onClick={() => aplicarFiltro("orden", "precio_asc")}>
+                                <label className="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" className="peer hidden" />
+
+                                    <div className="
+                                        w-4 h-4 border border-gray-400
+                                        peer-checked:bg-black
+                                        peer-checked:border-black
+                                        transition rounded-sm
+                                    "></div>
+
+                                    <span>Precio menor a mayor</span>
+                                 </label>
+                            </div>
+                            <div className="text-sm cursor-pointer" onClick={() => aplicarFiltro("orden", "precio_desc")}>
+                                <label className="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" className="peer hidden" />
+
+                                    <div className="
+                                        w-4 h-4 border border-gray-400
+                                        peer-checked:bg-black
+                                        peer-checked:border-black
+                                        transition rounded-sm
+                                    "></div>
+
+                                    <span>Precio mayor a menor</span>
+                                 </label>
+                            </div>
                         </FiltroItem>
 
                         {/* seccion de categoria */}
                         <FiltroItem title="Categoría" open={activo === "categoria"} onToggle={() => setActivo(activo === "categoria" ? null : "categoria")}>
                             {
-                                categorias.map((c) => (
-                                    <div key={c.id}>
-                                        <p className="text-sm font-medium">
-                                            {c.name}
+                                categorias.data.map((c) => (
+                                    <div key={c.id_categoria}>
+                                        <p className="text-sm font-medium mb-1">
+                                            {c.categoria}
                                         </p>
                                         {
-                                            c.subcategories.map((s: any) => (
-                                                <p key={s.id} className="text-xs ml-3 text-gray-500 cursor-pointer" onClick={() => aplicarFiltro("categoria", s.id)}>
-                                                    {s.nombre}
-                                                </p>
+                                            c.subcategorias.map((s) => (
+                                                <div key={s.id} className="text-sm ml-3 text-gray-500 cursor-pointer" onClick={() => aplicarFiltro("categoria", s.id.toString())}>
+
+                                                    <label className="flex items-center space-x-2 cursor-pointer">
+                                                        <input type="checkbox" className="peer hidden" />
+
+                                                        <div className="
+                                                            w-4 h-4 border border-gray-400
+                                                            peer-checked:bg-black
+                                                            peer-checked:border-black
+                                                            transition rounded-sm
+                                                        "></div>
+
+                                                        <span>{s.nombre}</span>
+                                                    </label>
+                                                    
+                                                </div>
                                             ))
                                         }
                                     </div>
@@ -155,9 +195,20 @@ export default function Filtros({ categorias, generos, colores, marcas, title, c
                         <FiltroItem title="Género" open={activo === "género"} onToggle={() => setActivo(activo === "género" ? null : "género")}>
                             {generos?.map((c) => (
                                 <div key={c.id}>
-                                    <p className="text-sm font-medium cursor-pointer" onClick={() => aplicarFiltro("genero", c.id.toString())}>
-                                        {c.nombre}
-                                    </p>
+                                    <div className="text-sm font-normal cursor-pointer" onClick={() => aplicarFiltro("genero", c.id.toString())}>
+                                        <label className="flex items-center space-x-2 cursor-pointer">
+                                            <input type="checkbox" className="peer hidden" />
+
+                                            <div className="
+                                                w-4 h-4 border border-gray-400
+                                                peer-checked:bg-black
+                                                peer-checked:border-black
+                                                transition rounded-sm
+                                            "></div>
+
+                                            <span>{c.nombre}</span>
+                                        </label>
+                                    </div>
                                 </div>
                             ))}
                         </FiltroItem>
@@ -183,9 +234,20 @@ export default function Filtros({ categorias, generos, colores, marcas, title, c
                         <FiltroItem title="Marcas" open={activo === "marca"} onToggle={() => setActivo(activo === "marca" ? null : "marca")}>
                             {marcas?.map((c) => (
                                 <div key={c.id}>
-                                    <p className="text-sm font-medium cursor-pointer" onClick={() => aplicarFiltro("marca", c.id.toString())}>
-                                        {c.nombre}
-                                    </p>
+                                    <div className="text-sm font-normal cursor-pointer" onClick={() => aplicarFiltro("marca", c.id.toString())}>
+                                        <label className="flex items-center space-x-2 cursor-pointer">
+                                            <input type="checkbox" className="peer hidden" />
+
+                                            <div className="
+                                                w-4 h-4 border border-gray-400
+                                                peer-checked:bg-black
+                                                peer-checked:border-black
+                                                transition rounded-sm
+                                            "></div>
+
+                                            <span>{c.nombre}</span>
+                                        </label>
+                                    </div>
                                 </div>
                             ))}
                         </FiltroItem>
