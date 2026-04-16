@@ -1,3 +1,20 @@
+export interface ListaDireccionEnvio {
+  ciudad: string;
+  estado: string;
+  codigo_postal: string;
+  calle: string;
+  numero_exterior: string;
+  numero_interior?: string;
+  colonia: string;
+}
+
+export interface DireccionEnvio {
+  id: number;
+  cantidad: number;
+  data: ListaDireccionEnvio[];
+}
+
+
 export interface State {
   id: number;
   name: string;
