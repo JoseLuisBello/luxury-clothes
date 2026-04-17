@@ -125,154 +125,172 @@ export default function Filtros({ categorias, generos, colores, marcas, title, c
                 </button>
             </div>
 
-            {open && (
-                <div className="fixed inset-0 bg-black/30 z-50 flex justify-end">
-                    <div className="w-87.5 bg-white h-full p-6 overflow-y-auto">
+    
+            <div
+            className={`
+                fixed inset-0 flex justify-end
+                transition-all duration-300
+                ${open ? "visible opacity-100" : "invisible opacity-0"}
+            `}
+            >
+                <div className={`
+                    absolute inset-0 bg-black/30
+                    transition-opacity duration-300
+                    ${open ? "opacity-100" : "opacity-0"}
+                `}
+                onClick={() => setOpen(false)}
+                />
+                <div
+                className={`
+                    relative w-87.5 bg-white h-full p-6 overflow-y-auto
+                    transform transition-transform duration-300 ease-in-out
+                    ${open ? "translate-x-0" : "translate-x-full"}
+                `}
+                >
 
-                        <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-lg font-semibold">
-                                Filtrar y ordenar
-                            </h2>
-                            <button onClick={() => setOpen(false)}>
-                                <X />
-                            </button>
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-lg font-semibold">
+                            Filtrar y ordenar
+                        </h2>
+                        <button onClick={() => setOpen(false)}>
+                            <X />
+                        </button>
+                    </div>
+
+                    {/* SECCIONES */}
+                    {/* seccion de orden */}
+                    <FiltroItem title="Ordenar por" open={activo === "orden"} onToggle={() => setActivo(activo === "orden" ? null : "orden")}>
+                        <div className="text-sm cursor-pointer" onClick={() => aplicarFiltro("orden", "precio_asc")}>
+                            <label className="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" className="peer hidden" />
+
+                                <div className="
+                                    w-4 h-4 border border-gray-400
+                                    peer-checked:bg-black
+                                    peer-checked:border-black
+                                    transition rounded-sm
+                                "></div>
+
+                                <span>Precio menor a mayor</span>
+                            </label>
                         </div>
+                        <div className="text-sm cursor-pointer" onClick={() => aplicarFiltro("orden", "precio_desc")}>
+                            <label className="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" className="peer hidden" />
 
-                        {/* SECCIONES */}
-                        {/* seccion de orden */}
-                        <FiltroItem title="Ordenar por" open={activo === "orden"} onToggle={() => setActivo(activo === "orden" ? null : "orden")}>
-                            <div className="text-sm cursor-pointer" onClick={() => aplicarFiltro("orden", "precio_asc")}>
-                                <label className="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" className="peer hidden" />
+                                <div className="
+                                    w-4 h-4 border border-gray-400
+                                    peer-checked:bg-black
+                                    peer-checked:border-black
+                                    transition rounded-sm
+                                "></div>
 
-                                    <div className="
-                                        w-4 h-4 border border-gray-400
-                                        peer-checked:bg-black
-                                        peer-checked:border-black
-                                        transition rounded-sm
-                                    "></div>
+                                <span>Precio mayor a menor</span>
+                            </label>
+                        </div>
+                    </FiltroItem>
 
-                                    <span>Precio menor a mayor</span>
-                                 </label>
+                    {/* seccion de categoria */}
+                    <FiltroItem title="Categoría" open={activo === "categoria"} onToggle={() => setActivo(activo === "categoria" ? null : "categoria")}>
+                        {
+                            categorias.data.map((c) => (
+                                <div key={c.id_categoria}>
+                                    <p className="text-sm font-medium mb-1">
+                                        {c.categoria}
+                                    </p>
+                                    {
+                                        c.subcategorias.map((s) => (
+                                            <div key={s.id} className="text-sm ml-3 text-gray-500 cursor-pointer" onClick={() => aplicarFiltro("categoria", s.id.toString())}>
+
+                                                <label className="flex items-center space-x-2 cursor-pointer">
+                                                    <input type="checkbox" className="peer hidden" />
+
+                                                    <div className="
+                                                        w-4 h-4 border border-gray-400
+                                                        peer-checked:bg-black
+                                                        peer-checked:border-black
+                                                        transition rounded-sm
+                                                    "></div>
+
+                                                    <span>{s.nombre}</span>
+                                                </label>
+                                                
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            ))
+                        }
+                    </FiltroItem>
+
+                    {/* seccion de genero */}
+                    <FiltroItem title="Género" open={activo === "género"} onToggle={() => setActivo(activo === "género" ? null : "género")}>
+                        {generos?.map((c) => (
+                            <div key={c.id}>
+                                <div className="text-sm font-normal cursor-pointer" onClick={() => aplicarFiltro("genero", c.id.toString())}>
+                                    <label className="flex items-center space-x-2 cursor-pointer">
+                                        <input type="checkbox" className="peer hidden" />
+
+                                        <div className="
+                                            w-4 h-4 border border-gray-400
+                                            peer-checked:bg-black
+                                            peer-checked:border-black
+                                            transition rounded-sm
+                                        "></div>
+
+                                        <span>{c.nombre}</span>
+                                    </label>
+                                </div>
                             </div>
-                            <div className="text-sm cursor-pointer" onClick={() => aplicarFiltro("orden", "precio_desc")}>
-                                <label className="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" className="peer hidden" />
+                        ))}
+                    </FiltroItem>
 
-                                    <div className="
-                                        w-4 h-4 border border-gray-400
-                                        peer-checked:bg-black
-                                        peer-checked:border-black
-                                        transition rounded-sm
-                                    "></div>
-
-                                    <span>Precio mayor a menor</span>
-                                 </label>
-                            </div>
-                        </FiltroItem>
-
-                        {/* seccion de categoria */}
-                        <FiltroItem title="Categoría" open={activo === "categoria"} onToggle={() => setActivo(activo === "categoria" ? null : "categoria")}>
-                            {
-                                categorias.data.map((c) => (
-                                    <div key={c.id_categoria}>
-                                        <p className="text-sm font-medium mb-1">
-                                            {c.categoria}
-                                        </p>
-                                        {
-                                            c.subcategorias.map((s) => (
-                                                <div key={s.id} className="text-sm ml-3 text-gray-500 cursor-pointer" onClick={() => aplicarFiltro("categoria", s.id.toString())}>
-
-                                                    <label className="flex items-center space-x-2 cursor-pointer">
-                                                        <input type="checkbox" className="peer hidden" />
-
-                                                        <div className="
-                                                            w-4 h-4 border border-gray-400
-                                                            peer-checked:bg-black
-                                                            peer-checked:border-black
-                                                            transition rounded-sm
-                                                        "></div>
-
-                                                        <span>{s.nombre}</span>
-                                                    </label>
-                                                    
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                ))
-                            }
-                        </FiltroItem>
-
-                        {/* seccion de genero */}
-                        <FiltroItem title="Género" open={activo === "género"} onToggle={() => setActivo(activo === "género" ? null : "género")}>
-                            {generos?.map((c) => (
-                                <div key={c.id}>
-                                    <div className="text-sm font-normal cursor-pointer" onClick={() => aplicarFiltro("genero", c.id.toString())}>
-                                        <label className="flex items-center space-x-2 cursor-pointer">
-                                            <input type="checkbox" className="peer hidden" />
-
-                                            <div className="
-                                                w-4 h-4 border border-gray-400
-                                                peer-checked:bg-black
-                                                peer-checked:border-black
-                                                transition rounded-sm
-                                            "></div>
-
-                                            <span>{c.nombre}</span>
-                                        </label>
-                                    </div>
+                    {/* seccion de Color */}
+                    <FiltroItem title="Color" open={activo === "color"} onToggle={() => setActivo(activo === "color" ? null : "color")}>
+                        <div className=" px-8 mt-4 grid grid-cols-3 gap-x-1 gap-y-6 justify-items-center">
+                            {colores?.map((color) => (
+                                <div key={color.id} className="flex flex-col items-center  w-fit">
+                                    <div
+                                        className="w-10 h-10 rounded-full cursor-pointer hover:scale-110 transition"
+                                        style={{ backgroundColor: getColor(color.nombre) }}
+                                        onClick={() => aplicarFiltro("color", color.id.toString())}
+                                    ></div>
+                                    <span className="text-xs mt-2 text-gray-700">
+                                        {color.nombre}
+                                    </span>
                                 </div>
                             ))}
-                        </FiltroItem>
-
-                        {/* seccion de Color */}
-                        <FiltroItem title="Color" open={activo === "color"} onToggle={() => setActivo(activo === "color" ? null : "color")}>
-                            <div className=" px-8 mt-4 grid grid-cols-3 gap-x-1 gap-y-6 justify-items-center">
-                                {colores?.map((color) => (
-                                    <div key={color.id} className="flex flex-col items-center  w-fit">
-                                        <div
-                                            className="w-10 h-10 rounded-full cursor-pointer hover:scale-110 transition"
-                                            style={{ backgroundColor: getColor(color.nombre) }}
-                                            onClick={() => aplicarFiltro("color", color.id.toString())}
-                                        ></div>
-                                        <span className="text-xs mt-2 text-gray-700">
-                                            {color.nombre}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
-                        </FiltroItem>
-
-                        <FiltroItem title="Marcas" open={activo === "marca"} onToggle={() => setActivo(activo === "marca" ? null : "marca")}>
-                            {marcas?.map((c) => (
-                                <div key={c.id}>
-                                    <div className="text-sm font-normal cursor-pointer" onClick={() => aplicarFiltro("marca", c.id.toString())}>
-                                        <label className="flex items-center space-x-2 cursor-pointer">
-                                            <input type="checkbox" className="peer hidden" />
-
-                                            <div className="
-                                                w-4 h-4 border border-gray-400
-                                                peer-checked:bg-black
-                                                peer-checked:border-black
-                                                transition rounded-sm
-                                            "></div>
-
-                                            <span>{c.nombre}</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            ))}
-                        </FiltroItem>
-
-                        <div className="mt-6 space-y-4">
-                            <button onClick={limpiarFiltros} className="text-sm underline">
-                                Borrar todo
-                            </button>
                         </div>
+                    </FiltroItem>
+
+                    <FiltroItem title="Marcas" open={activo === "marca"} onToggle={() => setActivo(activo === "marca" ? null : "marca")}>
+                        {marcas?.map((c) => (
+                            <div key={c.id}>
+                                <div className="text-sm font-normal cursor-pointer" onClick={() => aplicarFiltro("marca", c.id.toString())}>
+                                    <label className="flex items-center space-x-2 cursor-pointer">
+                                        <input type="checkbox" className="peer hidden" />
+
+                                        <div className="
+                                            w-4 h-4 border border-gray-400
+                                            peer-checked:bg-black
+                                            peer-checked:border-black
+                                            transition rounded-sm
+                                        "></div>
+
+                                        <span>{c.nombre}</span>
+                                    </label>
+                                </div>
+                            </div>
+                        ))}
+                    </FiltroItem>
+
+                    <div className="mt-6 space-y-4">
+                        <button onClick={limpiarFiltros} className="text-sm underline">
+                            Borrar todo
+                        </button>
                     </div>
                 </div>
-            )}
+            </div>
         </>
     );
 }
