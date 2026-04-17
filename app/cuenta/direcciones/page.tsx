@@ -5,10 +5,10 @@
 import { useEffect, useState } from "react";
 import FormularioDireccion from "@/app/cuenta/direcciones/components/FormularioDireccion";
 import DireccionEnvio from "./components/DireccionEnvio";
-import { DireccionesEnvio } from "@/types/direccionesenvio/DireccionesEnvio";
+import { DireccionesEnvio, ListaDireccionEnvio } from "@/types/direccionesenvio/DireccionesEnvio";
 
 export default function DireccionesPage() {
-  const [direcciones, setDirecciones] = useState<DireccionesEnvio[]>([]);
+  const [direcciones, setDirecciones] = useState<ListaDireccionEnvio[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -77,7 +77,9 @@ export default function DireccionesPage() {
       ):(
         <>
       <p>Si tenemos direcciones</p>
-        <DireccionEnvio/>
+        {direcciones.map((dir, index) => (
+          <DireccionEnvio key={index} direccion={dir} />
+        ))}
         </>
       )}
 

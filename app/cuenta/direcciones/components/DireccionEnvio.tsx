@@ -2,31 +2,18 @@
 
 import { useState } from "react";
 import FormularioDireccion from "./FormularioDireccion";
+import { ListaDireccionEnvio } from "@/types/direccionesenvio/DireccionesEnvio";
 
-type Direccion = {
-  id: number;
-  nombre: string;
-  apellido: string;
-  direccion: string;
-  ciudad: string;
-  cp: string;
+type Props = {
+  direccion: ListaDireccionEnvio;
 };
 
-const mockDireccion: Direccion = {
-  id: 1,
-  nombre: "Magali",
-  apellido: "Valeriano Lopez",
-  direccion: "Calle Nezahualcoyotl No. 16",
-  ciudad: "Huajuapan de León",
-  cp: "69007",
-};
-
-export default function DireccionEnvio() {
+export default function DireccionEnvio({ direccion }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDireccion, setSelectedDireccion] =
-    useState<Direccion | null>(null);
+    useState<ListaDireccionEnvio | null>(null);
 
-  const handleEdit = (direccion: Direccion) => {
+  const handleEdit = () => {
     setSelectedDireccion(direccion);
     setIsOpen(true);
   };
@@ -37,22 +24,28 @@ export default function DireccionEnvio() {
   };
 
   return (
-    <div className="max-w-xl">
+    <div className="max-w-xl border-b py-6">
 
-      <h2 className="text-black font-semibold text-lg mb-1">
-        Dirección de entrega predeterminada
+      <h2 className="text-black font-semibold text-lg mb-2">
+        Dirección de entrega
       </h2>
 
-      <div className="flex justify-between items-start mt-4">
+      <div className="flex justify-between items-start">
 
         <div className="text-[#757575] text-[16px] space-y-1">
-          <p>{mockDireccion.nombre} {mockDireccion.apellido}</p>
-          <p>{mockDireccion.direccion}</p>
-          <p>{mockDireccion.cp} {mockDireccion.ciudad}</p>
+          <p>
+            {direccion.calle} {direccion.numero_exterior}
+            {direccion.numero_interior && ` Int. ${direccion.numero_interior}`}
+          </p>
+          <p>{direccion.colonia}</p>
+          <p>
+            {direccion.codigo_postal} {direccion.ciudad}
+          </p>
+          <p>{direccion.estado}</p>
         </div>
 
         <button
-          onClick={() => handleEdit(mockDireccion)}
+          onClick={handleEdit}
           className="text-black text-sm font-bold underline"
         >
           Editar
@@ -60,16 +53,15 @@ export default function DireccionEnvio() {
 
       </div>
 
-      <div className="flex justify-end mt-8">
+      <div className="flex justify-end mt-4">
         <button
           onClick={handleCreate}
-          className="bg-black text-white px-6 py-2 rounded-full"
+          className="bg-black text-white px-4 py-2 rounded-full text-sm"
         >
-          Agregar nueva dirección
+          Agregar nueva
         </button>
       </div>
 
-      {/* MODAL */}
       <FormularioDireccion
         isOpen={isOpen}
         onClose={() => {
