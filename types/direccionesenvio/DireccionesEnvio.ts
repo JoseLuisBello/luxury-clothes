@@ -8,7 +8,7 @@ export interface ListaDireccionEnvio {
   colonia: string;
 }
 
-export interface DireccionEnvio {
+export interface DireccionesEnvio {
   id: number;
   cantidad: number;
   data: ListaDireccionEnvio[];

@@ -2,13 +2,42 @@
 //datos estaticos para probar información de direcciones, se eliminaran cuando se integre con la base de datos
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormularioDireccion from "@/app/cuenta/direcciones/components/FormularioDireccion";
 import DireccionEnvio from "./components/DireccionEnvio";
+import { DireccionesEnvio } from "@/types/direccionesenvio/DireccionesEnvio";
 
 export default function DireccionesPage() {
+  const [direcciones, setDirecciones] = useState<DireccionesEnvio[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [direcciones, setDirecciones] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if(!token) {
+      window.location.href = "/cuenta"; //redireccionamiento a page cuenta
+      return;
+    }
+
+    loadDireccion();
+  }, []);
+
+  const loadDireccion = async () => {
+    try {
+      const res = await fetch("/api/direcciondeenvio", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      
+      
+      const data   = await res.json();
+      setDirecciones(data.direcciones);
+    } catch (error) {
+      console.error(error);
+    } 
+  }
+
 
   const handleSaveAddress = (data: any) => {
     console.log("Guardando dirección...", data);
@@ -22,7 +51,7 @@ export default function DireccionesPage() {
         Direcciones de entrega guardadas
       </h1>
       
-      {!direcciones ? (
+      {direcciones.length === 0 ? (
         <>
         <div className="bg-gray-50 rounded-lg p-6 text-center pb-40 border-gray-300">
           <p className="text-gray-700 mt-2 mb-6">
@@ -46,8 +75,12 @@ export default function DireccionesPage() {
         />
         </>
       ):(
-      <DireccionEnvio/> 
+        <>
+      <p>Si tenemos direcciones</p>
+        <DireccionEnvio/>
+        </>
       )}
+
     </div>
   );
 }
