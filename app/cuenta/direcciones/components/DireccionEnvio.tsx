@@ -34,6 +34,9 @@ export default function DireccionEnvio({ direccion }: Props) {
 
         <div className="text-[#757575] text-[16px] space-y-1">
           <p>
+            {direccion.nombre} {direccion.apellido}
+          </p>
+          <p>
             {direccion.calle} {direccion.numero_exterior}
             {direccion.numero_interior && ` Int. ${direccion.numero_interior}`}
           </p>
