@@ -26,17 +26,19 @@ export default function ProductCardCart(
             {/* Imagen y botones */}
             <div className="flex flex-col items-center justify-start w-fit h-full space-y-3">
               <div className="h-42 w-42 overflow-hidden relative">
-                <Image
-                  key={id}
-                  src={image}
-                  alt={name}
-                  fill
-                  className=" object-cover"
-                />
+                <Link href={`/productos/${id}`}>
+                    <Image
+                      key={id}
+                      src={image}
+                      alt={name}
+                      fill
+                      className=" object-cover"
+                    />
+                </Link>
               </div>
               <div className="w-full flex h-fit justify-around">
                 {/* Boton para cantidades */}
-                <div className="rounded-full border border-gray-200 flex justify-between items-center w-25.5 h-10">
+                <div className="rounded-full border border-gray-200 flex justify-between items-center w-26 h-10">
                   <button className="h-10 w-10 flex hover:bg-gray-200 justify-center items-center rounded-full">
                     <LucideTrash2 className="h-4.5 w-4.5" />
                   </button>
@@ -58,7 +60,9 @@ export default function ProductCardCart(
             <div className="flex justify-between h-full w-full">
               {/* Titulo y demas */}
               <div className="w-full text-md px-4 py-1 flex flex-col gap-0.5">
-                <p className="font-semibold">{name}</p>
+                <Link href={`/productos/${id}`} className="w-fit h-fit">
+                    <p className="font-semibold hover:opacity-50">{name}</p>
+                </Link>
                 <p className="text-black font-medium opacity-50">{genero}</p>
                 <p className="text-black font-medium opacity-50">{color}</p>
                 <p className="text-black font-medium opacity-70 underline underline-offset-6">{'Talla: ' + talla}</p>
