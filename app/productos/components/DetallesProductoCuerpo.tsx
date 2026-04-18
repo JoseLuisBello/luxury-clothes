@@ -2,8 +2,11 @@
 import { Producto } from "@/types/producto/Producto";
 import GalleryDetails from "./GalleryDetails";
 import SelectorTalla from "./SelectorTalla";
+import { useState } from "react";
 
 export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
+    const [talla, setTalla] = useState<number | null>(null);
+
     return (
         <div className="p-24 w-full h-full flex gap-8 justify-center">
             {/* Div para la galeria de imagenes */}
@@ -31,15 +34,8 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
                     <p className={"font-semibold"}>Selecciona tu talla:</p>
                     <SelectorTalla 
                         tallas={data.stock_por_talla || []}
-                        onSelect={(talla) => console.log(talla)}
+                        onSelect={setTalla}
                     />
-                    {/* <div className="grid grid-cols-3 gap-2 w-fit">
-                        { 
-                            data.stock_por_talla && data.stock_por_talla.map(
-                                (item, index) => <Talla key={index} talla={item.talla} stock={item.stock} />
-                            )
-                        }
-                    </div> */}
                 </div>
                 <div className="mt-12 w-full">
                     <button className="bg-black text-white py-2 px-4 rounded-[28px] w-full h-16 hover:opacity-60">

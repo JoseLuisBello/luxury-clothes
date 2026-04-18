@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Talla } from "@/types/producto/Producto";
 
-export default function SelectorTalla({ tallas, onSelect } : { tallas: Talla[], onSelect: (talla: string) => void }) {
+export default function SelectorTalla({ tallas, onSelect } : { tallas: Talla[], onSelect: (talla: number) => void }) {
   const [selected, setSelected] = useState<string | null>(null);
 
   return (
@@ -13,9 +13,9 @@ export default function SelectorTalla({ tallas, onSelect } : { tallas: Talla[], 
           key={index}
           onClick={() => {
             if (item.stock === 0) return;
-
+            console.log("Seleccionaste la talla:", item.talla);
             setSelected(item.talla);
-            onSelect(item.talla);
+            onSelect(item.id);
           }}
           className={`
             w-30 h-12 border rounded-md flex items-center justify-center
