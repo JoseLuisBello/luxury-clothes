@@ -1,92 +1,52 @@
-"use client";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { Producto } from "@/types/producto/Producto";
-import { useParams } from "next/navigation";
+import { getProducto } from "@/client/producto.client";
+import { Loader } from "lucide-react";
+import GalleryDetails from "../components/GalleryDetails";
 
-export default function ProductoPage() {
-    const [producto, setProducto] = useState<Producto | null>(null);
-    const [url, setURL] = useState<String | null>(null);
-    const { id } = useParams();
+type Props = {
+  params: { id: number };
+};
 
-    useEffect(() => {
-        async function fetchProducto() {
-            try {
-                const res = await fetch(`/api/producto/${id}`);
-                const data = await res.json();
-                setProducto(data.data);
-                setURL(data.data.imagenes[0]);
-            } catch (error) {
-                console.error("Error fetching producto:", error);
-            }
-        }
+export default async function ProductoPage({ params }: Props) {
+    const { id } = await params;
+    const { data } = await getProducto(id);
 
-        fetchProducto();
-    }, [id]);
 
-    if (!producto) {
-        return <div className="h-full w-full flex items-center justify-center">Cargando...</div>;
+    if (!data) {
+        return (
+            <div className="h-full w-full flex items-center justify-center">
+                <Loader className="animate-spin" size={48} />
+            </div>
+        );
     }
 
     return (
         <div className="p-24 w-full h-full flex gap-8 justify-center">
             {/* Div para la galeria de imagenes */}
-            <div className="flex space-x-4 w-fit">
-                {/* Imagenes de costado */}
-                <div className="flex flex-col justify-start items-center space-y-3">
-                    {producto.imagenes && producto.imagenes.map((imgUrl, index) => (
-                        <div className="w-17.5 h-17.5 overflow-hidden rounded-[10px]" key={index}>
-                            <Image
-                                key={index}
-                                src={imgUrl}
-                                alt={`${producto.nombre} - Imagen ${index + 1}`}
-                                width={70}
-                                height={70}
-                                className="mb-4 cursor-pointer border rounded hover:opacity-80"
-                                onClick={() => setURL(imgUrl)}
-                                onMouseEnter={() => setURL(imgUrl)}
-                                objectFit="cover"
-                                loading="lazy"
-                            />
-                        </div>
-                    ))}
-                </div>
-                {/* Imagen principal */}
-                <div className="w-133.75 h-167.25">
-                    <Image
-                        src={url ? url.toString() : producto.imagen_url || "/placeholder.png"}
-                        alt={producto.nombre}
-                        width={400}
-                        height={400}
-                        className="object-cover w-full h-full rounded-[10px]"
-                        loading="eager"
-                    />
-                </div>
-            </div>
+            <GalleryDetails data={data} />
 
             {/* Div para la informacion del producto */}
             <div>
                 <div className="font-semibold text-2xl w-100 h-fit mt-6">
-                    <p>{producto.nombre}</p>
+                    <p>{data.nombre}</p>
                 </div>
                 <div className="w-100 h-fit font-regular text-[14px] opacity-50 mt-2">
-                    <p>{producto.descripcion}</p>
+                    <p>{data.descripcion}</p>
                 </div>
                 <div className="font-semibold text-[16px] mt-6">
-                    <p>${Number(producto.precio).toLocaleString()}</p>
+                    <p>${Number(data.precio).toLocaleString()}</p>
                 </div>
                 <div className="flex items-center gap-4 text-[16px] mt-8">
                     <p className="font-bold">Color: </p>
                     <div className="flex items-center gap-2">
-                        <div className="w-5 h-5 rounded-full" style={{ backgroundColor: getColor(producto.color || "lightgray") }}></div>
-                        <p>{producto.color}</p>
+                        <div className="w-5 h-5 rounded-full" style={{ backgroundColor: getColor(data.color || "lightgray") }}></div>
+                        <p>{data.color}</p>
                     </div>
                 </div>
                 <div className="mt-6 flex flex-col gap-4">
                     <p className={"font-semibold"}>Selecciona tu talla:</p>
                     <div className="grid grid-cols-3 gap-2 w-fit">
                         { 
-                            producto.stock_por_talla && producto.stock_por_talla.map(
+                            data.stock_por_talla && data.stock_por_talla.map(
                                 (item, index) => <Talla key={index} talla={item.talla} stock={item.stock} />
                             )
                         }
