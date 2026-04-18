@@ -58,7 +58,6 @@ export async function POST(req: Request) {
   try {
 
     const user = getUserFromToken(req);
-    console.log("🔥 AUTH HEADER:", req.headers.get("authorization"));
     if (!user) {
       return NextResponse.json(
         { error: "clientId is required" },
@@ -68,9 +67,9 @@ export async function POST(req: Request) {
     const clientId = user.id;
     const data = await req.json();
 
-    console.log("USER:", user);
-    console.log("CLIENT_ID:", clientId);
-    console.log("DATA:", data);
+    // console.log("USER:", user);
+    // console.log("CLIENT_ID:", clientId);
+    // console.log("DATA:", data);
 
     if (!data) {
       return NextResponse.json(
@@ -78,7 +77,6 @@ export async function POST(req: Request) {
         { status: 400 },
       );
     }
-        console.log("No pasamos de aqui");
 
     const address = await DireccionesEnvio.addAddress(clientId, data);
 
