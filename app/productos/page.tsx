@@ -66,28 +66,6 @@ export default async function Productos({searchParams}: Props) {
         <Filtros categorias={categoriasRes} generos={generos} colores={colores} marcas={marcas}  count={productos.length} titulos={titulos}/>
       </div>
 
-      {/* titulo y apartado de filtro */}
-      {/* <div className="flex w-full justify-between mb-4">
-        <div className="text-3xl font-medium">
-          <p>{titulos.categoria ? ((titulos.subcategoria ? titulos.subcategoria : titulos.categoria) + " " + (titulos.genero ? "para " + titulos.genero + " (" + productos.length + ")" : "(" + productos.length + ")")) : "Todos los productos (" + productos.length + ")"}</p>
-        </div>
-
-        <div className="flex items-center space-x-1">
-          <div className="text-xl">
-            <p>Mostrar Filtros</p>
-          </div>
-
-          <div>
-            <Image
-              src="/assets/images/filter.svg"
-              alt="Filtros"
-              width={27}
-              height={27}
-            />
-          </div>
-        </div>
-      </div> */}
-
       {/* Contenedor principal para productos cards */}
       <CatalogoCuerpo items={productos} />
     </div>

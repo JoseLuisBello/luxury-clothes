@@ -54,13 +54,13 @@ export default async function BuscarPage({ searchParams }: Props) {
         : productosRes.data;
 
     return (
-        <div className="flex flex-col justify-center items-start px-24">
+        <div className="flex flex-col justify-center items-start px-24 mb-24">
             <BreadCrumb 
                 categoria={0}
                 search={true}
             />
             
-            <div className="flex justify-between items-center w-full sticky top-0 bg-white z-40 mt-4 py-4">
+            <div className="flex justify-between items-center w-full sticky top-0 bg-white z-5 mt-4 py-4">
                 <Filtros categorias={categoriasRes} generos={generos} colores={colores} marcas={marcas} title={params.q} count={productos.length} />
             </div>
 
