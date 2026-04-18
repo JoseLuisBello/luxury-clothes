@@ -156,7 +156,6 @@ export default function PerfilPage() {
           </nav>
         </div>
 
-        {/* Área Principal de Contenido */}
         <div className="flex-1 px-40 bg-gray-50">
           <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-sm p-10">
             {/* Foto de perfil (si existe) */}
@@ -191,7 +190,6 @@ export default function PerfilPage() {
               </div>
             </div>
 
-            {/* Botones de acción */}
             <div className="mt-12 flex flex-col sm:flex-row gap-4">
               <button
                 onClick={handleDesactivarCuenta}
