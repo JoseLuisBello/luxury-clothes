@@ -18,7 +18,12 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
 
 		useEffect(() => {
 			document.body.style.overflow = showModal ? "hidden" : "auto";
+
+			setTimeout(() => {
+				if (showModal) setShowModal(false);
+			}, 8000);
 		}, [showModal]);
+
 
     const handleAddToCart = async () => {
 			setLoading(true);
@@ -57,8 +62,6 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
 
 			setLoading(false);
 		};
-
-		const mostrarCarritoRetro = () => {};
 
     return (
 			<>
