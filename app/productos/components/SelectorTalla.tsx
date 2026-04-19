@@ -13,7 +13,6 @@ export default function SelectorTalla({ tallas, onSelect } : { tallas: Talla[], 
           key={index}
           onClick={() => {
             if (item.stock === 0) return;
-            console.log("Seleccionaste la talla:", item.talla);
             setSelected(item.talla);
             onSelect(item.id);
           }}

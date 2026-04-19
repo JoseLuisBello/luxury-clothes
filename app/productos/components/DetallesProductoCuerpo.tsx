@@ -5,12 +5,10 @@ import SelectorTalla from "./SelectorTalla";
 import AddToCartButton from "./AddToCartBtn";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getUserFromToken, getUserFromTokenDirect } from "@/lib/auth";
 
 
 export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
     const [talla, setTalla] = useState<number | null>(null);
-    const [clientId, setClientID] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
@@ -24,15 +22,8 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
 
 			const token = localStorage.getItem("token");
 
+			console.log("Token:", token);
 			if (!token) {
-				setLoading(false);
-				router.push("/auth/login");
-				return;
-			}
-
-			const user = getUserFromTokenDirect(token);
-
-			if (!user) {
 				setLoading(false);
 				router.push("/auth/login");
 				return;
@@ -42,12 +33,13 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
 				await fetch("/api/carrito", {
 					method: "POST",
 					headers: {
+						Authorization: `Bearer ${token}`,
 						"Content-Type": "application/json",
 					},
 					body: JSON.stringify({
-						productoId: data.id,
-						tallaId: talla,
-						usuarioId: user.id,
+						id_producto: data.id,
+						id_talla: talla,
+						cantidad: 1,
 					}),
 				});
 

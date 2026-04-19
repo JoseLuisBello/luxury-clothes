@@ -24,20 +24,3 @@ export function getUserFromToken(req: Request | NextRequest) {
     return null;
   }
 }
-
-/**
- * Función para retornar datos del usuario recuperado con el token JWT
- * @param token - Token JWT del cliente
- * @returns object | null - Objeto con id y correo del cliente o null si el token no es válido
- */
-export function getUserFromTokenDirect(token: string) {
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
-      id: number;
-      correo: string;
-    };
-    return decoded;
-  } catch (error) {
-    return null;
-  }
-}

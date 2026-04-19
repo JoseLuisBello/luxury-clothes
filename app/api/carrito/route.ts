@@ -40,15 +40,15 @@ export async function GET(req: Request) {
  */
 export async function POST(req: Request) {
   try {
-    const clientId = getUserFromToken(req);
+    const user = getUserFromToken(req);
 
-    if (!clientId) {
+    if (!user) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
-    const { id_usuario, id_producto, id_talla, cantidad } = await req.json();
+    const { id_producto, id_talla, cantidad } = await req.json();
 
-    const result = await CarritoCompras.addProduct({ id_usuario, id_producto, id_talla, cantidad });
+    const result = await CarritoCompras.addProduct({ id_usuario: user.id, id_producto, id_talla, cantidad });
 
     if (!result) {
       return NextResponse.json({ ok: false, message: 'No se pudo agregar el producto al carrito' }, { status: 400 });
