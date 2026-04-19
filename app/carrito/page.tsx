@@ -226,7 +226,7 @@ export default function CarritoPage() {
         <div className="font-medium opacity-80 flex flex-col gap-4">
           <div className="flex justify-between">
             <p>Subtotal</p>
-            <p>${Number(getTotal()).toLocaleString()}</p>
+            <p>$ {Number(getTotal()).toLocaleString()}</p>
           </div>
 
           <div className="flex justify-between">
@@ -240,14 +240,16 @@ export default function CarritoPage() {
         <div className="flex flex-col gap-4">
           <div className="flex justify-between font-semibold">
             <p>Total</p>
-            <p>${Number(getTotal()).toLocaleString()}</p>
+            <p>$ {Number(getTotal()).toLocaleString()}</p>
           </div>
           <div className="border border-gray-200 w-full"></div>
         </div>
 
         {/* Boton */}
         <div className="w-full mt-4">
-          <button className="bg-black text-white py-2 px-4 rounded-full w-full h-16 hover:opacity-60 font-semibold">
+          <button 
+          disabled={cartItems.length === 0}
+          className="bg-black text-white py-2 px-4 rounded-full w-full h-16 hover:opacity-60 font-semibold disabled:opacity-60 disabled:cursor-not-allowed">
               Realizar compra
           </button>
         </div>
@@ -255,7 +257,8 @@ export default function CarritoPage() {
         <div className="w-full">
           <button 
           onClick={() => handleVaciarCarrito()}
-          className="text-black bg-white py-2 px-4 rounded-full w-full h-16 border border-[#E6E6E6] hover:border-black font-semibold">
+          disabled={cartItems.length === 0}
+          className="text-black bg-white py-2 px-4 rounded-full w-full h-16 border border-[#E6E6E6] hover:border-black font-semibold disabled:opacity-60 disabled:cursor-not-allowed">
             Vaciar carrito
           </button>
         </div>
