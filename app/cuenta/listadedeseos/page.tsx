@@ -48,7 +48,16 @@ export default function ListadeseosPage() {
         },
       });
 
-      const { data } = await res.json();
+      if (res.status === 401) {
+        router.push("/auth/login");
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error('Error al cargar la lista de deseos');
+      }
+
+      const { data } : { data: ListaDeDeseos[] } = await res.json();
       setProducts(data);
     } catch (error) {
       console.error(error);
@@ -278,21 +287,39 @@ export default function ListadeseosPage() {
 
       {/* Selector de tallas */}
       <div className={`
-          w-200 h-100 bg-white shadow-xl
+          w-230 h-130 bg-white shadow-xl
           transform transition-all duration-300 ease-in-out
-          rounded-xl absolute top-0 left-0 right-0 bottom-0 m-auto
+           rounded-xl absolute top-0 left-0 right-0 bottom-0 m-auto
           ${view === "selector"
             ? "translate-y-0 opacity-100" 
           : "-translate-y-10 opacity-0 pointer-events-none absolute"}`}
       >
-        <div>
-          <Image 
-            src={producto?.imagenes?.[0] || "/placeholder.png"}
-            alt={producto?.nombre || "Producto"}
-            className="object-cover rounded-tl-xl rounded-tr-xl"
-            fill
-          />
-
+        <div className="border flex items-center justify-between w-full h-full">
+          <div className="relative h-full w-1/2 flex items-center justify-center rounded-l-xl border overflow-hidden">
+            <Image
+              src={producto?.imagenes?.[0] || "/placeholder.png"}
+              alt={producto?.nombre || "Producto"}
+              className="object-cover"
+              fill
+            />
+          </div>
+          <div className=" flex flex-col jutify-center items-center gap-4 border w-1/2 h-full">
+            <div className="w-full flex items-center">
+              <p>{producto?.nombre}</p>
+            </div>
+            <div className="w-full flex">
+              <p>{producto?.color}</p>
+            </div>
+            <p>$ {Number(producto?.precio).toLocaleString()}</p>
+            <div className="flex items-center justify-center border">
+              <SelectorTalla
+                tallas={producto?.stock_por_talla || []}
+                onSelect= {setIdTalla}
+                onSelectedTalla={setTallaName}
+                onClick={setNotSelected}
+              />
+            </div>
+          </div>
         </div>
 
       </div>
