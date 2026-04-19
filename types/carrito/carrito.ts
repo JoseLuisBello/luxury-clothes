@@ -13,4 +13,5 @@ export interface CarritoItem {
     genero: string;
     color: string;
     imagen: string;
+    id_talla: number;
 }

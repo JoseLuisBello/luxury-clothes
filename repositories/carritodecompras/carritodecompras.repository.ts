@@ -59,6 +59,7 @@ export class Carrito {
         G.nombre as genero,
         CC.nombre as color,
         C.cantidad as cantidad,
+        C.id_talla as id_talla,
         I.url as imagen
       FROM "CarritoCompras" C 
       INNER JOIN "Producto" P ON C.id_producto = P.id

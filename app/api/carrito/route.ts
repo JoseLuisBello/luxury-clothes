@@ -118,12 +118,19 @@ export async function PUT(
 ) {
   let result = false;
   try {
-    const { id_usuario, id_producto, id_talla, cantidad, flag } = await req.json();
+
+    const user = getUserFromToken(req);
+
+    if (!user) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    }
+
+    const { id_producto, id_talla, cantidad, flag } = await req.json();
 
     if (flag === 'increase') {
-      result = await CarritoCompras.increaseQuantityProduct({id_usuario, id_producto, id_talla, cantidad});
+      result = await CarritoCompras.increaseQuantityProduct({id_usuario: user.id, id_producto, id_talla, cantidad});
     } else if (flag === 'decrease') {
-      result = await CarritoCompras.decreaseQuantityProduct({id_usuario, id_producto, id_talla, cantidad});
+      result = await CarritoCompras.decreaseQuantityProduct({id_usuario: user.id, id_producto, id_talla, cantidad});
     } else {
         throw new Error('Flag inválida. Debe ser "increase" o "decrease".');
     }

@@ -12,6 +12,8 @@ export default function ProductCardCart(
         genero, 
         id,
         cantidad,
+        id_talla,
+        onDecrease,
     } : { 
         name: string; 
         price: number; 
@@ -20,7 +22,10 @@ export default function ProductCardCart(
         talla: string; 
         genero: string; 
         id: number;
-        cantidad: number;}) {
+        id_talla: number;
+        cantidad: number;
+        onDecrease: (id: number, cantidad: number, id_talla: number) => void;
+    }) {
     return (
         <div className="relative h-fit w-180 flex flex-col space-y-7">
           {/* card de carrito */}
@@ -41,7 +46,9 @@ export default function ProductCardCart(
               <div className="w-full flex h-fit justify-around">
                 {/* Boton para cantidades */}
                 <div className="rounded-full border border-gray-200 flex justify-between items-center w-26 h-10">
-                  <button className="h-10 w-10 flex hover:bg-gray-200 justify-center items-center rounded-full">
+                  <button 
+                  onClick={() => onDecrease(id, cantidad, id_talla)}
+                  className="h-10 w-10 flex hover:bg-gray-200 justify-center items-center rounded-full">
                     <Minus className="h-4.5 w-4.5" />
                   </button>
                   <p>{cantidad}</p>

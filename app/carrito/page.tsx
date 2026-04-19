@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProductCardCart from "./Components/ProductCardCart";
-import { CarritoItem, CarritoResponse } from "@/types/carrito/carrito";
+import { CarritoItem } from "@/types/carrito/carrito";
 import { Loader } from "lucide-react";
 
 export default function CarritoPage() {
@@ -11,43 +11,77 @@ export default function CarritoPage() {
   const [loading, setLoading] = useState(true);
   const [cartItems, setCartItems] = useState<CarritoItem[]>([]);
 
-  useEffect(() => {
-    const getCart = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("token");
+  const getCart = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("token");
 
-      if (!token) {
-        setLoading(false);
-        router.push("/auth/login");
-        return;
-      }
-
-      try {
-        const res = await fetch("/api/carrito", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!res.ok) {
-          throw new Error('Error al obtener el carrito');
-        }
-
-        const { data } = await res.json();
-        setCartItems(data);
-
-      } catch (error) {
-        console.error(error);
-      }
-
+    if (!token) {
       setLoading(false);
+      router.push("/auth/login");
+      return;
     }
 
+    try {
+      const res = await fetch("/api/carrito", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error('Error al obtener el carrito');
+      }
+
+      const { data } = await res.json();
+      setCartItems(data);
+
+    } catch (error) {
+      console.error(error);
+    }
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
     getCart();
   }, [] );
 
   const getTotal = () => {
     return cartItems.reduce((total, item) => total + item.precio * item.cantidad, 0);
+  }
+
+  const handleDisminuirCantidad = async (id: number, cantidad: number, id_talla: number)  => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      router.push("/auth/login");
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/carrito`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id_producto: id,
+          cantidad: cantidad,
+          id_talla: id_talla,
+          flag: "decrease",
+        }),
+      });
+
+      if (!res.ok) {
+        setLoading(false);
+        throw new Error('Error al disminuir la cantidad');
+      }
+
+      await getCart();
+    } catch (error) {
+      throw new Error('Error al disminuir la cantidad');
+    }
   }
 
   return (
@@ -68,7 +102,7 @@ export default function CarritoPage() {
               ) : (
                 cartItems.map((item) => (
                   <ProductCardCart
-                    key={item.id_producto}
+                    key={`${item.id_producto}-${item.id_talla}`}
                     name={item.nombre}
                     price={item.precio}
                     image={item.imagen}
@@ -77,6 +111,8 @@ export default function CarritoPage() {
                     genero={"Para " + item.genero}
                     id={item.id_producto}
                     cantidad={item.cantidad}
+                    id_talla={item.id_talla}
+                    onDecrease={handleDisminuirCantidad}
                   />
                 ))
               )
