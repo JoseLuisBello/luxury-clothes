@@ -14,6 +14,7 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
     const [loading, setLoading] = useState(false);
 	const [notSelected, setNotSelected] = useState(false);
 	const [showModal, setShowModal] = useState(false);
+	const [isWishList, setIsWishList] = useState(false);
 	const [tallaName, setTallaName] = useState<string>("");
     const router = useRouter();
 
@@ -61,6 +62,39 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
 
 		setLoading(false);
 	};
+
+    const handleAddToWishList = async (id_producto: number) => {
+		setLoading(true);
+		const token = localStorage.getItem("token");
+
+		if (!token) {
+			setLoading(false);
+			router.push("/auth/login");
+			return;
+		}
+
+		try {
+			await fetch("/api/listadeseos", {
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${token}`,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					productId: id_producto,
+				}),
+			});
+
+			setIsWishList(true);
+			setShowModal(true);
+		} catch (error) {
+			console.error(error);
+		}
+
+		setLoading(false);
+	};
+
+
 
     return (
 			<>
