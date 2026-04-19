@@ -24,8 +24,8 @@ export default function DireccionEnvio({ direccion, onRefresh }: Props) {
     setIsOpen(true);
   };
 
-console.log("📍 DIRECCIÓN COMPLETA:", direccion);
-console.log("🆔 ID DE DIRECCIÓN:", direccion.id);
+  console.log("📍 DIRECCIÓN COMPLETA:", direccion);
+  console.log("🆔 ID DE DIRECCIÓN:", direccion.id);
 
   return (
     <div className="max-w-xl p-6 border border-gray-200 ">
