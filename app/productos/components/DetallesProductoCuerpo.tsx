@@ -17,8 +17,6 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
     const router = useRouter();
 
 		useEffect(() => {
-			document.body.style.overflow = showModal ? "hidden" : "auto";
-
 			setTimeout(() => {
 				if (showModal) setShowModal(false);
 			}, 8000);
@@ -133,9 +131,9 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
 					{/* PANEL DERECHO */}
 					<div className={`
 						relative w-100 h-fit bg-black shadow-xl
-						mt-28 mr-12
+						mt-26 mr-12
 						transform transition-all duration-300 ease-in-out
-						rounded-bl-xl rounded-br-xl
+						rounded-xl
 						${showModal 
 							? "translate-y-0 opacity-100" 
 							: "-translate-y-10 opacity-0"}`}
@@ -179,7 +177,7 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
 						<div className="p-4 flex flex-col gap-3">
 							<button
 								onClick={() => router.push("/carrito")}
-								className="border border-white text-white rounded-full py-3 hover:bg-white hover:text-black transition-colors duration-100"
+								className="border border-white text-white rounded-full py-3 hover:opacity-60 transition-colors duration-100"
 							>
 								Ver carrito
 							</button>
