@@ -2,10 +2,30 @@
 import { Producto } from "@/types/producto/Producto";
 import GalleryDetails from "./GalleryDetails";
 import SelectorTalla from "./SelectorTalla";
-import { useState } from "react";
+import AddToCartButton from "./AddToCartBtn";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { getUserFromToken } from "@/lib/auth";
+
 
 export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
     const [talla, setTalla] = useState<number | null>(null);
+    const [clientId, setClientID] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
+
+    // useEffect(() => {
+    //     const token = localStorage.getItem("token");
+
+    //     if (!token) {
+    //         setLoading(false);
+    //         router.push("/auth/login");
+    //         return;
+    //     }
+
+        
+
+    // }, []);
 
     return (
         <div className="p-24 w-full h-full flex gap-8 justify-center">
@@ -38,9 +58,11 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
                     />
                 </div>
                 <div className="mt-12 w-full">
-                    <button className="bg-black text-white py-2 px-4 rounded-[28px] w-full h-16 hover:opacity-60">
-                        Agregar al carrito
-                    </button>
+                    {/* <AddToCartButton 
+                        id_producto={data.id}
+                        id_Talla={talla || 0}
+                        id_usuario={}
+                    /> */}
                 </div>
 
                 <div className="mt-6 w-full">
