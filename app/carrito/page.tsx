@@ -152,7 +152,7 @@ export default function CarritoPage() {
   }
 
 
-  const handleVaciarCarrito = async (id: number)  => {
+  const handleVaciarCarrito = async ()  => {
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -161,7 +161,7 @@ export default function CarritoPage() {
     }
 
     try {
-      const res = await fetch(`/api/carrito`, {
+      const res = await fetch(`/api/carrito/drop`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -253,7 +253,9 @@ export default function CarritoPage() {
         </div>
 
         <div className="w-full">
-          <button className="text-black bg-white py-2 px-4 rounded-full w-full h-16 border border-[#E6E6E6] hover:border-black font-semibold">
+          <button 
+          onClick={() => handleVaciarCarrito()}
+          className="text-black bg-white py-2 px-4 rounded-full w-full h-16 border border-[#E6E6E6] hover:border-black font-semibold">
             Vaciar carrito
           </button>
         </div>
