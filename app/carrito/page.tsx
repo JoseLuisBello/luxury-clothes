@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import ProductCardCart from "./Components/ProductCardCart";
+import { CarritoItem, CarritoResponse } from "@/types/carrito/carrito";
 
 export default function CarritoPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [cartItems, setCartItems] = useState<CarritoItem[]>([]);
 
   const name = 'Zapatillas Speedrock de piel y malla';
   const price = 184830000.00;
@@ -16,6 +18,7 @@ export default function CarritoPage() {
   const genero = 'Tenis para hombre';
 
   const handleAddToCart = async () => {
+    setLoading(true);
 		const token = localStorage.getItem("token");
 
 		if (!token) {
@@ -25,11 +28,19 @@ export default function CarritoPage() {
 		}
 
 		try {
-			await fetch("/api/carrito", {
+			const res = await fetch("/api/carrito", {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
 			});
+
+      if (!res.ok) {
+        throw new Error('Error al obtener el carrito');
+      }
+
+      const { data } = await res.json();
+      setCartItems(data);
+
 		} catch (error) {
 			console.error(error);
 		}
