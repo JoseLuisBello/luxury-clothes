@@ -1,12 +1,41 @@
+'use client';
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import ProductCardCart from "./Components/ProductCardCart";
 
 export default function CarritoPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+
   const name = 'Zapatillas Speedrock de piel y malla';
   const price = 184830000.00;
   const image = 'https://www.prada.com/content/dam/pradabkg_products/2/2EE/2EE468/3ZM0F0002/2EE468_3ZM0_F0002_F_G000_SLR.jpg/_jcr_content/renditions/cq5dam.web.hebebed.1000.1000.jpg';
   const color = 'Negro';
   const talla = '30';
   const genero = 'Tenis para hombre';
+
+  const handleAddToCart = async () => {
+		const token = localStorage.getItem("token");
+
+		if (!token) {
+			setLoading(false);
+			router.push("/auth/login");
+			return;
+		}
+
+		try {
+			await fetch("/api/carrito", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+		} catch (error) {
+			console.error(error);
+		}
+
+		setLoading(false);
+	};
 
   return (
     <div className="w-full h-full p-24 flex justify-center gap-8">

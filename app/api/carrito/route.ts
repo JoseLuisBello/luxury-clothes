@@ -13,13 +13,18 @@ import { getUserFromToken } from "@/lib/auth";
  */
 export async function GET(req: Request) {
   try {
-    const user = getUserFromToken(req);
 
-    if (!user) {
-      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-    }
+    // const user = getUserFromToken(req);
+
+    // if (!user) {
+    //   return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    // }
   
-    const carrito = await CarritoCompras.getCart(user.id);
+    // const carrito = await CarritoCompras.getCart(user.id);
+    const { searchParams } = new URL(req.url);
+    const id_usuario = Number(searchParams.get('id_usuario'));
+  
+    const carrito = await CarritoCompras.getCart(id_usuario);
   
     return NextResponse.json({
       ok: true,

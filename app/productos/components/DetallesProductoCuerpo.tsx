@@ -12,54 +12,54 @@ import Image from "next/image";
 export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
     const [talla, setTalla] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
-		const [notSelected, setNotSelected] = useState(false);
-		const [showModal, setShowModal] = useState(false);
+	const [notSelected, setNotSelected] = useState(false);
+	const [showModal, setShowModal] = useState(false);
     const router = useRouter();
 
-		useEffect(() => {
-			setTimeout(() => {
-				if (showModal) setShowModal(false);
-			}, 8000);
-		}, [showModal]);
+	useEffect(() => {
+		setTimeout(() => {
+			if (showModal) setShowModal(false);
+		}, 8000);
+	}, [showModal]);
 
 
     const handleAddToCart = async () => {
-			setLoading(true);
-			if (!talla) {
-				setLoading(false);
-				setNotSelected(true);
-				return;
-			}
-
-			const token = localStorage.getItem("token");
-
-			if (!token) {
-				setLoading(false);
-				router.push("/auth/login");
-				return;
-			}
-
-			try {
-				await fetch("/api/carrito", {
-					method: "POST",
-					headers: {
-						Authorization: `Bearer ${token}`,
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						id_producto: data.id,
-						id_talla: talla,
-						cantidad: 1,
-					}),
-				});
-
-				setShowModal(true);
-			} catch (error) {
-				console.error(error);
-			}
-
+		setLoading(true);
+		if (!talla) {
 			setLoading(false);
-		};
+			setNotSelected(true);
+			return;
+		}
+
+		const token = localStorage.getItem("token");
+
+		if (!token) {
+			setLoading(false);
+			router.push("/auth/login");
+			return;
+		}
+
+		try {
+			await fetch("/api/carrito", {
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${token}`,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					id_producto: data.id,
+					id_talla: talla,
+					cantidad: 1,
+				}),
+			});
+
+			setShowModal(true);
+		} catch (error) {
+			console.error(error);
+		}
+
+		setLoading(false);
+	};
 
     return (
 			<>
