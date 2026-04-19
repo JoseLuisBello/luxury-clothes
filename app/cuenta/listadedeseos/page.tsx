@@ -12,6 +12,7 @@ import { ListaDeDeseos } from "@/types/listadedeseos/ListaDeDeseos";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/dist/client/components/navigation";
 import { Producto } from "@/types/producto/Producto";
+import SelectorTalla from "@/app/productos/components/SelectorTalla";
 
 export default function ListadeseosPage() {
   const [products, setProducts] = useState<ListaDeDeseos[]>([]);
@@ -21,6 +22,7 @@ export default function ListadeseosPage() {
   const [showModal, setShowModal] = useState(false);
   const [notSelected, setNotSelected] = useState(false);
   const [producto, setProducto] = useState<Producto | null>(null);
+  const [showSelector, setShowSelector] = useState(false);
 
   const router = useRouter();
 
@@ -179,6 +181,11 @@ export default function ListadeseosPage() {
             pendingDelete={pendingDeleteId === product.id}
             onRemoveFavorite={handleRemoveFavorite}
             onUndo={handleUndo}
+            onAddToCart={handleAddToCart}
+            onViewTallas={getProducto}
+            onSelectTalla={setIdTalla}
+            onSelectTallaName={setTallaName}
+            onSetNotSelected={setNotSelected}
           />
         ))}
       </div>
