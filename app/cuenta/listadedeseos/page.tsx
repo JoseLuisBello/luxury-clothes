@@ -20,6 +20,7 @@ export default function ListadeseosPage() {
   const [tallaName, setTallaName] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
   const [notSelected, setNotSelected] = useState(false);
+  const [producto, setProducto] = useState<Producto | null>(null);
 
   const router = useRouter();
 
@@ -90,7 +91,7 @@ export default function ListadeseosPage() {
     setPendingDeleteId(null);
   };
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (productId: number) => {
     setLoading(true);
     if (!idTalla) {
       setLoading(false);
@@ -114,9 +115,9 @@ export default function ListadeseosPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id_producto: data.id,
+          id_producto: productId,
           id_talla: idTalla,
-          cantidad: 1,
+          cantidad: 1,    
         }),
       });
 
@@ -128,7 +129,18 @@ export default function ListadeseosPage() {
     setLoading(false);
   };
 
-  
+  const getProducto = async (id_producto : number) => {
+    try {
+      const res = await fetch(`/api/producto/${id_producto}`);
+      const { data } : { data: Producto } = await res.json();
+      setProducto(data);
+    } catch (error) {
+      setProducto(null);
+      console.error(error);
+    }
+  };
+
+
 
   if ( loading ) {
     return (
