@@ -5,6 +5,8 @@ import SelectorTalla from "./SelectorTalla";
 import AddToCartButton from "./AddToCartBtn";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { CheckCircle2Icon } from "lucide-react";
+import Image from "next/image";
 
 
 export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
@@ -127,38 +129,44 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
 
 					{/* PANEL DERECHO */}
 					<div className={`
-						relative w-100 h-fit bg-white shadow-xl
+						relative w-100 h-fit bg-black shadow-xl
 						mt-28 mr-12
 						transform transition-all duration-300 ease-in-out
+						rounded-bl-xl rounded-br-xl
 						${showModal 
 							? "translate-y-0 opacity-100" 
 							: "-translate-y-10 opacity-0"}`}
 					>
 
 						{/* HEADER */}
-						<div className="flex justify-between items-center p-4 border-b">
-							<p className="font-semibold text-lg">
-								✅ Agregado a la bolsa
-							</p>
+						<div className="flex justify-between items-center p-4">
+							
+							<div className="flex gap-2 items-center">
+								<CheckCircle2Icon className="text-green-500" />
+								<p className="font-semibold text-lg text-white">
+								Agregado al carrito
+								</p>
+							</div>
 
-							<button onClick={() => setShowModal(false)}>
-								✕
-							</button>
+							<div className="text-white text-2xl cursor-pointer hover:text-gray-300 transition-colors duration-200 flex items-center justify-center">
+								<button onClick={() => setShowModal(false)}>
+									✕
+								</button>
+							</div>
 						</div>
 
 						{/* PRODUCTO */}
-						<div className="p-4 flex gap-4">
-							<img
-								src={data.imagenes?.[0]}
-								className="w-20 h-20 object-cover rounded"
-							/>
+						<div className="p-4 flex gap-4 w-full h-full">
+							<div className="relative h-20 w-20 overflow-hidden">
+								<Image src={data.imagenes?.[0] || ""} alt={data.nombre} className="object-cover rounded" fill/>
+							</div>
 
-							<div>
-								<p className="font-medium">{data.nombre}</p>
-								<p className="text-sm text-gray-500">
+							<div className="flex flex-col gap-1 w-3/4">
+								<p className="font-medium text-white">{data.nombre}</p>
+								<p className="text-sm text-white opacity-70">
 									Talla: {talla}
 								</p>
-								<p className="font-semibold">
+								<p className="font-semibold text-white">
 									${Number(data.precio).toLocaleString()}
 								</p>
 							</div>
@@ -168,15 +176,16 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
 						<div className="p-4 flex flex-col gap-3">
 							<button
 								onClick={() => router.push("/carrito")}
-								className="border rounded-full py-3 hover:bg-gray-100"
+								className="border border-white text-white rounded-full py-3 hover:bg-white hover:text-black transition-colors duration-100"
 							>
-								Ver bolsa
+								Ver carrito
 							</button>
 
 							<button
-								className="bg-black text-white rounded-full py-3 hover:opacity-80"
+							onClick={() => setShowModal(false)}
+								className="bg-white text-black rounded-full py-3 hover:opacity-60 transition-opacity duration-100"
 							>
-								Comprar
+								Seguir comprando
 							</button>
 						</div>
 					</div>
