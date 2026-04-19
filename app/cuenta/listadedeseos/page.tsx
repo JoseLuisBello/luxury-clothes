@@ -187,7 +187,7 @@ export default function ListadeseosPage() {
             onSelectTalla={setIdTalla}
             onSelectTallaName={setTallaName}
             onSetNotSelected={setNotSelected}
-
+            onSetView={setView}
           />
         ))}
       </div>

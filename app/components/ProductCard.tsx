@@ -25,8 +25,7 @@ export default function ProductCard(
     onSelectTalla,
     onSelectTallaName,
     onSetNotSelected,
-    onSetShowSelector,
-    onSetShowModal,
+    onSetView,
     pendingDelete,
     item,
   }
@@ -42,8 +41,7 @@ export default function ProductCard(
     onSelectTalla?: (idTalla: number) => void,
     onSelectTallaName?: (tallaName: string) => void,
     onSetNotSelected?: (value: boolean) => void,
-    onSetShowSelector?: (value: boolean) => void,
-    onSetShowModal?: (value: boolean) => void,
+    onSetView?: (view: "none" | "selector" | "modal") => void;
     pendingDelete?: boolean,
     item?: Producto
   }
@@ -121,8 +119,7 @@ export default function ProductCard(
             <button
             onClick={() => {
               onViewTallas?.(product!.id);
-              onSetShowSelector?.(true);
-              onSetShowModal?.(true);
+              onSetView?.("selector");
             }}
               className="bg-black text-white py-2 px-4 rounded-full w-full h-12 hover:opacity-60 transition-all duration-100 mt-5"
             >
