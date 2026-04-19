@@ -46,6 +46,10 @@ export default function CarritoPage() {
     getCart();
   }, [] );
 
+  const getTotal = () => {
+    return cartItems.reduce((total, item) => total + item.precio * item.cantidad, 0);
+  }
+
   return (
     <div className="w-full h-full p-24 flex justify-center gap-8">
       {/* Contenedor para la bolsa */}
@@ -89,7 +93,7 @@ export default function CarritoPage() {
         <div className="font-medium opacity-80 flex flex-col gap-4">
           <div className="flex justify-between">
             <p>Subtotal</p>
-            <p>$0</p>
+            <p>${Number(getTotal()).toLocaleString()}</p>
           </div>
 
           <div className="flex justify-between">
@@ -103,7 +107,7 @@ export default function CarritoPage() {
         <div className="flex flex-col gap-4">
           <div className="flex justify-between font-semibold">
             <p>Total</p>
-            <p>$0</p>
+            <p>${Number(getTotal()).toLocaleString()}</p>
           </div>
           <div className="border border-gray-200 w-full"></div>
         </div>
