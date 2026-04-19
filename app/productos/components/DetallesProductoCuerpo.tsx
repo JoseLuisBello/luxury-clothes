@@ -5,27 +5,59 @@ import SelectorTalla from "./SelectorTalla";
 import AddToCartButton from "./AddToCartBtn";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getUserFromToken } from "@/lib/auth";
+import { getUserFromToken, getUserFromTokenDirect } from "@/lib/auth";
 
 
 export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
     const [talla, setTalla] = useState<number | null>(null);
-    const [clientId, setClientID] = useState<string | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [clientId, setClientID] = useState<number | null>(null);
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem("token");
+    const handleAddToCart = async () => {
+			setLoading(true);
+			if (!talla) {
+				setLoading(false);
+				alert("Selecciona una talla");
+				return;
+			}
 
-    //     if (!token) {
-    //         setLoading(false);
-    //         router.push("/auth/login");
-    //         return;
-    //     }
+			const token = localStorage.getItem("token");
 
-        
+			if (!token) {
+				setLoading(false);
+				router.push("/auth/login");
+				return;
+			}
 
-    // }, []);
+			const user = getUserFromTokenDirect(token);
+
+			if (!user) {
+				setLoading(false);
+				router.push("/auth/login");
+				return;
+			}
+
+			try {
+				await fetch("/api/carrito", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						productoId: data.id,
+						tallaId: talla,
+						usuarioId: user.id,
+					}),
+				});
+
+				console.log("Producto agregado");
+			} catch (error) {
+				console.error(error);
+			}
+
+			setLoading(false);
+		};
 
     return (
         <div className="p-24 w-full h-full flex gap-8 justify-center">
@@ -58,11 +90,10 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
                     />
                 </div>
                 <div className="mt-12 w-full">
-                    {/* <AddToCartButton 
-                        id_producto={data.id}
-                        id_Talla={talla || 0}
-                        id_usuario={}
-                    /> */}
+                    <AddToCartButton 
+											onClick={handleAddToCart}
+											loading={loading}
+                    />
                 </div>
 
                 <div className="mt-6 w-full">
