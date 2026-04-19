@@ -194,11 +194,11 @@ export default function ListadeseosPage() {
     </div>
 
 
-    <div className={`fixed inset-0 z-50 flex ${view === "selector" ? "justify-center items-center" : "justify-end"}
+    <div className={`fixed inset-0 z-50
     transition-all duration-300
     ${view !== "none"
-      ? "visible opacity-100 pointer-events-auto" 
-      : "invisible opacity-0 pointer-events-none"}
+      ? "visible opacity-100" 
+      : "invisible opacity-0"}
     `}>
       
       {/* OVERLAY */}
@@ -213,13 +213,13 @@ export default function ListadeseosPage() {
 
       {/* PANEL DERECHO */}
       <div className={`
-        relative w-100 h-fit bg-black shadow-xl
-        mt-26 mr-12
-        transform transition-all duration-300 ease-in-out
-        rounded-xl ${view === "selector" ? "hidden": ""}
-        ${view === "modal"
+           w-100 h-fit bg-black shadow-xl
+          absolute right-12 top-26
+          transform transition-all duration-300 ease-in-out
+          rounded-xl
+          ${view === "modal"
           ? "translate-y-0 opacity-100" 
-          : "-translate-y-10 opacity-0"}`}
+          : "-translate-y-10 opacity-0 pointer-events-none absolute"}`}
       >
 
         {/* HEADER */}
@@ -278,12 +278,12 @@ export default function ListadeseosPage() {
 
       {/* Selector de tallas */}
       <div className={`
-        relative w-200 h-100 bg-white shadow-xl
-        transform transition-all duration-300 ease-in-out
-        rounded-xl
-        ${view === "selector"
-          ? "translate-y-0 opacity-100" 
-          : "-translate-y-10 opacity-0"}`}
+          w-200 h-100 bg-white shadow-xl
+          transform transition-all duration-300 ease-in-out
+          rounded-xl absolute top-0 left-0 right-0 bottom-0 m-auto
+          ${view === "selector"
+            ? "translate-y-0 opacity-100" 
+          : "-translate-y-10 opacity-0 pointer-events-none absolute"}`}
       >
         <div>
           <Image 
