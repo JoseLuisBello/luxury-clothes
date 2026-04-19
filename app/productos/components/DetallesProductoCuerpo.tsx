@@ -11,7 +11,12 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
     const [talla, setTalla] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
 		const [notSelected, setNotSelected] = useState(false);
+		const [showModal, setShowModal] = useState(false);
     const router = useRouter();
+
+		useEffect(() => {
+			document.body.style.overflow = showModal ? "hidden" : "auto";
+		}, [showModal]);
 
     const handleAddToCart = async () => {
 			setLoading(true);
@@ -23,7 +28,6 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
 
 			const token = localStorage.getItem("token");
 
-			console.log("Token:", token);
 			if (!token) {
 				setLoading(false);
 				router.push("/auth/login");
@@ -44,7 +48,7 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
 					}),
 				});
 
-				console.log("Producto agregado");
+				setShowModal(true);
 			} catch (error) {
 				console.error(error);
 			}
@@ -52,7 +56,10 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
 			setLoading(false);
 		};
 
+		const mostrarCarritoRetro = () => {};
+
     return (
+			<>
         <div className="p-24 w-full h-full flex gap-8 justify-center">
             {/* Div para la galeria de imagenes */}
             <GalleryDetails data={data} />
@@ -99,6 +106,83 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
                 </div>
             </div>
         </div>
+
+				
+				<div className={`  fixed inset-0 z-50 flex justify-end
+				transition-all duration-300
+				${showModal 
+					? "visible opacity-100 pointer-events-auto" 
+					: "invisible opacity-0 pointer-events-none"}
+				`}>
+					
+					{/* OVERLAY */}
+					<div 
+						className={`
+							absolute inset-0 bg-black/30
+							transition-opacity duration-300
+							${showModal ? "opacity-100" : "opacity-0"}
+						`}
+						onClick={() => setShowModal(false)}
+					/>
+
+					{/* PANEL DERECHO */}
+					<div className={`
+						relative w-100 h-fit bg-white shadow-xl
+						mt-28 mr-12
+						transform transition-all duration-300 ease-in-out
+						${showModal 
+							? "translate-y-0 opacity-100" 
+							: "-translate-y-10 opacity-0"}`}
+					>
+
+						{/* HEADER */}
+						<div className="flex justify-between items-center p-4 border-b">
+							<p className="font-semibold text-lg">
+								✅ Agregado a la bolsa
+							</p>
+
+							<button onClick={() => setShowModal(false)}>
+								✕
+							</button>
+						</div>
+
+						{/* PRODUCTO */}
+						<div className="p-4 flex gap-4">
+							<img
+								src={data.imagenes?.[0]}
+								className="w-20 h-20 object-cover rounded"
+							/>
+
+							<div>
+								<p className="font-medium">{data.nombre}</p>
+								<p className="text-sm text-gray-500">
+									Talla: {talla}
+								</p>
+								<p className="font-semibold">
+									${Number(data.precio).toLocaleString()}
+								</p>
+							</div>
+						</div>
+
+						{/* BOTONES */}
+						<div className="p-4 flex flex-col gap-3">
+							<button
+								onClick={() => router.push("/carrito")}
+								className="border rounded-full py-3 hover:bg-gray-100"
+							>
+								Ver bolsa
+							</button>
+
+							<button
+								className="bg-black text-white rounded-full py-3 hover:opacity-80"
+							>
+								Comprar
+							</button>
+						</div>
+					</div>
+				</div>
+				
+			</>
     );
 }
 
