@@ -145,7 +145,7 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
 
 			setIsWishList(true);
 			setInWishlist(false);
-			setShowModal(false);
+			setShowModal(true);
 		} catch (error) {
 			console.error(error);
 		}
@@ -199,7 +199,7 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
                     <button 
 					onClick={() => {
 						if (inWishlist) {
-							// Handle removal from wishlist
+							handleDeleteFromWishList(data.id);
 						} else {
 							handleAddToWishList(data.id);
 						}
@@ -246,7 +246,7 @@ export default function DetallesProductoCuerpo({ data }: { data: Producto }) {
 							<div className="flex gap-2 items-center">
 								<CheckCircle2Icon className="text-green-500" />
 								<p className="font-semibold text-lg text-white">
-								{isWishList ? "Agregado a la lista de deseos" : "Agregado al carrito"}
+								{isWishList ? (!inWishlist ? "Eliminado de la lista de deseos" : "Agregado a la lista de deseos" ): "Agregado al carrito"}
 								</p>
 							</div>
 
