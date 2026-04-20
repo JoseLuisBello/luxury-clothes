@@ -153,7 +153,7 @@ export default function FormularioDireccion(
           setForm(initialForm);
           setInitialData(initialForm);
           setTelefono("");
-          setErrors({}); // Limpia errores previos 
+          setErrors({}); 
         }
         setIsDirty(false);
       }
@@ -165,12 +165,10 @@ export default function FormularioDireccion(
     };
   }, [selectedDireccion, isOpen]); 
 
-
-
   useEffect(() => {
-  const isEqual = JSON.stringify(form) === JSON.stringify(initialData);
-  setIsDirty(!isEqual);
-}, [form, initialData]);
+    const isEqual = JSON.stringify(form) === JSON.stringify(initialData);
+    setIsDirty(!isEqual);
+  }, [form, initialData]);
 
   
     
