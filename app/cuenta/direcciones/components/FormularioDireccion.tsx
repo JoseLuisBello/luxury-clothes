@@ -166,15 +166,15 @@ export default function FormularioDireccion(
         setTelefono(clean);
       }
     } else {
-      // ESTO LIMPIA EL FORMULARIO AL ABRIR PARA "NUEVA DIRECCIÓN"
+      
       setForm(initialForm);
       setInitialData(initialForm);
       setTelefono("");
-      setErrors({}); // Limpia errores previos también
+      setErrors({}); // Limpia errores previos 
     }
     setIsDirty(false);
   }
-}, [selectedDireccion, isOpen]); // <--- AGREGA isOpen AQUÍ
+}, [selectedDireccion, isOpen]); 
 
 
 
@@ -195,8 +195,7 @@ if (telefonoLimpio.length !== 10) {
       ...errors,
       telefono: "El número debe tener exactamente 10 dígitos."
     });
-    // 3. RETORNO CRÍTICO: Aquí nos detenemos. 
-    // No llamamos a onSubmit() ni a onClose(), por lo que el modal SE QUEDA ABIERTO.
+   
     return; 
   }
    
