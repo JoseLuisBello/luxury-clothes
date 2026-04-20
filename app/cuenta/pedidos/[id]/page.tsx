@@ -9,6 +9,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import SeguimientoPedido from "../components/SeguimientoPedido";
 
 export default function DetallePedidoPage() {
     const { id } = useParams();
@@ -37,7 +38,7 @@ export default function DetallePedidoPage() {
             setDetalle(data);
 
         } catch (err: any) {
-            setError(err.message);
+            setError(err.message);  
 
             // si no está logueado o token inválido
             router.push("/auth/login");
@@ -47,28 +48,62 @@ export default function DetallePedidoPage() {
         if (id) fetchDetalle();
     }, [id]);
 
+    const [historialPedido, setHistorialPedido] = useState<any[]>([]);
+
+    //funcion para ver historial del pedido
+    useEffect (() => {
+        const getHistorial = async () => {
+            try{
+                const token = localStorage.getItem("token");
+                const res = await fetch(`/api/logistica/historial_estados/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                throw new Error(data.error);
+                }
+
+                setHistorialPedido(data.data);
+        }catch (err: any){
+            setError(err.message);
+        }
+    };
+
+        if (id) getHistorial();
+    }, [id]);
+
+    console.log("Historial:", historialPedido);
+console.log("Detalle:", detalle);
     return (
         <div className="p-5">
 
-    <button onClick={() => router.push("/cuenta/pedidos")} className="mb-4 text-blue-600 hover:underline">
-        Volver a pedidos
-    </button>  
-        <h1 className="text-2xl mb-4">Detalle del Pedido #{id}</h1>
+            <button onClick={() => router.push("/cuenta/pedidos")} className="mb-4 text-blue-600 hover:underline">
+                Volver a pedidos
+            </button>  
+            <h1 className="text-2xl mb-4">Detalle del Pedido #{id}</h1>
 
-        {error && <p className="text-red-500">{error}</p>}
+            {error && <p className="text-red-500">{error}</p>}
 
-        {detalle.length === 0 && !error && (
-            <p>Cargando...</p>
-        )}
+            {detalle.length === 0 && !error && (
+                <p>Cargando...</p>
+            )}
 
-        {detalle.map((item, index) => (
-            <div key={index} className="border p-3 mb-2">
-            <p><strong>Producto:</strong> {item.producto}</p>
-            <p><strong>Talla:</strong> {item.talla}</p>
-            <p><strong>Cantidad:</strong> {item.cantidad}</p>
-            <p><strong>Precio:</strong> ${item.precio_unitario}</p>
+            {detalle.map((item, index) => (
+                <div key={index} className="border p-3 mb-2">
+                <p><strong>Producto:</strong> {item.producto}</p>
+                <p><strong>Talla:</strong> {item.talla}</p>
+                <p><strong>Cantidad:</strong> {item.cantidad}</p>
+                <p><strong>Precio:</strong> ${item.precio_unitario}</p>
+                </div>
+            ))}
+
+            <div>
+                <SeguimientoPedido historial={historialPedido} />
             </div>
-        ))}
         </div>
     );
 }
