@@ -1,4 +1,10 @@
-import { Package, Truck, CheckCircle2, Box } from "lucide-react";
+import {
+  Clock,
+  PackageCheck,
+  Box,
+  Truck,
+  CheckCircle2
+} from "lucide-react";
 
 type HistorialItem = {
   estado_pedido?: string;
@@ -12,19 +18,20 @@ export default function SeguimientoPedido({
   historial: HistorialItem[];
 }) {
 
-  // 🔵 Estado pedido (solo toma el último que tenga valor)
+  // Estado pedido (solo toma el último que tenga valor)
   const estadoPedido =
     [...historial].reverse().find(h => h.estado_pedido)?.estado_pedido || "Pendiente";
 
-  // 🟢 Estado envío (solo toma el último que tenga valor)
+  // Estado envío (solo toma el último que tenga valor)
   const estadoEnvio =
     [...historial].reverse().find(h => h.estado_envio)?.estado_envio || "Preparando";
 
-  // 📦 Pasos del envío
   const pasosEnvio = [
-    { id: 1, nombre: "Preparando", icono: <Box size={20} /> },
-    { id: 2, nombre: "En camino", icono: <Truck size={20} /> },
-    { id: 3, nombre: "Entregado", icono: <Package size={20} /> },
+    { id: 1, nombre: "Pendiente", icono: <Clock size={20} /> },
+    { id: 2, nombre: "Preparando", icono: <Box size={20} /> },
+    { id: 3, nombre: "Enviado", icono: <PackageCheck size={20} /> },
+    { id: 4, nombre: "En camino", icono: <Truck size={20} /> },
+    { id: 5, nombre: "Entregado", icono: <CheckCircle2 size={20} /> },
   ];
 
   const pasoActual =
@@ -33,9 +40,8 @@ export default function SeguimientoPedido({
     ) + 1;
 
   return (
-    <div className="w-full max-w-4xl bg-white p-8 rounded-2xl border shadow-sm space-y-8">
+    <div className="w-full max-w-8xl bg-white p-8  space-y-8">
 
-      {/* 🔵 ESTADO DEL PEDIDO */}
       <div className="flex justify-between items-center border-b pb-4">
         <div>
           <h3 className="text-lg font-bold">Estado del pedido</h3>
@@ -49,13 +55,12 @@ export default function SeguimientoPedido({
         </span>
       </div>
 
-      {/* 🟢 SEGUIMIENTO DE ENVÍO */}
       <div>
         <h3 className="text-lg font-bold mb-6">Seguimiento del envío</h3>
 
         <div className="relative">
           {/* Línea base */}
-          <div className="absolute top-5 left-0 w-full h-1 bg-gray-200 -z-10" />
+          <div className="absolute top-5 left-0 w-full h-1 bg-gray-800 -z-10" />
 
           {/* Línea progreso */}
           <div
