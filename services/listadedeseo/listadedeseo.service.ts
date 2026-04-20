@@ -52,4 +52,19 @@ export class ListaDeseos {
         }
 
     }
+
+    /**
+     * Función para verificar si un producto ya está en la lista de deseos de un cliente
+     * @author Adrien Hernández Sánchez
+     */
+    static async productExistsInWishlist(clientId: number, productId: number): Promise<boolean> {
+        const listId = await DetalleListaDeseos.findWishlistIdByClientId(clientId);
+
+        if(!listId){
+            return false; // Si el cliente no tiene lista de deseos, el producto no puede estar en ella
+        }
+
+        return await DetalleListaDeseos.isProductInWishlist(listId, productId);
+    }
+
 }
