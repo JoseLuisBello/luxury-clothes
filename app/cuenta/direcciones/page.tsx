@@ -5,7 +5,7 @@
 import { useEffect, useState } from "react";
 import FormularioDireccion from "@/app/cuenta/direcciones/components/FormularioDireccion";
 import DireccionEnvio from "./components/DireccionEnvio";
-import { DireccionesEnvio, ListaDireccionEnvio } from "@/types/direccionesenvio/DireccionesEnvio";
+import { ListaDireccionEnvio } from "@/types/direccionesenvio/DireccionesEnvio";
 
 export default function DireccionesPage() {
   const [direcciones, setDirecciones] = useState<ListaDireccionEnvio[]>([]);
@@ -15,12 +15,10 @@ export default function DireccionesPage() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-
     if(!token) {
       window.location.href = "/cuenta"; //redireccionamiento a page cuenta
       return;
     }
-
     loadDireccion();
   }, []);
 
@@ -32,17 +30,12 @@ export default function DireccionesPage() {
         },
       })
       
-      
       const data   = await res.json();
       setDirecciones(data.direcciones);
     } catch (error) {
       console.error(error);
     } 
   }
-
-  const handleAddDireccion = (newDir: any) => {
-    setDirecciones((prev) => [...prev, newDir.direccion]);
-  };
 
   const hasDirecciones = direcciones.length > 0;
 
@@ -109,20 +102,17 @@ export default function DireccionesPage() {
         </div>
       )}
 
-
-
-<FormularioDireccion
-  // Al cambiar la key, React reinicia el estado interno del formulario
-  key={selectedDireccion ? selectedDireccion.id : isModalOpen ? "open" : "closed"}
-  isOpen={isModalOpen}
-  onClose={() => {
-    setIsModalOpen(false);
-    setSelectedDireccion(null); // Limpiamos la selección al cerrar
-  }}
-  onSubmit={handleSubmit}
-  selectedDireccion={selectedDireccion}
-/>
-
+      <FormularioDireccion
+        
+        key={selectedDireccion ? selectedDireccion.id : isModalOpen ? "open" : "closed"}
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedDireccion(null); // Limpiamos la selección al cerrar
+        }}
+        onSubmit={handleSubmit}
+        selectedDireccion={selectedDireccion}
+      />
 
     </div>
   );
