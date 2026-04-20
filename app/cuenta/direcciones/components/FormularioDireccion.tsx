@@ -133,8 +133,29 @@ export default function FormularioDireccion(
     onClose();
   };
 
-  useEffect(() => {
+  // useEffect(() => {
 
+  //   if (selectedDireccion) {
+  //     setForm(selectedDireccion);
+  //     setInitialData(selectedDireccion);
+  //     if (selectedDireccion.telefono) {
+  //       const clean = selectedDireccion.telefono
+  //         .replace("+52", "")
+  //         .replace(/\s/g, "");
+
+  //       setTelefono(clean);
+  //     }
+
+  //   } else {
+  //     setForm(initialForm);
+  //     setInitialData(initialForm);
+  //     setTelefono("");
+
+  //   }setIsDirty(false);
+  // }, [selectedDireccion]);
+
+  useEffect(() => {
+  if (isOpen) { // Solo actuar cuando el modal se abre
     if (selectedDireccion) {
       setForm(selectedDireccion);
       setInitialData(selectedDireccion);
@@ -142,17 +163,20 @@ export default function FormularioDireccion(
         const clean = selectedDireccion.telefono
           .replace("+52", "")
           .replace(/\s/g, "");
-
         setTelefono(clean);
       }
-
     } else {
+      // ESTO LIMPIA EL FORMULARIO AL ABRIR PARA "NUEVA DIRECCIÓN"
       setForm(initialForm);
       setInitialData(initialForm);
       setTelefono("");
+      setErrors({}); // Limpia errores previos también
+    }
+    setIsDirty(false);
+  }
+}, [selectedDireccion, isOpen]); // <--- AGREGA isOpen AQUÍ
 
-    }setIsDirty(false);
-  }, [selectedDireccion]);
+
 
   useEffect(() => {
   const isEqual = JSON.stringify(form) === JSON.stringify(initialData);
@@ -162,8 +186,20 @@ export default function FormularioDireccion(
   
     
   const handleSubmit = (e: React.FormEvent) => {
-    
-    e.preventDefault();
+     e.preventDefault();
+    e.stopPropagation();
+    const telefonoLimpio = telefono.replace(/\s/g, "");
+
+if (telefonoLimpio.length !== 10) {
+    setErrors({
+      ...errors,
+      telefono: "El número debe tener exactamente 10 dígitos."
+    });
+    // 3. RETORNO CRÍTICO: Aquí nos detenemos. 
+    // No llamamos a onSubmit() ni a onClose(), por lo que el modal SE QUEDA ABIERTO.
+    return; 
+  }
+   
 
     const payload = {
       ...form,
@@ -431,8 +467,16 @@ export default function FormularioDireccion(
               placeholder="953 174 2001"
               className="peer p-3 w-full outline-none"
             />
+
+  
             
           </div>
+          {/* 2. EL ERROR DEBE IR AQUÍ (FUERA DEL DIV DEL INPUT) */}
+  {errors.telefono && (
+    <p className="text-red-500 text-xs mt-1 font-bold animate-pulse">
+      {errors.telefono}
+    </p>
+  )}
           {errors.general && (
             <p className="text-red-500 text-sm">
               {errors.general}

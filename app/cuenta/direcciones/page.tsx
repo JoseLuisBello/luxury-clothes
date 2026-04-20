@@ -91,7 +91,7 @@ export default function DireccionesPage() {
           </p>
 
            <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {setIsModalOpen(true); setSelectedDireccion(null);}}
               className="bg-black text-white px-6 py-2.5 rounded-full font-medium hover:opacity-80 transition"
             >
               Agregar dirección
@@ -109,11 +109,19 @@ export default function DireccionesPage() {
         </div>
       )}
 
-      <FormularioDireccion
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={handleSubmit}
-      />
+
+
+<FormularioDireccion
+  // Al cambiar la key, React reinicia el estado interno del formulario
+  key={selectedDireccion ? selectedDireccion.id : isModalOpen ? "open" : "closed"}
+  isOpen={isModalOpen}
+  onClose={() => {
+    setIsModalOpen(false);
+    setSelectedDireccion(null); // Limpiamos la selección al cerrar
+  }}
+  onSubmit={handleSubmit}
+  selectedDireccion={selectedDireccion}
+/>
 
 
     </div>
