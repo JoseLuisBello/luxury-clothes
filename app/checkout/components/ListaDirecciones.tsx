@@ -90,14 +90,14 @@ export default function ListaDirecciones({
         </div>
 
         {/* FOOTER */}
-        <div className="flex justify-end mt-6">
-          <button
-            onClick={onClose}
-            className="px-5 py-2 rounded-full bg-black text-white hover:opacity-80 transition"
-          >
-            Cerrar
-          </button>
-        </div>
+        <div className="sticky bottom-0 bg-white pt-4 mt-6 flex justify-end ">
+            <button
+                onClick={onClose}
+                className="px-5 py-2 rounded-full bg-black text-white hover:opacity-80 transition"
+            >
+                Cerrar
+            </button>
+            </div>
       </div>
     </div>
   );
