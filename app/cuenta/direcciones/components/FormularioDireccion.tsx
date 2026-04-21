@@ -8,6 +8,7 @@ interface Props {
   onClose: () => void;
   onSubmit: (data: any) => void;
   selectedDireccion?: any | null;
+   allowDelete?: boolean;
 }
 
 export default function FormularioDireccion(

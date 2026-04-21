@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { getDirecciones } from "@/client/direccionesenvio";
 import { ListaDireccionEnvio } from "@/types/direccionesenvio/DireccionesEnvio";
+import FormularioDireccion from "../cuenta/direcciones/components/FormularioDireccion";
 
 interface ItemCarrito {
   id_producto: number;
@@ -122,7 +123,8 @@ export default function CheckoutPage() {
   };
 
   //Haciendo lista de direcciones 
-    const [direcciones, setDirecciones] = useState<ListaDireccionEnvio[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+    const [direccion, setDirecciones] = useState<ListaDireccionEnvio[]>([]);
     const [selectedDireccion, setSelectedDireccion] =
   useState<ListaDireccionEnvio | null>(null);
   
@@ -172,16 +174,40 @@ export default function CheckoutPage() {
                 <p className="text-md font-semibold">Enviar a domicilio</p>
                 {selectedDireccion ? (
                   <div>
-                    <p>Calle {selectedDireccion.calle} {selectedDireccion.numero_exterior} - {selectedDireccion.colonia}</p>
-                    <p>{selectedDireccion.ciudad}, {selectedDireccion.estado}</p>
-                    <p>CP {selectedDireccion.codigo_postal}</p>
-
+                  <div className="flex justify-between items-start">
+                    <div className="text-[#757575] text-[16px] space-y-1">
+                      <p>
+                        {selectedDireccion.nombre} {selectedDireccion.apellido} {selectedDireccion.telefono}
+                      </p>
+                      <p>
+                        {selectedDireccion.calle} {selectedDireccion.numero_exterior}
+                        {selectedDireccion.numero_interior && ` Int. ${selectedDireccion.numero_interior}`} {selectedDireccion.colonia}
+                      </p>
+                      <p>
+                        {selectedDireccion.codigo_postal} {selectedDireccion.ciudad}, {selectedDireccion.estado}
+                      </p>
+                    </div>
                     <button
-                      onClick={() => console.log("abrir modal de direcciones")}
-                      className="mt-3 text-sm underline text-blue-600"
+                      onClick={() => setIsModalOpen(true)}
+                        className="text-black text-sm font-bold underline"
                     >
-                      Cambiar dirección
+                      Editar
                     </button>
+                    
+                  </div>
+
+                  <div className="pt-4">
+                     <button
+                    onClick={() => {
+                      setSelectedDireccion(null); // 👈 importante (modo crear)
+                      setIsModalOpen(true);
+                    }}
+                    className="bg-black text-white px-6 py-2.5 rounded-full font-medium hover:opacity-80 transition"
+                  >
+                    Agregar dirección
+                  </button>
+                  </div>
+                   
                   </div>
                 ) : (
                   <p className="text-gray-500">No hay dirección seleccionada</p>
@@ -258,6 +284,21 @@ export default function CheckoutPage() {
         </div>
       </div>
     </div>
+    <FormularioDireccion
+      isOpen={isModalOpen}
+      onClose={() => setIsModalOpen(false)}
+      onSubmit={(data) => {
+        loadDireccion(); // recargar lista
+
+        // 👉 si viene una dirección nueva o editada
+        if (data?.direccion) {
+          setSelectedDireccion(data.direccion);
+        } else if (data?.id) {
+          setSelectedDireccion(data);
+        }
+      }}
+      selectedDireccion={selectedDireccion}
+    />
   </div>
   );
 }
