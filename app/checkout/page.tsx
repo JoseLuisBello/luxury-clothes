@@ -124,39 +124,35 @@ export default function CheckoutPage() {
 
   //Haciendo lista de direcciones 
   const [isModalOpen, setIsModalOpen] = useState(false);
-    const [direccion, setDirecciones] = useState<ListaDireccionEnvio[]>([]);
-    const [selectedDireccion, setSelectedDireccion] =
-  useState<ListaDireccionEnvio | null>(null);
-  const [direccionEnEdicion, setDireccionEnEdicion] =
-  useState<ListaDireccionEnvio | null>(null);
+  const [direccion, setDirecciones] = useState<ListaDireccionEnvio[]>([]);
+  const [selectedDireccion, setSelectedDireccion] = useState<ListaDireccionEnvio | null>(null);
+  const [direccionEnEdicion, setDireccionEnEdicion] = useState<ListaDireccionEnvio | null>(null);
   
-    useEffect(() => {
-      const token = localStorage.getItem("token");
-      if(!token) {
-        window.location.href = "/cuenta"; //redireccionamiento a page cuenta
-        return;
-      }
-      loadDireccion();
-    }, []);
-  
-  
-   const loadDireccion = async () => {
-  try {
-    const data = await getDirecciones();
-    const dirs = data.direcciones;
-
-    setDirecciones(dirs);
-
-    // 👉 última dirección agregada
-    if (dirs.length > 0) {
-      setSelectedDireccion(dirs[dirs.length - 1]);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if(!token) {
+      window.location.href = "/cuenta"; //redireccionamiento a page cuenta
+      return;
     }
-  } catch (error) {
-    console.error(error);
-  }
-};
+    loadDireccion();
+  }, []);
   
+  const loadDireccion = async () => {
+    try {
+      const data = await getDirecciones();
+      const dirs = data.direcciones;
 
+      setDirecciones(dirs);
+
+      // 👉 última dirección agregada
+      if (dirs.length > 0) {
+        setSelectedDireccion(dirs[dirs.length - 1]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
   if (isLoadingData) {
     return <div className="p-10 text-center">Cargando resumen del pedido...</div>;
   }
