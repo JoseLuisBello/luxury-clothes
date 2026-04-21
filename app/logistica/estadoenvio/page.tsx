@@ -39,12 +39,11 @@ export default function EnviosPendientes(){
 
     const estadoenvios = data.data || [];
 
-    // quitar duplicados por id_pedido
     const unicos = estadoenvios.filter(
       (envio: EnvioPendiente, index: number, self: EnvioPendiente[]) =>
         index === self.findIndex(e => e.id_pedido === envio.id_pedido)
     );
-  console.log(respuesta);
+    console.log(respuesta);
 
     setEnvioPendiente(unicos);
 
@@ -59,18 +58,21 @@ export default function EnviosPendientes(){
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans pb-10">
-      <main className="p-6 max-w-2xl mx-auto">
-        <header className="mb-8 text-center">
-          <h2 className="text-4xl font-bold uppercase tracking-tighter">Envios pendientes</h2>
-        </header>
+    <div className=" pl-8 bg-gray-50 font-sans pb-10">
+      <main className="p-6 ">
+        <h2 className="text-2xl font-bold">
+            Tus envíos pendientes
+        </h2>
+        <p className="text-gray-500 text-sm mt-1">
+            Gestiona y confirma el estado de tus envios pendientes
+        </p>
 
-        <section className="space-y-6">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
           {envioPendiente.map((envio) => (
           <div key={envio.id_pedido} className="bg-white p-6 shadow-sm border border-gray-100 relative overflow-hidden">
             
               {/* Estado */}
-              <div className={`absolute top-0 right-0 px-4 py-1 text-[10px] font-semibold uppercase tracking-widest ${getEstadoColor(envio.estado_envio)}`}>
+              <div className={`absolute top-0 right-0 px-4 py-1 text-[12px] font-semibold uppercase tracking-widest ${getEstadoColor(envio.estado_envio)}`}>
                 {envio.estado_envio}
               </div>
 
@@ -80,20 +82,14 @@ export default function EnviosPendientes(){
                     ID: {envio.numero_guia}
                   </span>
 
-                  <h3 className="text-2xl font-black uppercase mt-1 tracking-tight">
+                  <h3 className="text-2xl font-bold uppercase mt-1 tracking-tight">
                     {envio.cliente_nombre} {envio.cliente_apellido}
                   </h3>
                 </div>
               </div>
 
               <div className="space-y-2 mb-6 border-l-2 border-gray-100 pl-4">
-                <div className="flex items-center gap-2 text-gray-600">
-                  <MapPin size={14} className="text-black" />
-                  <p className="text-sm font-medium">
-                    {/* Aquí aún no tienes dirección */}
-                    Dirección no disponible
-                  </p>
-                </div>
+                
 
                 <div className="flex items-center gap-2 text-gray-600">
                   <Clock size={14} className="text-black" />
