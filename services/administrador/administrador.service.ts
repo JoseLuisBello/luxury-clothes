@@ -1,34 +1,47 @@
 //***********/
 //* Nombre del equipo: Equipo 1 */
 //* Autor de la clase: Ramos Bello Jose Luis */
-//* Fecha: 09/03/2026 */
+//* Fecha: 20/04/2026 */
 //**********/
 import { AdministradorRepository } from "@/repositories/administrador/administrador.repository";
 import { QueryResult } from 'pg';
 
 export class ProductoService {
+
+  static async listaProductos() {
+    try {
+      const result: QueryResult = await AdministradorRepository.obtenerProductos();
+      return result.rows;
+    } catch (error: any) {
+      throw new Error(error.message || "Error al obtener lista de productos");
+    }
+  }
+
   static async listaClientes() {
     const result: QueryResult = await AdministradorRepository.obtenerClientesActivos();
     return result.rows;
   }
 
   static async agregarProducto(data: any) {
-    const requiredFields = [
-      'nombre', 'descripcion', 'precio',
-      'id_color', 'id_genero', 'id_subcategoria', 'id_marca'
-    ];
-
-    for (const field of requiredFields) {
-      if (data[field] === undefined || data[field] === null) {
-        throw new Error(`Faltan campos obligatorios: ${requiredFields.join(', ')}`);
-      }
+    // Solo validamos los campos que realmente vienen del formulario
+    if (!data.nombre || !data.descripcion) {
+      throw new Error("Nombre y descripción son obligatorios");
     }
-
     if (typeof data.precio !== 'number' || data.precio <= 0) {
       throw new Error("El precio debe ser un número mayor a 0");
     }
 
-    const result = await AdministradorRepository.crearProducto(data);
+    const productoData = {
+      nombre: data.nombre,
+      descripcion: data.descripcion,
+      precio: data.precio,
+      id_color: data.id_color || 1,
+      id_genero: data.id_genero || 1,
+      id_subcategoria: data.id_subcategoria || 1,
+      id_marca: data.id_marca || 1,
+    };
+
+    const result = await AdministradorRepository.crearProducto(productoData);
 
     if (result.rowCount === 0) {
       throw new Error("No se pudo crear el producto");
@@ -70,6 +83,7 @@ export class ProductoService {
     };
   }
 
+  // Métodos existentes que no tocamos
   static async obtenerHistorialVentas() {
     try {
       const result: QueryResult = await AdministradorRepository.obtenerHistorialVentas();
