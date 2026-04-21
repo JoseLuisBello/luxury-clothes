@@ -131,6 +131,7 @@ export default function DireccionesPage() {
         }}
         onSubmit={handleSubmit}
         selectedDireccion={selectedDireccion}
+        allowDelete={true}
       />
 
     </div>

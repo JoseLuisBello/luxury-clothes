@@ -8,7 +8,7 @@ interface Props {
   onClose: () => void;
   onSubmit: (data: any) => void;
   selectedDireccion?: any | null;
-   allowDelete?: boolean;
+  allowDelete?: boolean;
 }
 
 export default function FormularioDireccion(
@@ -16,7 +16,8 @@ export default function FormularioDireccion(
     isOpen, 
     onClose, 
     onSubmit, 
-    selectedDireccion
+    selectedDireccion,
+    allowDelete
   }: Props) {
 
   const initialForm = {
@@ -487,7 +488,7 @@ export default function FormularioDireccion(
           <div className="flex justify-end  items-center pt-6">
 
             {/* ELIMINAR */}
-            {isEditing && (
+            {isEditing  && allowDelete !== false && (
               <button
                 type="button"
                 onClick={() => setShowConfirm(true)}
