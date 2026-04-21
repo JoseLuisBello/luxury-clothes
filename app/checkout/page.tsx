@@ -127,6 +127,8 @@ export default function CheckoutPage() {
     const [direccion, setDirecciones] = useState<ListaDireccionEnvio[]>([]);
     const [selectedDireccion, setSelectedDireccion] =
   useState<ListaDireccionEnvio | null>(null);
+  const [direccionEnEdicion, setDireccionEnEdicion] =
+  useState<ListaDireccionEnvio | null>(null);
   
     useEffect(() => {
       const token = localStorage.getItem("token");
@@ -188,7 +190,7 @@ export default function CheckoutPage() {
                       </p>
                     </div>
                     <button
-                      onClick={() => setIsModalOpen(true)}
+                      onClick={() => { setDireccionEnEdicion(selectedDireccion);setIsModalOpen(true)}}
                         className="text-black text-sm font-bold underline"
                     >
                       Editar
@@ -199,7 +201,7 @@ export default function CheckoutPage() {
                   <div className="pt-4">
                      <button
                     onClick={() => {
-                      setSelectedDireccion(null); // 👈 importante (modo crear)
+                      setDireccionEnEdicion(null);
                       setIsModalOpen(true);
                     }}
                     className="bg-black text-white px-6 py-2.5 rounded-full font-medium hover:opacity-80 transition"
@@ -284,20 +286,19 @@ export default function CheckoutPage() {
         </div>
       </div>
     </div>
+    //Formulario para editar o añadir direccion
     <FormularioDireccion
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
       onSubmit={(data) => {
-        loadDireccion(); // recargar lista
+        loadDireccion();
 
-        // 👉 si viene una dirección nueva o editada
         if (data?.direccion) {
           setSelectedDireccion(data.direccion);
-        } else if (data?.id) {
-          setSelectedDireccion(data);
         }
       }}
-      selectedDireccion={selectedDireccion}
+      selectedDireccion={direccionEnEdicion}
+      allowDelete={false}
     />
   </div>
   );
