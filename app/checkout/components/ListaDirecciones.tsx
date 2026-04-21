@@ -21,7 +21,7 @@ export default function ListaDirecciones({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="bg-white w-full max-w-2xl rounded-2xl p-6 max-h-[80vh] overflow-y-auto overflow-hidden shadow-2xl">
+      <div className="bg-white w-full max-w-2xl rounded-2xl p-6 max-h-[90vh] overflow-y-auto overflow-hidden shadow-2xl">
 
         {/* HEADER */}
         <h2 className="text-xl font-semibold mb-1">
