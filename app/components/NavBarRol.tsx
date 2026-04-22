@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation"; // <--- Importante
+import { usePathname } from "next/navigation"; 
 import NavBar from "./NavBar";
 import NavBarLogistica from "./NavBarLogistica";
 
 export default function NavBarRol(props: any) {
   const [rol, setRol] = useState<number | null>(null);
   const [ready, setReady] = useState(false);
-  const pathname = usePathname(); // Escucha cambios de URL
+  const pathname = usePathname(); 
 
   useEffect(() => {
     const checkAuth = () => {
@@ -17,7 +17,7 @@ export default function NavBarRol(props: any) {
     };
 
     checkAuth();
-  }, [pathname]); // <--- Cada vez que cambies de página, volverá a leer el localStorage
+  }, [pathname]);
 
   if (!ready) return null;
 
