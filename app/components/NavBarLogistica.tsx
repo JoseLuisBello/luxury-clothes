@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function NavBarRol() {
+export default async function NavBarLogistica() {
 
 
   return (
