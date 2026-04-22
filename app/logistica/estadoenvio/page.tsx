@@ -14,6 +14,7 @@ export default function EnviosPendientes(){
   const [openModal, setOpenModal] = useState(false);
   const [pedidoSeleccionado, setPedidoSeleccionado] = useState<number | null>(null);
   const [nuevoEstado, setNuevoEstado] = useState("");
+  const [detalleEnvio, setDetalleEnvio] = useState<EstadoEnvioDetalle | null>(null);
 
   const getEstadoColor = (estado: EnvioPendiente["estado_envio"]): string => {
     switch (estado) {
@@ -147,9 +148,11 @@ export default function EnviosPendientes(){
               </div>
 
               <button
-                onClick={() => {
+                onClick={async () => {
                   setPedidoSeleccionado(envio.id_pedido);
                   setOpenModal(true);
+
+                  await cargarDetalleEnvio(envio.id_pedido);
                 }}
                 className={`flex items-center justify-center gap-2 font-black p-4 text-xs uppercase tracking-widest transition shadow-lg rounded-full ${
                   envio.estado_envio === "Entregado" 
