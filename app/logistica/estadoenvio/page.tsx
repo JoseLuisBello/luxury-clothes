@@ -194,7 +194,7 @@ export default function EnviosPendientes(){
         </section>
 
         {openModal && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-100">
             
             <div className="bg-white w-105 rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
 
@@ -205,7 +205,7 @@ export default function EnviosPendientes(){
                 </h3>
 
                 <p className="text-xs text-gray-500 mt-1">
-                  Actualización de estado logístico
+                  Actualización de estado de envío
                 </p>
               </div>
 
