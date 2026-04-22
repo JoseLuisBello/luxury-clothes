@@ -57,6 +57,7 @@ export default async function RootLayout({
       <body
         className={`${geistMontserrat.variable} antialiased min-h-screen flex flex-col`}
       >
+        
         <NavBarRol 
           generos={generos}
           categoriasPorGenero={categoriasPorGenero}
