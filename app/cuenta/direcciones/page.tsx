@@ -84,7 +84,6 @@ export default function DireccionesPage() {
       <div className="max-w-7xl mx-auto px-8 py-6">
           <h1 className="text-3xl font-semibold text-center">Direcciones de envío guardadas</h1>
           <p className="text-center text-gray-600 mt-1 text-lg">
-            
           </p>
         </div>
 
