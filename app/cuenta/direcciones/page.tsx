@@ -8,7 +8,6 @@ import DireccionEnvio from "./components/DireccionEnvio";
 import { ListaDireccionEnvio } from "@/types/direccionesenvio/DireccionesEnvio";
 import SidebarCuenta from "@/app/components/SidebarCuenta";
 
-
 export default function DireccionesPage() {
   const [direcciones, setDirecciones] = useState<ListaDireccionEnvio[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -79,33 +78,34 @@ export default function DireccionesPage() {
   };
 
   return (
-     <div className="min-h-screen bg-gray-50 flex flex-col">
-          
-      <div className="max-w-7xl mx-auto px-8 py-6">
-          <h1 className="text-3xl font-semibold text-center">Direcciones de envío guardadas</h1>
+    <div className="min-h-screen bg-gray-50 flex flex-col max-w-full">
+      <div className=" mx-auto px-8 py-6 pb-15 ">
+       
+          <h1 className="text-3xl font-semibold text-center">
+             Direcciones de entrega guardadas
+          </h1>
           <p className="text-center text-gray-600 mt-1 text-lg">
+            Gestiona tus direccion de envio
           </p>
         </div>
 
-    <div className="flex flex-1 w-full max-w-7xl px-50 pt-10">
-            <SidebarCuenta />
-      
-
-      </div>
-      <div className="flex-1">
+        <div className="flex flex-1  px-50">
+            <SidebarCuenta /> 
+        <div className="flex-1 p-10 bg-white max-w-full h-full">
+      {/* BOTÓN ARRIBA SOLO SI HAY DIRECCIONES */}
       {hasDirecciones && (
-        <div className="flex justify-end mt-4">
+        <div className=" flex justify-start rounded-2xl">
           <button
             onClick={() => {setSelectedDireccion(null);setIsModalOpen(true)}}
             className="bg-black text-white px-6 py-2.5 rounded-full font-medium hover:opacity-80 transition"
           >
-            Agregar nueva
+            + Agregar nueva direccion
           </button>
         </div>
       )}
       
       {!hasDirecciones ? (
-       <div className="flex justify-end mb-4">
+        <div className="bg-gray-50 rounded-lg p-6 text-center pb-40 mt-6">
           <p className="text-gray-700 mt-2 mb-6">
             Actualmente no tienes ninguna dirección de envío guardada. <br /> Agrega
             una dirección aquí para que se complete automáticamente y puedas
@@ -144,10 +144,9 @@ export default function DireccionesPage() {
         allowDelete={true}
       />
 
+      </div>
     </div>
-    </div>
-    
-
+  </div>
 
   );
 }
