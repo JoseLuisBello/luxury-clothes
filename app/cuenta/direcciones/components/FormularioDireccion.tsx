@@ -127,7 +127,11 @@ export default function FormularioDireccion(
     const data = await res.json();
 
     if (!res.ok) {
-      console.error("ERROR DELETE:", data);
+      if (data.error?.includes("envío")) {
+        alert("📦 No puedes eliminar esta dirección porque ya fue usada en un envío.");
+      } else {
+        alert("Error al eliminar la dirección");
+      }
       return;
     }
 
