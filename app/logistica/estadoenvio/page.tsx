@@ -1,7 +1,7 @@
 "use client"
 import { useEffect } from "react";
-import React, { useState } from 'react';
-import { MapPin, Clock, RefreshCcw } from 'lucide-react';
+import { useState } from 'react';
+import { Clock } from 'lucide-react';
 import { EnvioPendiente, EstadoEnvioDetalle } from '@/types/logistica/envio_pendiente';
 
 export default function EnviosPendientes(){
