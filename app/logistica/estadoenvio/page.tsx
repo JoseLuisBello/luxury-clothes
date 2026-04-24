@@ -61,7 +61,7 @@ export default function EnviosPendientes(){
       (envio: EnvioPendiente, index: number, self: EnvioPendiente[]) =>
         index === self.findIndex(e => e.id_pedido === envio.id_pedido)
     );
-    console.log(unicos);
+    // console.log(unicos);
 
     setEnvioPendiente(unicos);
 
@@ -89,12 +89,12 @@ export default function EnviosPendientes(){
       const res = await fetch(`/api/logistica/estado_envio/${id}`);
 
       const data = await res.json();
-console.log("Respuesta cruda:", data);
+      // console.log("Respuesta cruda:", data);
 
-if (!res.ok) throw new Error(data.error);
+      if (!res.ok) throw new Error(data.error);
 
       setDetalleEnvio(data.data);
-return data.data;
+      return data.data;
     } catch (err: any) {
       setError(err.message);
     }
@@ -177,7 +177,6 @@ return data.data;
               </div>
 
               <button
-             
                 onClick={async () => {
                   setPedidoSeleccionado(envio.id_pedido);
                   setDetalleEnvio(null);
