@@ -31,10 +31,8 @@ export default function NavBar({
       <nav className="*:h-full flex items-center">
         <ul className="h-full flex justify-center items-center text-sm space-x-9">
           <li className="h-full text-white group hover:underline" key={12312}>
-            <div className="h-full w-auto flex items-center justify-center">
-              <Link href="#">
+            <div className="h-full w-auto flex items-center justify-center cursor-pointer">
                 {"CATEGORÍAS"}
-              </Link>
             </div>
 
             <div className="
@@ -48,7 +46,7 @@ export default function NavBar({
                 {
                   todasLasCategorias.data?.map( categoria =>
                     <div key={categoria.id_categoria}>
-                      <p className="font-semibold mb-3"><Link href="#">{categoria.categoria.toUpperCase()}</Link></p>
+                      <p className="font-semibold mb-3 hover:underline"><Link href={`/productos?categoria=${categoria.id_categoria}`}>{categoria.categoria.toUpperCase()}</Link></p>
                       <ul className="space-y-2 text-gray-600">
                         {
                           categoria.subcategorias.map(
@@ -72,10 +70,8 @@ export default function NavBar({
             generos.data.slice(0, 3)?.map( (genero) => {
               const categorias = categoriasPorGenero.find(c => c.generoId === genero.id);
               return (<li className="h-full text-white group hover:underline flex justify-center items-center" key={genero.id}>
-                <div className="h-full w-auto flex items-center justify-center">
-                  <Link href="#">
+                <div className="h-full w-auto flex items-center justify-center cursor-pointer">
                     {genero.nombre.toUpperCase()}
-                  </Link>
                 </div>
               
 
@@ -91,7 +87,7 @@ export default function NavBar({
                       {
                         categorias?.categorias?.map( (categoria) => (
                           <div key={categoria.id_categoria}>
-                            <p className="font-semibold mb-3"><Link href="#">{categoria.categoria.toUpperCase()}</Link></p>
+                            <p className="font-semibold mb-3 hover:underline"><Link href={`/productos?categoria=${categoria.id_categoria}`}>{categoria.categoria.toUpperCase()}</Link></p>
                             <ul className="space-y-2 text-gray-600">
                               {
                                 categoria.subcategorias.map(
