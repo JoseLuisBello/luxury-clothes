@@ -61,6 +61,7 @@ export default function EnviosPendientes(){
       (envio: EnvioPendiente, index: number, self: EnvioPendiente[]) =>
         index === self.findIndex(e => e.id_pedido === envio.id_pedido)
     );
+    console.log(unicos);
 
     setEnvioPendiente(unicos);
 
@@ -88,11 +89,12 @@ export default function EnviosPendientes(){
       const res = await fetch(`/api/logistica/estado_envio/${id}`);
 
       const data = await res.json();
+console.log("Respuesta cruda:", data);
 
-      if (!res.ok) throw new Error(data.error);
+if (!res.ok) throw new Error(data.error);
 
       setDetalleEnvio(data.data);
-
+return data.data;
     } catch (err: any) {
       setError(err.message);
     }
@@ -175,12 +177,12 @@ export default function EnviosPendientes(){
               </div>
 
               <button
-                onClick={async () => {
+             
+  onClick={async () => {
                   setPedidoSeleccionado(envio.id_pedido);
-
-                  await cargarDetalleEnvio(envio.id_pedido);
+                  setDetalleEnvio(null);
                   setOpenModal(true);
-
+                  const res = await cargarDetalleEnvio(envio.id_pedido);
                 }}
                 className={`flex items-center justify-center gap-2 font-black p-4 text-xs uppercase tracking-widest transition shadow-lg rounded-full ${
                   envio.estado_envio === "Entregado" 
