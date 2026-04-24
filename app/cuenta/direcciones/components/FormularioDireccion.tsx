@@ -127,8 +127,8 @@ export default function FormularioDireccion(
     const data = await res.json();
 
      if (!res.ok) {
-    setErrors({
-      invalido: "¡Ups! esta dirección está vinculada con un envío y no se puede eliminar.",
+      setErrors({
+        invalido: "¡Ups! esta dirección está vinculada con un envío y no se puede eliminar.",
     });
     return false; 
   }
