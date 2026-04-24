@@ -8,6 +8,8 @@ import { getMarcas } from "@/client/marca.client";
 import { getColores } from "@/client/color.client";
 import { getGeneros } from "@/client/genero.client";
 import { getTodasLasCategorias } from "@/client/categoria.client";
+import { FiltroV2Response } from "@/types/filtro_v2/filtro_v2";
+import { getFiltroV2 } from "@/client/filtro_v2.client";
 
 type Props = {
   searchParams: {
@@ -44,6 +46,9 @@ export default async function Productos({searchParams}: Props) {
   });
 
   const { productos } = res || {};
+
+  // Respuesta para el filtro
+  const filtroResponse = await getFiltroV2(categoria || 0);
 
   if (productos.length === 0) {
     return (
