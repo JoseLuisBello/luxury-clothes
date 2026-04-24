@@ -26,8 +26,7 @@ export default function EnviosPendientes(){
 
   const estadoActualIndex = flujoEstados.indexOf(detalleEnvio?.estado || "Pendiente");
 
-  const estadosDisponibles =
-  estadoActualIndex >= 0 && estadoActualIndex < flujoEstados.length - 1
+  const estadosDisponibles = estadoActualIndex >= 0 && estadoActualIndex < flujoEstados.length - 1
     ? [flujoEstados[estadoActualIndex + 1]]
     : [];
 
@@ -261,8 +260,20 @@ export default function EnviosPendientes(){
                   <label className="text-xs font-bold uppercase text-gray-500">
                     Nuevo estado
                   </label>
-
                   <select
+                    className="w-full mt-2 border border-gray-200 p-3 rounded-xl text-sm font-medium"
+                    value={nuevoEstado}
+                    onChange={(e) => setNuevoEstado(e.target.value)}
+                  >
+                    <option value="">Selecciona estado</option>
+
+                    {estadosDisponibles.map((estado) => (
+                      <option key={estado} value={estado}>
+                        {estado}
+                      </option>
+                    ))}
+                  </select>
+                  {/* <select
                     className="w-full mt-2 border border-gray-200 p-3 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-black"
                     value={nuevoEstado}
                     onChange={(e) => setNuevoEstado(e.target.value)}
@@ -272,7 +283,7 @@ export default function EnviosPendientes(){
                     <option value="Enviado">Enviado</option>
                     <option value="En Camino">En Camino</option>
                     <option value="Entregado">Entregado</option>
-                  </select>
+                  </select> */}
                 </div>
               </div>
 
