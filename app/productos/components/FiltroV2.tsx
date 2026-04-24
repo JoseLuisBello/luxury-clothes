@@ -203,7 +203,7 @@ export default function FiltroV2({ data, title, count, titulos }: Props) {
                                             transition rounded-sm
                                         "></div>
 
-                                        <span>{c.nombre}</span>
+                                        <span>{c.genero + " (" + c.total_categoria+ ")"}</span>
                                     </label>
                                 </div>
                             </div>
@@ -217,11 +217,11 @@ export default function FiltroV2({ data, title, count, titulos }: Props) {
                                 <div key={color.id} className="flex flex-col items-center  w-fit">
                                     <div
                                         className="w-10 h-10 rounded-full cursor-pointer hover:scale-110 transition"
-                                        style={{ backgroundColor: getColor(color.nombre) }}
+                                        style={{ backgroundColor: getColor(color.color || "") }}
                                         onClick={() => aplicarFiltro("color", color.id.toString())}
                                     ></div>
                                     <span className="text-xs mt-2 text-gray-700">
-                                        {color.nombre}
+                                        {color.color + " (" + color.total_categoria + ")"}
                                     </span>
                                 </div>
                             ))}
@@ -242,7 +242,7 @@ export default function FiltroV2({ data, title, count, titulos }: Props) {
                                             transition rounded-sm
                                         "></div>
 
-                                        <span>{c.nombre}</span>
+                                        <span>{c.marca + " (" + c.total_categoria + ")"}</span>
                                     </label>
                                 </div>
                             </div>
