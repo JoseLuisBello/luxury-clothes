@@ -8,7 +8,6 @@ import { getMarcas } from "@/client/marca.client";
 import { getColores } from "@/client/color.client";
 import { getGeneros } from "@/client/genero.client";
 import { getTodasLasCategorias } from "@/client/categoria.client";
-import { FiltroV2Response } from "@/types/filtro_v2/filtro_v2";
 import { getFiltroV2 } from "@/client/filtro_v2.client";
 
 type Props = {
@@ -24,6 +23,7 @@ type Props = {
 export default async function Productos({searchParams}: Props) {
   const { categoria, subcategoria, genero, marca } = await searchParams;
 
+  // TODO: Vas a poder borrar esto jasdfasdkj
   const categoriasRes = await getTodasLasCategorias();
   const generosRes = await getGeneros();
   const generos = generosRes.data;
@@ -31,6 +31,7 @@ export default async function Productos({searchParams}: Props) {
   const colores = coloresRes.data;
   const marcasRes = await getMarcas();
   const marcas = marcasRes.data;
+
 
   const res = await getCatalogo({
     id_categoria: categoria,
@@ -48,7 +49,13 @@ export default async function Productos({searchParams}: Props) {
   const { productos } = res || {};
 
   // Respuesta para el filtro
-  const filtroResponse = await getFiltroV2(categoria || 0);
+  try {
+    const { data } = await getFiltroV2(categoria || 0);
+  } catch (err : any) {
+    if (err.message === "El ID de categoría no puede ser 0") {
+      console.error("Error al obtener el filtro v2:", err.message);
+    }    
+  }
 
   if (productos.length === 0) {
     return (
