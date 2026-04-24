@@ -265,11 +265,13 @@ export default function EnviosPendientes(){
                     value={nuevoEstado}
                     onChange={(e) => setNuevoEstado(e.target.value)}
                   >
-                    <option value="">Selecciona estado</option>
-                    <option value="Preparado">Preparado</option>
-                    <option value="Enviado">Enviado</option>
-                    <option value="En Camino">En Camino</option>
-                    <option value="Entregado">Entregado</option>
+                   <option value="">Selecciona estado</option>
+
+                    {siguienteEstado && (
+                      <option value={siguienteEstado}>
+                        {siguienteEstado}
+                      </option>
+                    )}
                   </select>
                 </div>
               </div>
