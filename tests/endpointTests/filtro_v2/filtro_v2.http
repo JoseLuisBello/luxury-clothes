@@ -1,0 +1,2 @@
+# Obtener nuevo filtro
+GET http://localhost:3000/api/filtro_v2?id_categoria=2

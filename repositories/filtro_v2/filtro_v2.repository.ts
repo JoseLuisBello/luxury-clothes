@@ -191,6 +191,7 @@ export class FilterV2Repository {
         ]);
 
         return {
+            id_categoria: id_categoria,
             categoria: categoryResult.rows[0].nombre,
             total: totalResult.rows[0].total_categoria,
             cantidades: {
