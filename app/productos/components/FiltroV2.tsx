@@ -26,6 +26,9 @@ export default function FiltroV2({ data, title, count, titulos }: Props) {
     const [open, setOpen] = useState(false);
     const [activo, setActivo] = useState<string | null>(null);
 
+    const { categoria, id_categoria } = data || {};
+    const { cantidades } = data || {};
+    const { subcategorias, generos, colores, marcas } = cantidades || {};
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -157,35 +160,32 @@ export default function FiltroV2({ data, title, count, titulos }: Props) {
 
                     {/* seccion de categoria */}
                     <FiltroItem title="Categoría" open={activo === "categoria"} onToggle={() => setActivo(activo === "categoria" ? null : "categoria")}>
-                        {
-                            categorias.data.map((c) => (
-                                <div key={c.id_categoria}>
-                                    <p className="text-sm font-medium mb-1">
-                                        {c.categoria}
-                                    </p>
-                                    {
-                                        c.subcategorias.map((s) => (
-                                            <div key={s.id} className="text-sm ml-3 text-gray-500 cursor-pointer" onClick={() => aplicarFiltro("categoria", s.id.toString())}>
 
-                                                <label className="flex items-center space-x-2 cursor-pointer">
-                                                    <input type="checkbox" className="peer hidden" />
+                        <div key={id_categoria}>
+                            <p className="text-sm font-medium mb-1">
+                                {categoria}
+                            </p>
+                            {
+                                subcategorias?.map((s) => (
+                                    <div key={s.id} className="text-sm ml-3 text-gray-500 cursor-pointer" onClick={() => aplicarFiltro("categoria", s.id.toString())}>
 
-                                                    <div className="
-                                                        w-4 h-4 border border-gray-400
-                                                        peer-checked:bg-black
-                                                        peer-checked:border-black
-                                                        transition rounded-sm
-                                                    "></div>
+                                        <label className="flex items-center space-x-2 cursor-pointer">
+                                            <input type="checkbox" className="peer hidden" />
 
-                                                    <span>{s.nombre}</span>
-                                                </label>
-                                                
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                            ))
-                        }
+                                            <div className="
+                                                w-4 h-4 border border-gray-400
+                                                peer-checked:bg-black
+                                                peer-checked:border-black
+                                                transition rounded-sm
+                                            "></div>
+
+                                            <span>{s.nombre + " (" + s.cantidad + ")"}</span>
+                                        </label>
+                                        
+                                    </div>
+                                ))
+                            }
+                        </div>
                     </FiltroItem>
 
                     {/* seccion de genero */}
