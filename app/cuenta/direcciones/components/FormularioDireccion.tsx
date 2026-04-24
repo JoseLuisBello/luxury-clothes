@@ -133,16 +133,6 @@ export default function FormularioDireccion(
     return false; 
   }
 
-    // if (!res.ok) {
-
-    //   if (data.error?.includes("envío")) {
-    //     alert("📦 No puedes eliminar esta dirección porque ya fue usada en un envío.");
-    //   } else {
-    //     alert("Error al eliminar la dirección");
-    //   }
-    //   return;
-    // }
-
     onSubmit({ deleted: true, id: selectedDireccion.id });
     onClose();
     return true;
