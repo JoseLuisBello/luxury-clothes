@@ -178,7 +178,7 @@ return data.data;
 
               <button
              
-  onClick={async () => {
+                onClick={async () => {
                   setPedidoSeleccionado(envio.id_pedido);
                   setDetalleEnvio(null);
                   setOpenModal(true);
