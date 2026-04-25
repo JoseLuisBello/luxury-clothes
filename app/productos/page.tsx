@@ -74,7 +74,6 @@ export default async function Productos({searchParams}: Props) {
       />
 
       <div className="flex justify-between items-center w-full sticky top-0 bg-white z-5 mt-4 py-4">
-        {/* <Filtros categorias={categoriasRes} generos={generos} colores={colores} marcas={marcas}  count={productos.length} titulos={titulos}/> */}
         <FiltroV2 
           params={params}
           data={data}
@@ -89,7 +88,3 @@ export default async function Productos({searchParams}: Props) {
     </div>
   );
 }
-function timeout(arg0: () => void, arg1: number) {
-  throw new Error("Function not implemented.");
-}
-
