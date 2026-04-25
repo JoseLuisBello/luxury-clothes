@@ -36,17 +36,9 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
     const { cantidades } = data || {};
     const { subcategorias, generos, colores, marcas } = cantidades || {};
 
-    const [subcategoria, setSubcategoria] = useState<number | null>(
-        params?.id_subcategoria ? Number(params.id_subcategoria) : null
-    );
-
-    const [genero, setGenero] = useState<number | null>(
-        params?.id_genero ? Number(params.id_genero) : null
-    );
-
-    const [marca, setMarca] = useState<number | null>(
-        params?.id_marca ? Number(params.id_marca) : null
-    );
+    const selectedSubcategoria = params?.id_subcategoria ? Number(params.id_subcategoria) : null;
+    const selectedGenero = params?.id_genero ? Number(params.id_genero) : null;
+    const selectedMarca = params?.id_marca ? Number(params.id_marca) : null;
 
     const [color, setColor] = useState<number | null>(
         null
@@ -55,20 +47,17 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    let cantidad = 0;
+    function aplicarFiltro(key: string, value: string | null) {
+        const params = new URLSearchParams(searchParams.toString());
 
-    // function aplicarFiltro(key: string, value: string) {
-    //     const params = new URLSearchParams(searchParams.toString());
+        if (value === null) {
+            params.delete(key);
+        } else {
+            params.set(key, value);
+        }
 
-    //     params.set(key, value);
-
-    //     if (!params.get("q")) {
-    //         const q = searchParams.get("q");
-    //         if (q) params.set("q", q);
-    //     }
-
-    //     router.push(`/productos/buscar?${params.toString()}`);
-    // }
+        router.push(`/productos?${params.toString()}`);
+    }
 
     // function limpiarFiltros() {
     //     const params = new URLSearchParams();
@@ -217,12 +206,12 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
                                     <input 
                                     type="checkbox"
                                     className="peer hidden"
-                                    checked={subcategoria === s.id}
+                                    checked={selectedSubcategoria === s.id}
                                     onChange={() => { 
-                                        if (subcategoria === s.id) {
-                                        setSubcategoria(null);
+                                        if (selectedSubcategoria === s.id) {
+                                            aplicarFiltro("subcategoria", null);
                                         } else {
-                                        setSubcategoria(s.id);
+                                            aplicarFiltro("subcategoria", s.id.toString());
                                         }
                                     }}
                                     />
@@ -244,9 +233,9 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
                     {/* seccion de genero */}
                     <FiltroItem title="Género" open={activo === "género"} onToggle={() => setActivo(activo === "género" ? null : "género")}>
                         {generos?.map((c) => {
-                            const cantidad = getCantidadPorSubcategoria(c, subcategoria);
+                            const cantidad = getCantidadPorSubcategoria(c, selectedSubcategoria);
 
-                            if (cantidad === 0) return null; // 🔥 no renderizar
+                            if (cantidad === 0) return null;
 
                             return (
                                 <div key={c.id}>
@@ -255,13 +244,13 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
                                     <input 
                                         type="checkbox"
                                         className="peer hidden"
-                                        checked={genero === c.id}
+                                        checked={selectedGenero === c.id}
                                         onChange={() => { 
-                                        if (genero === c.id) {
-                                            setGenero(null);
-                                        } else {
-                                            setGenero(c.id);
-                                        }
+                                            if (selectedGenero === c.id) {
+                                                aplicarFiltro("genero", null);
+                                            } else {
+                                                aplicarFiltro("genero", c.id.toString());
+                                            }
                                         }}
                                     />
 
@@ -307,9 +296,9 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
 
                     <FiltroItem title="Marcas" open={activo === "marca"} onToggle={() => setActivo(activo === "marca" ? null : "marca")}>
                         {marcas?.map((c) => {
-                            const cantidad = getCantidadPorSubcategoria(c, subcategoria);
+                            const cantidad = getCantidadPorSubcategoria(c, selectedSubcategoria);
 
-                            if (cantidad === 0) return null; // 🔥 aquí lo filtras
+                            if (cantidad === 0) return null;
 
                             return (
                                 <div key={c.id}>
@@ -319,12 +308,12 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
                                     <input 
                                         type="checkbox"
                                         className="peer hidden"
-                                        checked={marca === c.id}
+                                        checked={selectedMarca === c.id}
                                         onChange={() => { 
-                                        if (marca === c.id) {
-                                            setMarca(null);
+                                        if (selectedMarca === c.id) {
+                                            aplicarFiltro("marca", null);
                                         } else {
-                                            setMarca(c.id);
+                                            aplicarFiltro("marca", c.id.toString());
                                         }
                                         }}
                                     />
