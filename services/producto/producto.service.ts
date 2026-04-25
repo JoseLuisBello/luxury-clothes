@@ -19,18 +19,21 @@ export class Producto {
         id_genero,
         id_categoria,
         id_subcategoria,
-        id_marca
+        id_marca,
+        id_color,
     }: {
         id_genero?: number;
         id_categoria?: number;
         id_subcategoria?: number;
         id_marca?: number;
+        id_color?: number;
     }) {
         return await ProductoRepo.getAllProducts({
             id_genero,
             id_categoria,
             id_subcategoria,
-            id_marca
+            id_marca,
+            id_color,
         });
     }
 
