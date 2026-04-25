@@ -15,6 +15,7 @@ interface ProductoInput {
   id_subcategoria?: number;
   id_marca?: number;
   activo?: boolean;
+  stock: number;
 }
 
 export class AdministradorRepository {
@@ -58,27 +59,28 @@ export class AdministradorRepository {
     );
   }
 
-  static async crearProducto(data: ProductoInput): Promise<QueryResult> {
-    const {
-      nombre,
-      descripcion,
-      precio,
-      id_color = 1,      // valor por defecto
-      id_genero = 1,
-      id_subcategoria = 1,
-      id_marca = 1,
-      activo = true,
-    } = data;
+static async crearProducto(data: ProductoInput): Promise<QueryResult> {
+  const {
+    nombre,
+    descripcion,
+    precio,
+    stock,
+    id_color = 1,
+    id_genero = 1,
+    id_subcategoria = 1,
+    id_marca = 1,
+    activo = true,
+  } = data;
 
-    return pool.query(
-      `INSERT INTO "Producto" (
-         nombre, descripcion, precio,
-         id_color, id_genero, id_subcategoria, id_marca, activo
-       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-       RETURNING id, nombre, descripcion, precio, activo`,
-      [nombre, descripcion, precio, id_color, id_genero, id_subcategoria, id_marca, activo]
-    );
-  }
+  return pool.query(
+    `INSERT INTO "Producto" (
+       nombre, descripcion, precio,
+       id_color, id_genero, id_subcategoria, id_marca, activo
+     ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+     RETURNING id, nombre, descripcion, precio, activo`,
+    [nombre, descripcion, precio, id_color, id_genero, id_subcategoria, id_marca, activo]
+  );
+}
 
   static async actualizarProducto(id: number, data: Partial<ProductoInput>): Promise<QueryResult> {
     if (Object.keys(data).length === 0) {
