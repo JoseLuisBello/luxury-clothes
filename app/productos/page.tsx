@@ -1,11 +1,12 @@
 import BreadCrumb from "./components/BreadCrumb";
 import CatalogoCuerpo from "./components/CatalogoCuerpo";
 import { getCatalogo } from "@/client/producto.client";
-import { Loader } from "lucide-react";
 import { breadCrumbs } from "./utils/producto";
 // import Filtros from "./components/Filtros";
 import { getFiltroV2 } from "@/client/filtro_v2.client";
 import FiltroV2 from "./components/FiltroV2";
+import Link from "next/link";
+import { time } from "console";
 
 type Props = {
   searchParams: {
@@ -34,6 +35,7 @@ export default async function Productos({searchParams}: Props) {
     id_subcategoria: subcategoria,
     id_genero: genero,
     id_marca: marca,
+    id_color: color
   });
 
   const titulos = breadCrumbs({
@@ -55,9 +57,20 @@ export default async function Productos({searchParams}: Props) {
   }
 
   if (productos.length === 0) {
+    timeout(() => {
+      window.location.href = "/productos?categoria=1";
+    }, 3000);
     return (
       <div className="h-full w-full flex items-center justify-center">
-        <Loader className="animate-spin" size={48} />
+        <div className="w-full h-[50vh] flex flex-col items-center justify-center gap-4">
+          <p className="text-xl font-medium">
+            No hay productos disponibles
+          </p>
+
+          <p className="text-gray-500">
+            Algo no está bien, volviendo a inicio...
+          </p>
+        </div>
       </div>
     );
   }
@@ -88,3 +101,7 @@ export default async function Productos({searchParams}: Props) {
     </div>
   );
 }
+function timeout(arg0: () => void, arg1: number) {
+  throw new Error("Function not implemented.");
+}
+

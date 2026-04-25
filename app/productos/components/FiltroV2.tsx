@@ -25,6 +25,7 @@ interface Props {
         id_subcategoria?: number;
         id_genero?: number;
         id_marca?: number;
+        id_color?: number;
     }
 }
 
@@ -39,15 +40,16 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
     const selectedSubcategoria = params?.id_subcategoria ? Number(params.id_subcategoria) : null;
     const selectedGenero = params?.id_genero ? Number(params.id_genero) : null;
     const selectedMarca = params?.id_marca ? Number(params.id_marca) : null;
-
-    const [color, setColor] = useState<number | null>(
-        null
-    );
+    const selectedColor = params?.id_color ? Number(params.id_color) : null;
 
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    function aplicarFiltro(key: string, value: string | null) {
+    function aplicarFiltro(
+        key: string,
+        value: string | null,
+        resetKeys: string[] = []
+    ) {
         const params = new URLSearchParams(searchParams.toString());
 
         if (value === null) {
@@ -55,6 +57,8 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
         } else {
             params.set(key, value);
         }
+
+        resetKeys.forEach((k) => params.delete(k));
 
         router.push(`/productos?${params.toString()}`);
     }
@@ -209,9 +213,9 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
                                     checked={selectedSubcategoria === s.id}
                                     onChange={() => { 
                                         if (selectedSubcategoria === s.id) {
-                                            aplicarFiltro("subcategoria", null);
+                                            aplicarFiltro("subcategoria", null, ["color"]);
                                         } else {
-                                            aplicarFiltro("subcategoria", s.id.toString());
+                                            aplicarFiltro("subcategoria", s.id.toString(), ["color"]);
                                         }
                                     }}
                                     />
@@ -247,9 +251,9 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
                                         checked={selectedGenero === c.id}
                                         onChange={() => { 
                                             if (selectedGenero === c.id) {
-                                                aplicarFiltro("genero", null);
+                                                aplicarFiltro("genero", null, ["color"]);
                                             } else {
-                                                aplicarFiltro("genero", c.id.toString());
+                                                aplicarFiltro("genero", c.id.toString(), ["color"]);
                                             }
                                         }}
                                     />
@@ -274,23 +278,25 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
                     {/* seccion de Color */}
                     <FiltroItem title="Color" open={activo === "color"} onToggle={() => setActivo(activo === "color" ? null : "color")}>
                         <div className=" px-8 mt-4 grid grid-cols-3 gap-x-1 gap-y-6 justify-items-center">
-                            {colores?.map((color) => (
-                                <div key={color.id} className="flex flex-col items-center  w-fit">
-                                    {/* <div
-                                        className="w-10 h-10 rounded-full cursor-pointer hover:scale-110 transition"
-                                        style={{ backgroundColor: getColor(color.color || "") }}
-                                        onClick={() => aplicarFiltro("color", color.id.toString())}
-                                    ></div> */}
+                        {colores?.map((color) => {
+                        const cantidad = getCantidadPorSubcategoria(color, selectedSubcategoria);
 
-                                    <div
-                                        className="w-10 h-10 rounded-full cursor-pointer hover:scale-110 transition"
-                                        style={{ backgroundColor: getColor(color.color || "") }}
-                                    ></div>
-                                    <span className="text-xs mt-2 text-gray-700">
-                                        {color.color + " (" + color.total_categoria + ")"}
-                                    </span>
-                                </div>
-                            ))}
+                        if (cantidad === 0) return null;
+
+                        return (
+                            <div key={color.id} className="flex flex-col items-center w-fit">
+                            <div
+                                className="w-10 h-10 rounded-full cursor-pointer hover:scale-110 transition"
+                                style={{ backgroundColor: getColor(color.color || "") }}
+                                onClick={() => aplicarFiltro("color", color.id.toString())}
+                            ></div>
+
+                            <span className="text-xs mt-2 text-gray-700">
+                                {color.color} ({cantidad})
+                            </span>
+                            </div>
+                        );
+                        })}
                         </div>
                     </FiltroItem>
 
@@ -310,11 +316,11 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
                                         className="peer hidden"
                                         checked={selectedMarca === c.id}
                                         onChange={() => { 
-                                        if (selectedMarca === c.id) {
-                                            aplicarFiltro("marca", null);
-                                        } else {
-                                            aplicarFiltro("marca", c.id.toString());
-                                        }
+                                            if (selectedMarca === c.id) {
+                                                aplicarFiltro("marca", null, ["color"]);
+                                            } else {
+                                                aplicarFiltro("marca", c.id.toString(), ["color"]);
+                                            }
                                         }}
                                     />
 
