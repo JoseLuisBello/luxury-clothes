@@ -9,7 +9,7 @@ import { useRef, useState } from "react";
 import { X, Plus, Minus } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { Data } from "@/types/filtro_v2/filtro_v2";
+import { Colore, Data, TotalSubcategoria } from "@/types/filtro_v2/filtro_v2";
 
 interface Props {
     data: Data | undefined;
@@ -36,10 +36,26 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
     const { cantidades } = data || {};
     const { subcategorias, generos, colores, marcas } = cantidades || {};
 
-    const [subcategoria, setSubcategoria] = useState<number | null>(params?.id_subcategoria || null);
+    const [subcategoria, setSubcategoria] = useState<number | null>(
+        params?.id_subcategoria ? Number(params.id_subcategoria) : null
+    );
+
+    const [genero, setGenero] = useState<number | null>(
+        params?.id_genero ? Number(params.id_genero) : null
+    );
+
+    const [marca, setMarca] = useState<number | null>(
+        params?.id_marca ? Number(params.id_marca) : null
+    );
+
+    const [color, setColor] = useState<number | null>(
+        null
+    );
 
     const router = useRouter();
     const searchParams = useSearchParams();
+
+    let cantidad = 0;
 
     // function aplicarFiltro(key: string, value: string) {
     //     const params = new URLSearchParams(searchParams.toString());
@@ -67,7 +83,7 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
     // }
 
     function getCantidadPorSubcategoria(
-        item: any,
+        item: Colore,
         subcategoriaSeleccionada: number | null
     ) {
         if (!subcategoriaSeleccionada) {
@@ -75,7 +91,7 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
         }
 
         const match = item.total_subcategorias.find(
-            (s: any) => s.id_sub === subcategoriaSeleccionada
+            (s: TotalSubcategoria) => s.id_sub === subcategoriaSeleccionada
         );
 
         return match?.cantidad || 0;
@@ -192,70 +208,78 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
                             <p className="text-sm font-medium mb-1">
                                 {categoria}
                             </p>
-                            {
-                                subcategorias?.map((s) => (
-                                    // <div key={s.id} className="text-sm ml-3 text-gray-500 cursor-pointer" onClick={() => aplicarFiltro("categoria", s.id.toString())}>
-                                    <div key={s.id} className="text-sm ml-3 text-gray-500 cursor-pointer">
+                            {subcategorias
+                            ?.filter((s) => s.cantidad > 0)
+                            .map((s) => (
+                                <div key={s.id} className="text-sm ml-3 text-gray-500 cursor-pointer">
 
+                                <label className="flex items-center space-x-2 cursor-pointer">
+                                    <input 
+                                    type="checkbox"
+                                    className="peer hidden"
+                                    checked={subcategoria === s.id}
+                                    onChange={() => { 
+                                        if (subcategoria === s.id) {
+                                        setSubcategoria(null);
+                                        } else {
+                                        setSubcategoria(s.id);
+                                        }
+                                    }}
+                                    />
 
-                                        <label className="flex items-center space-x-2 cursor-pointer">
-                                            <input 
-                                                type="checkbox"
-                                                className="peer hidden"
-                                                checked={subcategoria === s.id}
-                                                onChange={() => { 
-                                                    if (subcategoria === s.id) {
-                                                        setSubcategoria(null);
-                                                    } else {
-                                                        setSubcategoria(s.id);
-                                                    }
-                                                }}
-                                            />
+                                    <div className="
+                                    w-4 h-4 border border-gray-400
+                                    peer-checked:bg-black
+                                    peer-checked:border-black
+                                    transition rounded-sm
+                                    "></div>
 
-                                            <div className={`
-                                                w-4 h-4 border border-gray-400
-                                                peer-checked:bg-black
-                                                peer-checked:border-black
-                                                transition rounded-sm
-                                            `}
-                                            ></div>
-
-                                            <span>{s.nombre + " (" + s.cantidad + ")"}</span>
-                                        </label>
-                                        
-                                    </div>
-                                ))
-                            }
+                                    <span>{s.nombre} ({s.cantidad})</span>
+                                </label>
+                                </div>
+                            ))}
                         </div>
                     </FiltroItem>
 
                     {/* seccion de genero */}
                     <FiltroItem title="Género" open={activo === "género"} onToggle={() => setActivo(activo === "género" ? null : "género")}>
-                        {generos?.map((c) => (
-                            <div key={c.id}>
-                                {/* <div className="text-sm font-normal cursor-pointer" onClick={() => aplicarFiltro("genero", c.id.toString())}> */}
+                        {generos?.map((c) => {
+                            const cantidad = getCantidadPorSubcategoria(c, subcategoria);
+
+                            if (cantidad === 0) return null; // 🔥 no renderizar
+
+                            return (
+                                <div key={c.id}>
                                 <div className="text-sm font-normal cursor-pointer">
-
                                     <label className="flex items-center space-x-2 cursor-pointer">
-                                        <input 
-                                            type="checkbox"
-                                            className="peer hidden"
-                                            checked={Number(params?.id_genero) === c.id}
-                                            readOnly
-                                        />
+                                    <input 
+                                        type="checkbox"
+                                        className="peer hidden"
+                                        checked={genero === c.id}
+                                        onChange={() => { 
+                                        if (genero === c.id) {
+                                            setGenero(null);
+                                        } else {
+                                            setGenero(c.id);
+                                        }
+                                        }}
+                                    />
 
-                                        <div className="
-                                            w-4 h-4 border border-gray-400
-                                            peer-checked:bg-black
-                                            peer-checked:border-black
-                                            transition rounded-sm
-                                        "></div>
+                                    <div className="
+                                        w-4 h-4 border border-gray-400
+                                        peer-checked:bg-black
+                                        peer-checked:border-black
+                                        transition rounded-sm
+                                    "></div>
 
-                                        <span>{c.genero + " (" + c.total_categoria+ ")"}</span>
+                                    <span>
+                                        {c.genero} ({cantidad})
+                                    </span>
                                     </label>
                                 </div>
-                            </div>
-                        ))}
+                                </div>
+                            );
+                        })}
                     </FiltroItem>
 
                     {/* seccion de Color */}
@@ -282,26 +306,44 @@ export default function FiltroV2({ data, title, count, titulos, params }: Props)
                     </FiltroItem>
 
                     <FiltroItem title="Marcas" open={activo === "marca"} onToggle={() => setActivo(activo === "marca" ? null : "marca")}>
-                        {marcas?.map((c) => (
-                            <div key={c.id}>
-                                {/* <div className="text-sm font-normal cursor-pointer" onClick={() => aplicarFiltro("marca", c.id.toString())}> */}
+                        {marcas?.map((c) => {
+                            const cantidad = getCantidadPorSubcategoria(c, subcategoria);
+
+                            if (cantidad === 0) return null; // 🔥 aquí lo filtras
+
+                            return (
+                                <div key={c.id}>
                                 <div className="text-sm font-normal cursor-pointer">
 
                                     <label className="flex items-center space-x-2 cursor-pointer">
-                                        <input type="checkbox" className="peer hidden" />
+                                    <input 
+                                        type="checkbox"
+                                        className="peer hidden"
+                                        checked={marca === c.id}
+                                        onChange={() => { 
+                                        if (marca === c.id) {
+                                            setMarca(null);
+                                        } else {
+                                            setMarca(c.id);
+                                        }
+                                        }}
+                                    />
 
-                                        <div className="
-                                            w-4 h-4 border border-gray-400
-                                            peer-checked:bg-black
-                                            peer-checked:border-black
-                                            transition rounded-sm
-                                        "></div>
+                                    <div className="
+                                        w-4 h-4 border border-gray-400
+                                        peer-checked:bg-black
+                                        peer-checked:border-black
+                                        transition rounded-sm
+                                    "></div>
 
-                                        <span>{c.marca + " (" + c.total_categoria + ")"}</span>
+                                    <span>
+                                        {c.marca} ({cantidad})
+                                    </span>
                                     </label>
                                 </div>
-                            </div>
-                        ))}
+                                </div>
+                            );
+                            })}
                     </FiltroItem>
 
                     <div className="mt-6 space-y-4">
