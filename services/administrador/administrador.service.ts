@@ -23,18 +23,23 @@ export class ProductoService {
   }
 
   static async agregarProducto(data: any) {
-    // Solo validamos los campos que realmente vienen del formulario
     if (!data.nombre || !data.descripcion) {
       throw new Error("Nombre y descripción son obligatorios");
     }
+
     if (typeof data.precio !== 'number' || data.precio <= 0) {
       throw new Error("El precio debe ser un número mayor a 0");
+    }
+
+    if (typeof data.stock !== 'number' || data.stock < 0) {
+      throw new Error("El stock debe ser >= 0");
     }
 
     const productoData = {
       nombre: data.nombre,
       descripcion: data.descripcion,
       precio: data.precio,
+      stock: data.stock,
       id_color: data.id_color || 1,
       id_genero: data.id_genero || 1,
       id_subcategoria: data.id_subcategoria || 1,
