@@ -28,6 +28,7 @@ interface Props {
         id_genero?: number;
         id_marca?: number;
         id_color?: number;
+        order?: string;
     }
 }
 
@@ -42,6 +43,7 @@ export default function FiltroV2({ data, title, count, titulos, params, flag = f
     const selectedSubcategoria = params?.id_subcategoria ? Number(params.id_subcategoria) : null;
     const selectedGenero = params?.id_genero ? Number(params.id_genero) : null;
     const selectedMarca = params?.id_marca ? Number(params.id_marca) : null;
+    const selectedOrder = params?.order || "";
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -161,9 +163,18 @@ export default function FiltroV2({ data, title, count, titulos, params, flag = f
                     {/* SECCIONES */}
                     {/* seccion de orden */}
                     <FiltroItem title="Ordenar por" open={activo === "orden"} onToggle={() => setActivo(activo === "orden" ? null : "orden")}>
-                        <div className="text-sm cursor-pointer" onClick={() => aplicarFiltro("orden", "precio_asc")}>
+                        <div className="text-sm cursor-pointer">
                             <label className="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" className="peer hidden" />
+                                <input type="checkbox" className="peer hidden" 
+                                    checked={selectedOrder === "precio_asc"}
+                                    onChange={() => { 
+                                        if (selectedOrder === "precio_asc") {
+                                            aplicarFiltro("orden", null, ["color"]);
+                                        } else {
+                                            aplicarFiltro("orden", "precio_asc", ["color"]);
+                                        }
+                                    }}
+                                />
 
                                 <div className="
                                     w-4 h-4 border border-gray-400
@@ -175,9 +186,18 @@ export default function FiltroV2({ data, title, count, titulos, params, flag = f
                                 <span>Precio menor a mayor</span>
                             </label>
                         </div>
-                        <div className="text-sm cursor-pointer" onClick={() => aplicarFiltro("orden", "precio_desc")}>
+                        <div className="text-sm cursor-pointer">
                             <label className="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" className="peer hidden" />
+                                <input type="checkbox" className="peer hidden" 
+                                    checked={selectedOrder === "precio_desc"}
+                                        onChange={() => { 
+                                            if (selectedOrder === "precio_desc") {
+                                                aplicarFiltro("orden", null, ["color"]);
+                                            } else {
+                                                aplicarFiltro("orden", "precio_desc", ["color"]);
+                                            }
+                                        }}
+                                />
 
                                 <div className="
                                     w-4 h-4 border border-gray-400
