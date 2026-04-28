@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation"; 
 import NavBar from "./NavBar";
 import NavBarLogistica from "./NavBarLogistica";
+import NavBarLogisticaEmpacador from "./NavBarLogisticaEmpacador";
 import NavBarAdmin from "./NavBarAdmin";
 
 export default function NavBarRol(props: any) {
@@ -28,6 +29,10 @@ export default function NavBarRol(props: any) {
   
   if (rol === 3) {
     return <NavBarLogistica />;
+  }
+
+  if (rol === 4) {
+    return <NavBarLogisticaEmpacador />;
   }
 
   return <NavBar {...props} />;
