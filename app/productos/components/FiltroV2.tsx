@@ -100,7 +100,9 @@ export default function FiltroV2({ data, title, count, titulos, params, flag = f
             <div className="flex w-full justify-between items-end">
                 <div className="text-3xl font-medium">
                     {
-                        titulos && (<p>{titulos?.categoria ? ((titulos.subcategoria ? titulos.subcategoria : titulos.categoria) + " " + (titulos.genero ? "para " + titulos.genero + " (" + count + ")" : "(" + count + ")")) : (titulos?.marca ? titulos.marca + " (" + count + ")" : "Todos los productos (" + count + ")")}</p>)
+                        titulos && (<p>{titulos?.categoria ? ((titulos.subcategoria ? titulos.subcategoria : titulos.categoria) + " " + (titulos.genero ? "para " + titulos.genero + " (" + count + ")" : "(" + count + ")")) 
+                        
+                        : (titulos?.marca ? titulos.marca + " (" + count + ")" : (titulos?.subcategoria ? titulos.subcategoria + " (" + count + ")" : "Todos los productos (" + count + ")"))}</p>)
                     }
 
                     {

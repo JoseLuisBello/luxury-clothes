@@ -104,7 +104,7 @@ export default function Home() {
             <p className="text-2xl">Productos destacados</p>
 
             <div className="flex items-center gap-2">
-              <Link href="/productos?categoria=1">
+              <Link href="/productos">
                 <p className="underline text-lg">Ver todo</p>
               </Link>
               <button className="rounded-full border hover:cursor-pointer" onClick={anterior}>
@@ -211,7 +211,7 @@ export default function Home() {
             </div>
 
             <div className="flex items-center gap-2">
-              <Link href="/productos?categoria=1">
+              <Link href={`/productos?subcategoria=${currentCategory}`}>
                 <p className="underline text-lg">Ver todo</p>
               </Link>
               <button className="rounded-full border hover:cursor-pointer" onClick={ant}>
