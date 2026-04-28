@@ -30,6 +30,10 @@ export default function NavBarRol(props: any) {
     return <NavBarLogistica />;
   }
 
+  if (rol === 4) {
+    return <NavBarLogistica />;
+  }
+
   return <NavBar {...props} />;
 
 
