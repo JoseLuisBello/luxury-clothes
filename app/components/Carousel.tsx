@@ -16,28 +16,71 @@ import Image from "next/image";
 
 export default function Carrusel({ productos }: { productos: Producto[] }) {
   const [index, setIndex] = useState<number>(0);
+  const [transition, setTransition] = useState(true);
   const router = useRouter();
+
+  // useEffect(() => {
+  //   if (productos.length === 0) return;
+
+  //   const interval = setInterval(() => {
+  //     setIndex((prev) => (prev + 1) % productos.length);
+  //   }, 4000);
+
+  //   return () => clearInterval(interval);
+  // }, [productos]);
+
 
   useEffect(() => {
     if (productos.length === 0) return;
 
     const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % productos.length);
+      if (index === productos.length - 1) {
+        setTransition(false);
+        setIndex(0);
+
+        setTimeout(() => {
+          setTransition(true);
+        }, 50);
+      } else {
+        setTransition(true);
+        setIndex((prev) => prev + 1);
+      }
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [productos]);
+  }, [index, productos.length]);
+
 
   const siguiente = (e: any) => {
     e.stopPropagation();
-    setIndex((prev) => (prev + 1) % productos.length);
+
+    if (index === productos.length - 1) {
+      setTransition(false);
+      setIndex(0);
+
+      setTimeout(() => {
+        setTransition(true);
+      }, 50);
+    } else {
+      setTransition(true);
+      setIndex((prev) => prev + 1);
+    }
   };
 
   const anterior = (e: any) => {
     e.stopPropagation();
-    setIndex((prev) =>
-      prev === 0 ? productos.length - 1 : prev - 1
-    );
+
+    if (index === 0) {
+      setTransition(false);
+      setIndex(productos.length - 1);
+
+      setTimeout(() => {
+        setTransition(true);
+      }, 50);
+    } else {
+      setTransition(true);
+      setIndex((prev) => prev - 1);
+    }
   };
 
 
@@ -50,7 +93,10 @@ export default function Carrusel({ productos }: { productos: Producto[] }) {
     <div className="absolute inset-0 w-full h-full overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
         <div
-          className="flex h-full transition-transform duration-700 ease-in-out"
+          className={`
+            flex h-full
+            ${transition ? "transition-transform duration-700 ease-in-out" : ""}
+          `}
           style={{
             width: `${productos.length * 100}%`,
             transform: `translateX(-${index * (100 / productos.length)}%)`,
@@ -103,7 +149,7 @@ export default function Carrusel({ productos }: { productos: Producto[] }) {
           <h2 className="text-white text-4xl font-bold z-10 max-w-240">{producto.nombre}</h2>
         </div>
 
-        <button className="text-black bg-white py-2 px-4 rounded-[28px]" onClick={() => router.push(`/productos/${producto.id}`)}>
+        <button className="text-black bg-white py-2 px-4 rounded-[28px] hover:cursor-pointer" onClick={() => router.push(`/productos/${producto.id}`)}>
           Ver producto
         </button>
       </div>
