@@ -20,10 +20,18 @@ export default function Home() {
   const router = useRouter();
   const [categorias, setCategorias] = useState<any[]>([]);
   const [productos, setProductos] = useState<Producto[]>([]);
+  const [items, setItems] = useState<Producto[]>([]);
   const [marcas, setMarcas] = useState<any[]>([]);
+
+  // Para el carrusel de productos destacados
   const [currentSlide, setCurrentSlide] = useState(0);
   const productosPorSlide = 3;
   const totalSlides = Math.ceil(productos.length / productosPorSlide);
+
+  // Para el carrusel de productos por categoria
+  const [curSlide, setCurSlide] = useState(0);
+  const slidesTotal = Math.ceil(items.length / productosPorSlide);
+  const [currentCategory, setCurrentCategory] = useState<number>(13);
 
   // consulta de 10 productos al azar
   useEffect(() => {
@@ -40,6 +48,17 @@ export default function Home() {
       .then(data => setMarcas(data.data));
   }, []);
 
+  // conssulta por categorias
+  useEffect(() => {
+    fetch(`/api/catalogo?id_subcategoria=${currentCategory}&limit=10`)
+      .then(res => res.json())
+      .then(data => {
+        setItems(data.productos);
+        setCurSlide(0);
+      });
+  }, [currentCategory]);
+
+  // Para los productos destacados
   const siguiente = () => {
     setCurrentSlide((prev) =>
       prev === totalSlides - 1 ? 0 : prev + 1
@@ -49,6 +68,19 @@ export default function Home() {
   const anterior = () => {
     setCurrentSlide((prev) =>
       prev === 0 ? totalSlides - 1 : prev - 1
+    );
+  };
+
+  // Para productos por categoria
+  const sig = () => {
+    setCurSlide((prev) =>
+      prev === slidesTotal - 1 ? 0 : prev + 1
+    );
+  };
+
+  const ant = () => {
+    setCurSlide((prev) =>
+      prev === 0 ? slidesTotal - 1 : prev - 1
     );
   };
 
@@ -121,9 +153,88 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
 
-      
+
+
+
+        {/* Productos por categoria */}
+        <div className="flex flex-col gap-4">
+          {/* handler y titulo */}
+          <div className="flex items-center justify-between">
+            <div className="border flex items-center gap-4">
+              <button className="border text-black bg-white px-2 py-0.5 hover:cursor-pointer">
+                Tacones
+              </button>
+              
+              <button className="border text-black bg-white px-2 py-0.5 hover:cursor-pointer">
+                Camisas
+              </button>
+
+              <button className="border text-black bg-white px-2 py-0.5 hover:cursor-pointer">
+                Pantalones
+              </button>
+
+              <button className="border text-black bg-white px-2 py-0.5 hover:cursor-pointer">
+                Relojes
+              </button>
+
+              <button className="border text-black bg-white px-2 py-0.5 hover:cursor-pointer">
+                Joyería
+              </button>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Link href="/productos?categoria=1">
+                <p className="underline text-lg">Ver todo</p>
+              </Link>
+              <button className="rounded-full border hover:cursor-pointer" onClick={ant}>
+                <ChevronLeft size={25} />
+              </button>
+              <button className="rounded-full border hover:cursor-pointer" onClick={sig}>
+                <ChevronRight size={25} />
+              </button>
+            </div>
+          </div>
+          {/* Productos */}
+          <div className="overflow-hidden w-full">
+            <div
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{
+                width: `${slidesTotal * 100}%`,
+                transform: `translateX(-${curSlide * (100 / slidesTotal)}%)`,
+              }}
+            >
+              {Array.from({ length: slidesTotal }).map((_, slideIndex) => (
+                <div
+                  key={slideIndex}
+                  className="grid grid-cols-3 gap-6 shrink-0"
+                  style={{
+                    width: `${100 / slidesTotal}%`,
+                  }}
+                >
+                  {items
+                    .slice(
+                      slideIndex * productosPorSlide,
+                      (slideIndex + 1) * productosPorSlide
+                    )
+                    .map((producto) => (
+                      <Link
+                        href={`/productos/${producto.id}`}
+                        key={producto.id}
+                      >
+                        <ProductCard
+                          item={producto}
+                          showIcon={false}
+                          showToCart={false}
+                        />
+                      </Link>
+                    ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
