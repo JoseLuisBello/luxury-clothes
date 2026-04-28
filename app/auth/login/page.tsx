@@ -75,7 +75,11 @@ export default function LoginPage() {
     } else if (rol === 3) {
       router.push("/logistica/estadoenvio"); // Repartidor
     } else if (rol === 4) {
+<<<<<<< HEAD
       router.push("/logistica/estadopedido"); // Empacador
+=======
+      router.push("/logistica/estadopedido/"); // Empacador
+>>>>>>> main
     } else {
       router.push("/"); // fallback
     }
