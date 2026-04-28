@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Producto } from "@/types/producto/Producto";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Carrusel({ productos }: { productos: Producto[] }) {
   const [index, setIndex] = useState<number>(0);
@@ -60,13 +61,28 @@ export default function Carrusel({ productos }: { productos: Producto[] }) {
 
       {/*  anterior */}
       <button onClick={anterior} className="absolute left-5 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-3 rounded-full z-10 transition">
-        <ChevronLeft size={40} />
+        <ChevronLeft size={25}/>
       </button>
 
       {/*  siguiente */}
       <button onClick={siguiente} className="absolute right-5 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-3 rounded-full z-10 transition">
-        <ChevronRight size={40} />
+        <ChevronRight size={25} />
       </button>
+
+      <div className="absolute bottom-40 left-35 flex flex-col items-start gap-10 z-10">
+        <div className="flex flex-col gap-2">
+          <p className="text-white text-2xl z-10">
+            {producto.marca}
+          </p>
+          <h2 className="text-white text-4xl font-bold z-10">{producto.nombre}</h2>
+        </div>
+
+        <button className="text-black bg-white py-2 px-4 rounded-[28px]">
+          <Link href={`/productos/${producto.id}`} >
+            Ver producto
+          </Link>
+        </button>
+      </div>
     </div>
   );
 }
