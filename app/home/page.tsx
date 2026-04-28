@@ -61,19 +61,23 @@ export default function Home() {
         <Carrusel productos={productos} />
       </div>
 
+      {/* Contenedor principal para cuerpo de home */}
       <div className="p-24 h-full w-full">
+
         {/* Productos destacados */}
-        <div className="border">
+        <div className="flex flex-col gap-4">
           {/* handler y titulo */}
           <div className="flex items-center justify-between">
-            <p>Productos destacados</p>
+            <p className="text-2xl">Productos destacados</p>
 
             <div className="flex items-center gap-2">
-              <p>Ver todo</p>
-              <button className="rounded-full border" onClick={anterior}>
+              <Link href="/productos?categoria=1">
+                <p className="underline text-lg">Ver todo</p>
+              </Link>
+              <button className="rounded-full border hover:cursor-pointer" onClick={anterior}>
                 <ChevronLeft size={25} />
               </button>
-              <button className="rounded-full border" onClick={siguiente}>
+              <button className="rounded-full border hover:cursor-pointer" onClick={siguiente}>
                 <ChevronRight size={25} />
               </button>
             </div>
@@ -95,7 +99,7 @@ export default function Home() {
                     width: `${100 / totalSlides}%`,
                   }}
                 >
-                  {productos
+                  {productos.reverse()
                     .slice(
                       slideIndex * productosPorSlide,
                       (slideIndex + 1) * productosPorSlide
