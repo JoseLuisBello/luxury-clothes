@@ -74,7 +74,7 @@ export default function Carrusel({ productos }: { productos: Producto[] }) {
 
   if (productos.length === 0) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-200 gap-2">
+      <div className="w-full h-screen flex items-center justify-center bg-gray-200 gap-2">
         <Loader size={48} className="animate-spin text-gray-500" />
         <p className="text-gray-500">Cargando productos...</p>
       </div>
